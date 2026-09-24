@@ -248,6 +248,8 @@ class Finder:
 
         async def load_thumb(i: int, it: Item):
             data = await fetch_bytes(self.http, it.c.thumb_url)
+            if data is None and it.c.kind != "video" and it.c.full_url and it.c.full_url != it.c.thumb_url:
+                data = await fetch_bytes(self.http, it.c.full_url)  # thumbnail service failed: use the original
             if data is None and it.c.kind == "video":
                 it.frames = await video_frames(self.http, it, scratch(it), opt.frames_per_video)
                 if it.frames:

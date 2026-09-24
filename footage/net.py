@@ -64,7 +64,8 @@ class Http:
         self._sems: dict[str, asyncio.Semaphore] = {}
         self._next: dict[str, float] = {}
         self._locks: dict[str, asyncio.Lock] = {}
-        self.stats = {"requests": 0, "cache_hits": 0, "errors": 0}
+        self._tripped: dict[str, float] = {}   # host -> monotonic time until which we skip it
+        self.stats = {"requests": 0, "cache_hits": 0, "errors": 0, "tripped": []}
 
     async def __aenter__(self):
         return self
@@ -99,6 +100,10 @@ class Http:
         if self.offline:
             raise HttpError(f"offline: {url}")
         host = urlsplit(url).hostname or ""
+        # Circuit breaker: a host that is rate-limiting us is skipped for a while instead of
+        # making every request wait through retries (speed matters more than one source).
+        if self._tripped.get(host, 0) > time.monotonic():
+            raise HttpError(f"{host} is rate-limiting us; skipped for now")
         last: Exception | None = None
         for attempt in range(4):
             sem = await self._slot(host)
@@ -118,12 +123,21 @@ class Http:
                 last = HttpError(f"HTTP {r.status_code} for {r.request.url}")
                 ra = r.headers.get("retry-after", "")
                 delay = float(ra) if ra.isdigit() else 1.5 * 2 ** attempt
+                if r.status_code == 429 and (delay > 5 or attempt >= 1):
+                    self._trip(host)
+                    raise last
             else:
                 delay = 1.0 * 2 ** attempt
             if attempt < 3:
                 await asyncio.sleep(min(delay, 20))
         self.stats["errors"] += 1
         raise HttpError(str(last))
+
+    def _trip(self, host: str, seconds: float = 300.0) -> None:
+        if self._tripped.get(host, 0) <= time.monotonic():
+            self.stats["tripped"].append(host)
+        self._tripped[host] = time.monotonic() + seconds
+        self.stats["errors"] += 1
 
     async def get_json(self, url: str, params: dict | None = None, headers: dict | None = None,
                        ttl: float | None = None) -> Any:
