@@ -50,3 +50,11 @@ when we host it.
 - **Live agent control:** a WebSocket MCP bridge so a Claude session can edit the open timeline
   while you watch (the desktop build already has an MCP server we can reuse).
 - **Templates:** our graphics (maps, timelines, figures, document cards) as editor templates.
+
+## Hosting
+
+The Studio deploys to Vercel as project `documentary-studio` (root directory `editor/`, settings in
+`editor/vercel.json`). Vercel builds on every push. The build is static (`pnpm build` →
+`apps/web/dist`), served with the cross-origin isolation headers the editor's multithreaded video
+engine needs. The hosted Studio shows the committed compact demo production until the feed moves
+to R2 (`VITE_STUDIO_FEED`).
