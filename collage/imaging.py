@@ -32,15 +32,16 @@ def hex_rgb(h: str) -> tuple[int, int, int]:
 @dataclass
 class Sprite:
     """Premultiplied RGBA float32 image (h, w, 4) with values 0..1."""
-    px: np.ndarray
+    px: np.ndarray | None
+    u8: np.ndarray | None = None   # opaque RGB uint8 fast path (photos, backgrounds)
 
     @property
     def w(self):
-        return self.px.shape[1]
+        return (self.px if self.px is not None else self.u8).shape[1]
 
     @property
     def h(self):
-        return self.px.shape[0]
+        return (self.px if self.px is not None else self.u8).shape[0]
 
     @staticmethod
     def from_rgba(rgb: np.ndarray, alpha: np.ndarray) -> "Sprite":
@@ -135,14 +136,14 @@ def paper(w=W, h=H, color=PAPER, seed=7) -> np.ndarray:
 
 # --------------------------------------------------------------------------------------- photo tone
 def autocontrast(gray: np.ndarray, lo=1.0, hi=99.0) -> np.ndarray:
-    a, b = np.percentile(gray, [lo, hi])
+    a, b = np.percentile(gray[::3, ::3], [lo, hi])
     return np.clip((gray - a) / max(1e-3, b - a), 0, 1)
 
 
 def prep_gray(rgb: np.ndarray, contrast=1.25, mask=None) -> np.ndarray:
     g = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY).astype(np.float32) / 255.0
     if mask is not None and mask.mean() > 0.02:
-        sel = g[mask > 0.5]
+        sel = g[::2, ::2][mask[::2, ::2] > 0.5]
         a, b = np.percentile(sel, [1, 99])
         g = np.clip((g - a) / max(1e-3, b - a), 0, 1)
     else:
@@ -152,7 +153,18 @@ def prep_gray(rgb: np.ndarray, contrast=1.25, mask=None) -> np.ndarray:
     g = np.clip(g + 0.6 * (g - blur), 0, 1)
     # S-curve contrast
     g = np.clip(0.5 + (g - 0.5) * contrast, 0, 1)
-    return g
+    return g.astype(np.float32)
+
+
+@lru_cache(maxsize=16)
+def _screen(h, w, cell, angle, seed):
+    yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
+    th = np.deg2rad(angle)
+    u = (xx * np.cos(th) + yy * np.sin(th)) * (2 * np.pi / cell)
+    v = (-xx * np.sin(th) + yy * np.cos(th)) * (2 * np.pi / cell)
+    screen = 0.5 + 0.25 * (np.cos(u) + np.cos(v))          # 0..1 threshold map (Euclidean dot)
+    uneven = 0.93 + 0.07 * fbm(h, w, seed, (40, 8))
+    return screen.astype(np.float32), uneven.astype(np.float32)
 
 
 def halftone(gray: np.ndarray, cell=6.0, angle=45.0, ink=INK, paper_rgb=STICKER, mix=0.35,
@@ -163,33 +175,37 @@ def halftone(gray: np.ndarray, cell=6.0, angle=45.0, ink=INK, paper_rgb=STICKER,
     into a checkerboard in the midtones, like newspaper print. `mix` blends some continuous tone back
     in so faces stay readable at 1080p.
     """
+    gray = gray.astype(np.float32, copy=False)
     h, w = gray.shape
-    yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
-    th = np.deg2rad(angle)
-    u = (xx * np.cos(th) + yy * np.sin(th)) * (2 * np.pi / cell)
-    v = (-xx * np.sin(th) + yy * np.cos(th)) * (2 * np.pi / cell)
-    screen = 0.5 + 0.25 * (np.cos(u) + np.cos(v))          # 0..1 threshold map
+    screen, uneven = _screen(h, w, float(cell), float(angle), seed)
     dark = 1.0 - cv2.GaussianBlur(gray, (0, 0), cell * 0.18)
     # soft (anti-aliased) threshold
     ink_amt = np.clip((dark - screen) * 3.2 + 0.5, 0, 1)
     ink_amt = (1 - mix) * ink_amt + mix * (1.0 - gray)
-    # slight print unevenness
-    ink_amt *= 0.93 + 0.07 * fbm(h, w, seed, (40, 8))
-    ink = np.array(ink, np.float32)[None, None]
-    pap = np.array(paper_rgb, np.float32)[None, None]
-    out = pap + (ink - pap) * ink_amt[..., None]
-    return np.clip(out, 0, 255).astype(np.uint8)
+    ink_amt *= uneven  # slight print unevenness
+    ink = np.array(ink, np.float32)
+    pap = np.array(paper_rgb, np.float32)
+    chans = [cv2.convertScaleAbs(ink_amt, alpha=float(ink[c] - pap[c]), beta=float(pap[c]))
+             if ink[c] >= pap[c] else
+             cv2.convertScaleAbs(1.0 - ink_amt, alpha=float(pap[c] - ink[c]), beta=float(ink[c]))
+             for c in range(3)]
+    return cv2.merge(chans)
+
+
+@lru_cache(maxsize=8)
+def _archival_maps(h, w, seed):
+    rng = np.random.default_rng(seed)
+    grain = cv2.GaussianBlur(rng.normal(0, 1, (h, w)).astype(np.float32), (0, 0), 0.9) * 0.045
+    yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
+    vig = 1.0 - 0.35 * (((xx / w - 0.5) ** 2 + (yy / h - 0.5) ** 2) * 2.0)
+    return grain, vig.astype(np.float32)
 
 
 def archival(rgb: np.ndarray, seed=5, warm=True) -> np.ndarray:
     g = prep_gray(rgb, contrast=1.12)
     h, w = g.shape
-    rng = np.random.default_rng(seed)
-    g = g * 0.9 + 0.05
-    g += cv2.GaussianBlur(rng.normal(0, 1, (h, w)).astype(np.float32), (0, 0), 0.9) * 0.045
-    yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
-    g *= 1.0 - 0.35 * (((xx / w - 0.5) ** 2 + (yy / h - 0.5) ** 2) * 2.0)
-    g = np.clip(g, 0, 1)
+    grain, vig = _archival_maps(h, w, seed)
+    g = np.clip((g * 0.9 + 0.05 + grain) * vig, 0, 1)
     tint = np.array([1.0, 0.95, 0.86] if warm else [1, 1, 1], np.float32)
     lo = np.array([22, 18, 15], np.float32)
     hi = np.array([238, 229, 208], np.float32) * tint / tint.max()
@@ -433,8 +449,12 @@ def tape(w=190, h=58, seed=13) -> Sprite:
     a = cv2.resize(m, (w + 2 * pad, h + 2 * pad), interpolation=cv2.INTER_AREA).astype(np.float32) / 255
     hh, ww = a.shape
     tex = fbm(hh, ww, seed + 1, (30, 6, 2), (1.0, 0.5, 0.5))
-    rgb = np.array([226, 216, 190], np.float32)[None, None] * (0.95 + 0.08 * tex)[..., None]
-    return Sprite.from_rgba(rgb, a * (0.62 + 0.12 * tex))
+    # lengthwise streaks like crinkled masking tape
+    streak = cv2.resize(rng.random((max(2, hh // 6), 3)).astype(np.float32), (ww, hh), interpolation=cv2.INTER_CUBIC)
+    rgb = np.array([218, 204, 166], np.float32)[None, None] * (0.93 + 0.07 * tex + 0.05 * streak)[..., None]
+    alpha = a * (0.72 + 0.1 * tex)
+    sp = Sprite.from_rgba(np.clip(rgb, 0, 255), alpha)
+    return with_shadow(sp, offset=(1, 2), blur=2, opacity=0.18)
 
 
 def solid(w: int, h: int, rgb) -> Sprite:
@@ -442,4 +462,5 @@ def solid(w: int, h: int, rgb) -> Sprite:
 
 
 def rgb_sprite(img: np.ndarray) -> Sprite:
-    return Sprite.from_rgba(img, np.ones(img.shape[:2], np.float32))
+    """Opaque sprite (fast path: no premultiply needed)."""
+    return Sprite(None, np.ascontiguousarray(img, dtype=np.uint8))

@@ -49,7 +49,7 @@ def bg_layers(bg: dict | None, seed: int, ctx) -> list[Layer]:
     if bg.get("type") == "photo":
         rgb = load_rgb(bg["src"])
         cw, ch = int(W * 1.06), int(H * 1.06)
-        c = im.cover(rgb, cw, ch, tuple(bg.get("focus", (0.5, 0.5))))
+        c = im.cover(rgb, cw, ch, tuple(bg.get("focus", (0.5, 0.3))))
         style = bg.get("style", "halftone")
         toned = im.tone(c, style, cell=5.5, seed=seed)
         # mute a touch so cut-outs with white borders pop
@@ -132,26 +132,56 @@ def _photo_frame_source(spec, ctx, cw, ch, style, seed):
     if spec.get("video"):
         return None, _video_frames(spec, ctx, cw, ch, style, seed)
     rgb = load_rgb(spec["photo"])
-    c = im.cover(rgb, cw, ch, tuple(spec.get("focus", (0.5, 0.5))))
+    c = im.cover(rgb, cw, ch, tuple(spec.get("focus", (0.5, 0.3))))
     return im.rgb_sprite(im.tone(c, style, cell=6.0, seed=seed)), None
+
+
+class _VideoReader:
+    """Sequential ffmpeg decode shared by the frame workers (frames are requested nearly in order)."""
+
+    def __init__(self, cmd, cw, ch, keep=64):
+        import threading
+        self.p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+        self.size = cw * ch * 3
+        self.shape = (ch, cw, 3)
+        self.buf = {}
+        self.next = 0
+        self.last = None
+        self.keep = keep
+        self.lock = threading.Lock()
+
+    def get(self, i):
+        with self.lock:
+            while i >= self.next and self.p is not None:
+                data = self.p.stdout.read(self.size)
+                if len(data) < self.size:
+                    self.p.stdout.close()
+                    self.p.wait()
+                    self.p = None
+                    break
+                self.last = np.frombuffer(data, np.uint8).reshape(self.shape)
+                self.buf[self.next] = self.last
+                self.buf.pop(self.next - self.keep, None)
+                self.next += 1
+            fr = self.buf.get(i)
+            if fr is None:  # past the end of the clip (or evicted): hold the nearest frame
+                fr = self.buf[max(k for k in self.buf if k <= i)] if any(k <= i for k in self.buf) else self.last
+            return fr
 
 
 def _video_frames(spec, ctx, cw, ch, style, seed):
     dur = float(spec["duration"])
-    n = int(round(dur * FPS))
-    path = Path(ctx["workdir"]) / f"video_{seed}.u8"
     vf = (f"fps={FPS},scale={cw}:{ch}:force_original_aspect_ratio=increase:flags=bicubic,"
           f"crop={cw}:{ch}")
-    cmd = ["ffmpeg", "-v", "error", "-y", "-ss", str(float(spec.get("in", 0))), "-i", str(spec["video"]),
-           "-t", f"{dur + 0.5:.3f}", "-vf", vf, "-an", "-f", "rawvideo", "-pix_fmt", "rgb24", str(path)]
-    subprocess.run(cmd, check=True)
-    fsz = cw * ch * 3
-    got = max(1, path.stat().st_size // fsz)
-    mm = np.memmap(path, np.uint8, "r", shape=(got, ch, cw, 3))
+    cmd = ["ffmpeg", "-v", "error", "-ss", str(float(spec.get("in", 0))), "-i", str(spec["video"]),
+           "-t", f"{dur + 0.5:.3f}", "-vf", vf, "-an", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"]
+    reader = _VideoReader(cmd, cw, ch)
 
     def frame(i):
-        fr = np.asarray(mm[min(i, got - 1)])
-        return im.rgb_sprite(im.tone(fr, style, cell=6.0, seed=seed + (i // 2) % 4))
+        fr = reader.get(i)
+        if fr is None:
+            raise RuntimeError(f"could not decode video {spec['video']}")
+        return im.rgb_sprite(im.tone(fr, style, cell=6.0, seed=seed))
     return frame
 
 
@@ -163,7 +193,7 @@ def build_cutout(spec, ctx) -> Scene:
     layers = bg_layers(spec.get("bg"), sd, ctx)
     cap = spec.get("caption")
     scale = float(spec.get("scale", 1.0))
-    target_h = H * 0.98 * scale
+    target_h = H * 1.05 * scale
     if pos == "center":
         x = W / 2
         max_w = W * 0.8
@@ -186,7 +216,7 @@ def build_cutout(spec, ctx) -> Scene:
         elif pos == "left":
             layers += caption_layers(cap, W - 90, H * 0.66, sd, align="right", max_w=max(420, int(W - lay.sprite.w - 160)))
         else:
-            layers += caption_layers(cap, W / 2, H * 0.82, sd, align="center", max_w=1100)
+            layers += caption_layers(cap, W / 2, H * 0.72, sd, align="center", max_w=1100)
     return Scene(layers, dur, camera_for(spec.get("motion", "push"), dur))
 
 
@@ -279,7 +309,7 @@ def build_quote(spec, ctx) -> Scene:
     accent = im.hex_rgb(spec.get("accent", DEFAULT_ACCENT))
     layers = bg_layers(spec.get("bg"), sd, ctx)
     photo = spec.get("photo")
-    text = "“" + spec["text"].strip().strip('"“”') + "”"
+    text = spec["text"].strip().strip('"“”')  # the accent card carries the quote mark
     if photo:
         lay = cutout_layer(photo, ctx, H * 0.9, 0, style=spec.get("style", "halftone"),
                            subject=spec.get("subject", "largest"), max_w=W * 0.4, seed=sd % 97,
@@ -290,7 +320,7 @@ def build_quote(spec, ctx) -> Scene:
         tx, maxw = W * 0.64, 900
     else:
         tx, maxw = W / 2, 1300
-    size = 60 if len(text) < 140 else 50
+    size = 78 if len(text) < 50 else 64 if len(text) < 110 else 54 if len(text) < 200 else 46
     lines = im.wrap(text, "typewriter", size, maxw).split("\n")
     # typing speed adapts so the quote finishes by ~65% of the scene
     total_chars = sum(len(l) for l in lines)
@@ -365,13 +395,22 @@ def _clipping(spec, seed, accent):
     hm = im.text_mask(wrapped, "serif_bold", size, line_gap=1.02, align="center")
     ink(hm, ox + (inner_w - hm.shape[1]) // 2, y)
     head_box = (ox + (inner_w - hm.shape[1]) // 2, y, hm.shape[1], hm.shape[0])
-    y += hm.shape[0] + 30
+    y += hm.shape[0] + 44
     ink(np.ones((2, inner_w), np.float32), ox, y)
     y += 20
     # greeked body copy: 3 columns of grey word-bars
     rng = np.random.default_rng(seed)
     colw = (inner_w - 2 * 30) // 3
-    for c in range(3):
+    first_col = 0
+    if spec.get("photo"):
+        # halftone news photo across the first two columns
+        pw, ph = 2 * colw + 30, int(ch + 14 - y - 10)
+        pic = im.cover(load_rgb(spec["photo"]), pw, ph, tuple(spec.get("focus", (0.5, 0.3))))
+        g = im.prep_gray(pic, contrast=1.15)
+        ht = im.halftone(g, cell=5.0, paper_rgb=news, seed=seed, mix=0.25)
+        im.over(canvas, im.Sprite.from_rgba(ht, np.ones((ph, pw), np.float32)), ox, int(y))
+        first_col = 2
+    for c in range(first_col, 3):
         x0 = ox + c * (colw + 30)
         yy = y
         while yy < ch + 14 - 20:
@@ -382,10 +421,10 @@ def _clipping(spec, seed, accent):
                 wl = int(rng.uniform(18, 70))
                 wl = min(wl, int(end - xx))
                 if wl > 4:
-                    bar = np.ones((9, wl), np.float32) * 0.55
+                    bar = np.ones((6, wl), np.float32) * 0.42
                     ink(bar, xx, yy, alpha=0.9)
                 xx += wl + 9
-            yy += 19
+            yy += 15
         if c < 2:
             ink(np.ones((ch - y, 1), np.float32) * 0.6, x0 + colw + 15, y)
     return canvas, head_box
@@ -409,7 +448,7 @@ def build_headline(spec, ctx) -> Scene:
     stroke = im.Sprite.from_rgba(np.broadcast_to(np.array(accent, np.uint8)[None, None], a.shape + (3,)), a * 0.92)
     # headline box centre relative to clipping centre
     lx = pad + hx + hw / 2 - clip_s.w / 2
-    ly = pad + hy + hh + 14 - clip_s.h / 2
+    ly = pad + hy + hh + 24 - clip_s.h / 2
     r = math.radians(-rot)
     X = cx + lx * math.cos(r) - ly * math.sin(r)
     Y = cy + lx * math.sin(r) + ly * math.cos(r)

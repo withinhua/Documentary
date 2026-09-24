@@ -13,10 +13,8 @@ MODELS = Path(os.environ.get("COLLAGE_MODELS", ASSETS / "models"))
 FONT = {
     "typewriter": FONTS / "SpecialElite-Regular.ttf",
     "numeral": FONTS / "ArchivoBlack-Regular.ttf",
-    "condensed": FONTS / "Anton-Regular.ttf",
     "serif": FONTS / "OldStandard-Regular.ttf",
     "serif_bold": FONTS / "OldStandard-Bold.ttf",
-    "serif_italic": FONTS / "OldStandard-Italic.ttf",
     "display_serif": FONTS / "PlayfairDisplay.ttf",
     "blackletter": FONTS / "UnifrakturMaguntia-Book.ttf",
 }

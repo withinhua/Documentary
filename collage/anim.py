@@ -121,6 +121,9 @@ def draw(canvas: np.ndarray, sp: Sprite, M: np.ndarray, alpha: float = 1.0, reve
     """Warp premultiplied sprite with affine M (src->dst) and composite onto float canvas (H,W,3)."""
     if alpha <= 0.001:
         return
+    if sp.px is None:
+        _draw_opaque(canvas, sp.u8, M, alpha)
+        return
     src = sp.px
     if reveal < 1.0:
         cut = int(round(sp.w * clamp01(reveal)))
@@ -165,6 +168,24 @@ def draw(canvas: np.ndarray, sp: Sprite, M: np.ndarray, alpha: float = 1.0, reve
     reg = canvas[y0:y1, x0:x1]
     reg *= (1.0 - warped[..., 3:4])
     reg += warped[..., :3]
+
+
+def _draw_opaque(canvas, u8, M, alpha):
+    """Opaque RGB uint8 layer: warp in uint8 (3x cheaper than float RGBA), coverage from a warped mask."""
+    h, w = u8.shape[:2]
+    rgb = cv2.warpAffine(u8, M, (W, H), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT, borderValue=(0, 0, 0))
+    corners = np.array([[0, 0, 1], [w, 0, 1], [0, h, 1], [w, h, 1]], np.float32) @ M.T
+    full = corners[:, 0].min() <= 0 and corners[:, 1].min() <= 0 and corners[:, 0].max() >= W and corners[:, 1].max() >= H
+    covers = full and abs(M[0, 1]) < 1e-9  # axis aligned and covering the frame
+    f = rgb.astype(np.float32) * (1.0 / 255.0)
+    if covers and alpha >= 0.999:
+        canvas[:] = f
+        return
+    m = cv2.warpAffine(np.full((h, w), 255, np.uint8), M, (W, H), flags=cv2.INTER_LINEAR,
+                       borderMode=cv2.BORDER_CONSTANT, borderValue=0).astype(np.float32) * (alpha / 255.0)
+    m = m[..., None]
+    canvas *= (1.0 - m)
+    canvas += f * m
 
 
 class Grain:
