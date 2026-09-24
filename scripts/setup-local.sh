@@ -23,6 +23,8 @@ done
 
 echo "→ House look (LUT + vignette)"
 python house/make_house.py >/dev/null
+# Show every production in the Studio right away (script only until it's rendered)
+for d in projects/*/; do [ -f "$d/script.json" ] && python -m pipeline.feed publish "$d" >/dev/null; done
 
 echo "→ Studio (editor) dependencies"
 corepack enable >/dev/null 2>&1 || npm i -g pnpm

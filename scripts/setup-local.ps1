@@ -16,4 +16,8 @@ foreach ($f in "kokoro-v1.0.onnx", "voices-v1.0.bin") {
   }
 }
 & .\.venv\Scripts\python.exe house\make_house.py | Out-Null
+# Show every production in the Studio right away (script only until it's rendered)
+Get-ChildItem projects -Directory | Where-Object { Test-Path (Join-Path $_.FullName "script.json") } | ForEach-Object {
+  & .\.venv\Scripts\python.exe -m pipeline.feed publish $_.FullName --feed editor\apps\web\public\studio-feed | Out-Null
+}
 Write-Host "Done. Keep scripts\studio.ps1 running, then run scripts\new-coke.ps1" -ForegroundColor Green
