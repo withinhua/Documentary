@@ -47,3 +47,12 @@ machines and publishes it on the repo's Releases page as **studio-latest**. Inst
 The dashboard then shows your productions live; each production has **Get footage**,
 **Make video** and **Show file** buttons that run the pipeline on your PC (after
 `scripts\setup-local.ps1` has set up Python and the voice model once).
+
+## Connect Claude Code to the app (MCP)
+With Documentary Studio open, from this folder in PowerShell:
+```powershell
+$e = Get-Content "$HOME\.openreel\mcp-endpoint.json" | ConvertFrom-Json
+claude mcp add --transport http documentary-studio $e.url --header "Authorization: Bearer $($e.token)"
+claude mcp list        # documentary-studio should show ✓ Connected
+```
+If it stops connecting after the app restarts: `claude mcp remove documentary-studio`, then the two lines above again.
