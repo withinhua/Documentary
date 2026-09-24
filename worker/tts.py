@@ -11,6 +11,9 @@ the first scenes while later beats are still being voiced (`iter_takes`).
 """
 from __future__ import annotations
 
+import hashlib
+import json
+import math
 import os
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
@@ -30,9 +33,11 @@ def _providers():
 
 class Narrator:
     def __init__(self, voice: str = "bm_george", speed: float = 0.95, model_dir: Path = MODEL_DIR,
-                 threads: int | None = None, workers: int | None = None):
+                 threads: int | None = None, workers: int | None = None, cache_dir: Path | None = None):
         """`threads`: ONNX intra-op threads for this process's session (default: ONNX's choice).
-        `workers`: processes used by `narrate`/`iter_takes` on CPU (default: auto, see `_auto_workers`)."""
+        `workers`: processes used by `narrate`/`iter_takes` on CPU (default: auto, see `_auto_workers`).
+        `cache_dir`: keep every take keyed by (text, pace, voice, speed, model); re-runs only voice
+        the lines that changed."""
         import onnxruntime as ort
         from kokoro_onnx import Kokoro
 
@@ -44,6 +49,8 @@ class Narrator:
         self.device = "cuda" if sess.get_providers()[0].startswith("CUDA") else "cpu"
         self.k = Kokoro.from_session(sess, str(model_dir / "voices-v1.0.bin"))
         self.voice, self.speed, self.model_dir, self.workers = voice, speed, Path(model_dir), workers
+        self.cache_dir = Path(cache_dir) if cache_dir else None
+        self.cached = 0   # takes served from the cache by the last narrate()
 
     def say(self, text: str, pace: float = 1.0):
         audio, sr = self.k.create(text, voice=self.voice, speed=self.speed * pace, lang="en-us")
@@ -57,44 +64,91 @@ class Narrator:
             return 1
         return max(1, min(4, (os.cpu_count() or 2) // 2, n_beats // 2))
 
+    def _key(self, text: str, pace: float) -> str:
+        m = self.model_dir / "kokoro-v1.0.onnx"
+        st = m.stat()
+        raw = json.dumps([text, round(pace, 6), self.voice, round(self.speed, 6), st.st_size, "en-us"])
+        return hashlib.sha256(raw.encode()).hexdigest()[:24]
+
+    def _cache_get(self, key: str):
+        if not self.cache_dir:
+            return None
+        try:
+            return np.load(self.cache_dir / f"{key}.npy")
+        except (OSError, ValueError):
+            return None
+
+    def _cache_put(self, key: str, audio: np.ndarray) -> None:
+        if not self.cache_dir:
+            return
+        self.cache_dir.mkdir(parents=True, exist_ok=True)
+        tmp = self.cache_dir / f"{key}.{os.getpid()}.tmp.npy"
+        np.save(tmp, audio)
+        os.replace(tmp, self.cache_dir / f"{key}.npy")
+
     def iter_takes(self, beats: list[dict]) -> Iterator[tuple[int, np.ndarray, int]]:
-        """Yield (index, audio, sample_rate) for every beat, in order, as soon as each is ready."""
-        n = self._auto_workers(len(beats))
+        """Yield (index, audio, sample_rate) for every beat, in order, as soon as each is ready
+        (and every beat before it). Cached takes are served without running the model."""
         jobs = [(b["text"], float(b.get("pace", 1.0))) for b in beats]
+        keys = [self._key(t, p) for t, p in jobs]
+        have = {i: a for i, a in ((i, self._cache_get(k)) for i, k in enumerate(keys)) if a is not None}
+        self.cached = len(have)
+        todo = [i for i in range(len(jobs)) if i not in have]
+        n = self._auto_workers(len(todo))
         if n <= 1:
-            for i, (text, pace) in enumerate(jobs):
-                audio, sr = self.say(text, pace)
-                yield i, audio, sr
+            for i in range(len(jobs)):
+                if i in have:
+                    yield i, have.pop(i), SR
+                else:
+                    audio, sr = self.say(*jobs[i])
+                    self._cache_put(keys[i], audio)
+                    yield i, audio, sr
             return
         threads = max(1, (os.cpu_count() or 2) // n)
         import multiprocessing as mp
         # spawn, not fork: this process already runs ONNX Runtime threads, which don't survive a fork
         with ProcessPoolExecutor(n, mp_context=mp.get_context("spawn"), initializer=_init_worker,
                                  initargs=(self.voice, self.speed, str(self.model_dir), threads)) as ex:
-            # submit everything; results are consumed in order (map keeps order, runs ahead in parallel)
-            for i, (audio, sr) in enumerate(ex.map(_take, jobs)):
+            futs = {i: ex.submit(_take, jobs[i]) for i in todo}   # all queued; consumed in order
+            for i in range(len(jobs)):
+                if i in have:
+                    yield i, have.pop(i), SR
+                    continue
+                audio, sr = futs.pop(i).result()
+                self._cache_put(keys[i], audio)
                 yield i, audio, sr
 
     def narrate(self, chapters: list[dict], out_wav: Path,
-                on_beat: Callable[[int, int, float, float], None] | None = None) -> list[list[tuple[float, float]]]:
+                on_beat: Callable[[int, int, float, float], None] | None = None,
+                frame_rate: int | None = None) -> list[list[tuple[float, float]]]:
         """Write the narration; return [(start, end)] seconds per beat, per chapter.
         A beat's slot runs until the next beat starts, so pauses stay on the same picture.
         `on_beat(chapter_index, beat_index, start, end)` fires as soon as a beat's slot is known
-        (in order), so callers can start work on it while the rest is still being voiced."""
+        (in order), so callers can start work on it while the rest is still being voiced.
+        `frame_rate`: stretch each beat's pause (by < 1 frame) so every slot is a whole number of
+        video frames. Then a beat's scene length depends on that beat alone: re-voicing one line
+        never shifts the frame counts (and render-cache keys) of the scenes after it."""
         flat = [(ci, bi, b) for ci, ch in enumerate(chapters) for bi, b in enumerate(ch.get("beats", []))]
         times: list[list[tuple[float, float]]] = [[] for _ in chapters]
-        parts, t, sr = [], 0.0, SR
+        parts, t, sr, frames = [], 0.0, SR, 0
         for i, audio, sr in self.iter_takes([b for _, _, b in flat]):
             ci, bi, b = flat[i]
             last = bi == len(chapters[ci]["beats"]) - 1
             pause = float(b.get("pause_after", 1.2 if last else 0.3))
-            gap = np.zeros(int(pause * sr), dtype=np.float32)
+            if frame_rate:
+                spf = sr / frame_rate                       # samples per frame (800 at 24 kHz / 30 fps)
+                n = int(math.ceil((len(audio) + pause * sr) / spf - 1e-9))
+                gap = np.zeros(int(round((frames + n) * spf)) - int(round(frames * spf)) - len(audio), np.float32)
+                start, end = frames / frame_rate, (frames + n) / frame_rate
+                frames += n
+            else:
+                gap = np.zeros(int(pause * sr), dtype=np.float32)
+                start, end = t, t + len(audio) / sr + pause
             parts += [audio, gap]
-            dur = len(audio) / sr + pause
-            times[ci].append((t, t + dur))
+            times[ci].append((start, end))
             if on_beat:
-                on_beat(ci, bi, t, t + dur)
-            t += dur
+                on_beat(ci, bi, start, end)
+            t = end
         sf.write(out_wav, np.concatenate(parts) if parts else np.zeros(sr, np.float32), sr)
         return times
 
