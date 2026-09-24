@@ -5,7 +5,7 @@ All randomness is seeded so renders are deterministic.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from functools import lru_cache
 
 import cv2
@@ -34,6 +34,17 @@ class Sprite:
     """Premultiplied RGBA float32 image (h, w, 4) with values 0..1."""
     px: np.ndarray | None
     u8: np.ndarray | None = None   # opaque RGB uint8 fast path (photos, backgrounds)
+    _pm8: np.ndarray | None = field(default=None, repr=False, compare=False)
+
+    def pm8(self) -> np.ndarray:
+        """Premultiplied RGBA uint8 (h, w, 4) used by the compositor; opaque sprites get alpha 255.
+        Computed once per sprite (4-channel uint8 is the fastest layout for cv2.warpAffine)."""
+        if self._pm8 is None:
+            if self.px is not None:
+                self._pm8 = cv2.convertScaleAbs(self.px, alpha=255.0)   # round + saturate
+            else:
+                self._pm8 = cv2.cvtColor(self.u8, cv2.COLOR_RGB2RGBA)
+        return self._pm8
 
     @property
     def w(self):
@@ -62,6 +73,7 @@ def over(dst: Sprite, src: Sprite, x: int, y: int) -> Sprite:
     d = dst.px[y0:y1, x0:x1]
     d *= (1.0 - s[..., 3:4])
     d += s
+    dst._pm8 = None
     return dst
 
 
@@ -130,8 +142,37 @@ def _paper_cached(w, h, color, seed):
     return np.clip(img, 0, 255).astype(np.uint8)
 
 
+_PAPER_VERSION = 1   # bump when _paper_cached changes, so stale disk copies are ignored
+
+
+@lru_cache(maxsize=8)
+def _paper_disk(w, h, color, seed):
+    """Paper textures are deterministic and shared by every paper scene: keep them on disk in the
+    collage cache ($COLLAGE_CACHE) so each render process loads (~5 ms) instead of regenerating (~0.5 s)."""
+    import os
+    import tempfile
+    from pathlib import Path
+    cache = Path(os.environ.get("COLLAGE_CACHE", Path(tempfile.gettempdir()) / "collage-cache"))
+    f = cache / f"paper_v{_PAPER_VERSION}_{w}x{h}_{'-'.join(map(str, color))}_{seed}.npy"
+    try:
+        img = np.load(f)
+        if img.shape == (h, w, 3) and img.dtype == np.uint8:
+            return img
+    except (OSError, ValueError):
+        pass
+    img = _paper_cached(w, h, color, seed)
+    try:
+        cache.mkdir(parents=True, exist_ok=True)
+        tmp = f.with_name(f"{f.stem}.{os.getpid()}.tmp.npy")
+        np.save(tmp, img)
+        os.replace(tmp, f)
+    except OSError:
+        pass
+    return img
+
+
 def paper(w=W, h=H, color=PAPER, seed=7) -> np.ndarray:
-    return _paper_cached(w, h, tuple(color), seed).copy()
+    return _paper_disk(w, h, tuple(int(c) for c in color), seed).copy()
 
 
 # --------------------------------------------------------------------------------------- photo tone

@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import shutil
@@ -19,7 +20,7 @@ from pathlib import Path
 
 import cv2
 
-from .anim import FPS, Grain, render_frame
+from .anim import FPS, Grain, frame_key, render_frame, render_yuv
 from .imaging import H, W
 from .scenes import build
 
@@ -35,46 +36,121 @@ def _ctx(workdir):
     return {"workdir": wd, "cache": DEFAULT_CACHE}
 
 
-def render_scene(spec: dict, out_path, workdir=None, threads: int | None = None, crf: int = 18,
-                 preset: str = "veryfast") -> Path:
-    """Render ONE scene spec to `out_path` (mp4). Returns the output path."""
+# x264 settings. `superfast` at CRF 18 measured SSIM >= `veryfast` at CRF 18 on these grainy collage frames
+# for ~55% of the encoder CPU (files ~15% larger); frames are piped as yuv420p (converted with
+# cv2, BT.601 limited range like ffmpeg's default) because ffmpeg's rgb24->yuv420p swscale step alone
+# cost ~20 ms/frame.
+DEFAULT_CRF = 18
+DEFAULT_PRESET = "superfast"
+
+
+def render_scene(spec: dict, out_path, workdir=None, threads: int | None = None, crf: int = DEFAULT_CRF,
+                 preset: str = DEFAULT_PRESET, encoder_threads: int | None = None) -> Path:
+    """Render ONE scene spec to `out_path` (mp4). Returns the output path.
+
+    `threads`: frame-compositing threads (default: all cores). `encoder_threads`: x264 threads
+    (default: x264's own choice). When several scenes render at once (pipeline process pool) pass
+    small values for both so the machine isn't oversubscribed.
+    """
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     ctx = _ctx(workdir)
     try:
-        return _render(spec, out_path, ctx, threads, crf, preset)
+        return _render(spec, out_path, ctx, threads, crf, preset, encoder_threads)
     finally:
         if workdir is None:
             shutil.rmtree(ctx["workdir"], ignore_errors=True)
 
 
-def _render(spec, out_path, ctx, threads, crf, preset) -> Path:
+def _render(spec, out_path, ctx, threads, crf, preset, encoder_threads=None) -> Path:
     scene = build(spec, ctx)
     n = int(round(float(spec["duration"]) * FPS))
     grain = Grain(scene.grain)
-    cmd = ["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
+    tmp = out_path.with_name(out_path.stem + ".part" + out_path.suffix)
+    cmd = ["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "yuv420p", "-s", f"{W}x{H}",
            "-r", str(FPS), "-i", "-", "-an", "-c:v", "libx264", "-preset", preset, "-crf", str(crf),
-           "-pix_fmt", "yuv420p", "-r", str(FPS), "-frames:v", str(n), "-movflags", "+faststart", str(out_path)]
+           *(["-threads", str(encoder_threads)] if encoder_threads else []),
+           "-pix_fmt", "yuv420p", "-r", str(FPS), "-frames:v", str(n), "-movflags", "+faststart", str(tmp)]
+    # Frames whose inputs are identical to the previous frame's (held stop-motion poses under a locked
+    # camera, grain held on twos) are written again instead of recomputed.
+    keys = [frame_key(scene, i, grain) for i in range(n)]
+    same = [i > 0 and keys[i] is not None and keys[i] == keys[i - 1] for i in range(n)]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     workers = threads or max(1, (os.cpu_count() or 2))
     try:
         with ThreadPoolExecutor(workers) as ex:
+            todo = [i for i in range(n) if not same[i]]
             window = workers * 2
             futs = {}
-            for i in range(min(window, n)):
-                futs[i] = ex.submit(render_frame, scene, i, grain)
+            nxt = 0
+            while nxt < len(todo) and len(futs) < window:
+                futs[todo[nxt]] = ex.submit(render_yuv, scene, todo[nxt], grain)
+                nxt += 1
+            last = None
             for i in range(n):
-                frame = futs.pop(i).result()
-                j = i + window
-                if j < n:
-                    futs[j] = ex.submit(render_frame, scene, j, grain)
-                proc.stdin.write(frame.tobytes())
+                if not same[i]:
+                    last = futs.pop(i).result()
+                    if nxt < len(todo):
+                        futs[todo[nxt]] = ex.submit(render_yuv, scene, todo[nxt], grain)
+                        nxt += 1
+                proc.stdin.write(last)
     finally:
-        proc.stdin.close()
+        try:
+            proc.stdin.close()
+        except BrokenPipeError:
+            pass
         rc = proc.wait()
     if rc != 0:
+        tmp.unlink(missing_ok=True)
         raise RuntimeError(f"ffmpeg failed ({rc}) for {out_path}")
+    os.replace(tmp, out_path)  # atomic: a half-written clip never looks finished (render cache)
     return out_path
+
+
+# --------------------------------------------------------------------------------------- render cache
+MEDIA_KEYS = ("photo", "video", "src")
+
+
+def _code_version() -> str:
+    """Hash of the renderer's own source, so any change to the look invalidates cached clips."""
+    h = hashlib.sha256()
+    for f in sorted(Path(__file__).resolve().parent.glob("*.py")):
+        h.update(f.name.encode())
+        h.update(f.read_bytes())
+    return h.hexdigest()[:16]
+
+
+def spec_media(spec) -> list[str]:
+    """Every local media file a spec references (photo, video, bg.src, nested), in a stable order."""
+    out: list[str] = []
+
+    def walk(v, key=None):
+        if isinstance(v, dict):
+            for k in sorted(v):
+                walk(v[k], k)
+        elif isinstance(v, list):
+            for x in v:
+                walk(x, key)
+        elif isinstance(v, str) and key in MEDIA_KEYS and v not in out:
+            out.append(v)
+    walk(spec)
+    return out
+
+
+def cache_key(spec: dict, crf: int = DEFAULT_CRF, preset: str = DEFAULT_PRESET, media_root=None) -> str:
+    """Content hash of everything a rendered clip depends on: the spec, each referenced media file's
+    size + mtime, the encoder settings and the renderer code. Equal key => the existing clip is valid."""
+    h = hashlib.sha256()
+    h.update(json.dumps(spec, sort_keys=True, default=str).encode())
+    for m in spec_media(spec):
+        p = Path(media_root, m) if media_root else Path(m)
+        try:
+            st = p.stat()
+            h.update(f"{m}|{st.st_size}|{st.st_mtime_ns}".encode())
+        except OSError:
+            h.update(f"{m}|missing".encode())
+    h.update(f"{crf}|{preset}|{_code_version()}".encode())
+    return h.hexdigest()[:24]
 
 
 def render_still(spec: dict, t: float, out_path, workdir=None) -> Path:

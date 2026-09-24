@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass, field
+from functools import lru_cache
 from typing import Callable
 
 import cv2
@@ -117,25 +118,42 @@ def _boil(layer: Layer, t: float, fps_step: int):
     return (float(rng.uniform(-j, j)), float(rng.uniform(-j, j)), float(rng.uniform(-0.12, 0.12) * j))
 
 
+def _bounds(M: np.ndarray, w: int, h: int):
+    """Integer destination rect (x0, y0, x1, y1) covering the warped w x h sprite, clipped to the frame."""
+    c = np.array([[0, 0, 1], [w, 0, 1], [0, h, 1], [w, h, 1]], np.float32) @ M.T
+    x0 = max(0, int(math.floor(c[:, 0].min())) - 1)
+    y0 = max(0, int(math.floor(c[:, 1].min())) - 1)
+    x1 = min(W, int(math.ceil(c[:, 0].max())) + 1)
+    y1 = min(H, int(math.ceil(c[:, 1].max())) + 1)
+    return x0, y0, x1, y1
+
+
+def _blend(reg: np.ndarray, src: np.ndarray, alpha: float = 1.0) -> None:
+    """reg = reg * (1 - a) + src for premultiplied RGBA uint8 `src` (in place, saturating uint8 SIMD ops)."""
+    if alpha < 0.999:
+        src = cv2.convertScaleAbs(src, alpha=alpha)
+    inv = cv2.bitwise_not(cv2.extractChannel(src, 3))
+    cv2.multiply(reg, cv2.merge((inv, inv, inv, inv)), dst=reg, scale=1.0 / 255.0)
+    cv2.add(reg, src, dst=reg)
+
+
 def draw(canvas: np.ndarray, sp: Sprite, M: np.ndarray, alpha: float = 1.0, reveal: float = 1.0):
-    """Warp premultiplied sprite with affine M (src->dst) and composite onto float canvas (H,W,3)."""
+    """Warp a sprite with affine M (src->dst) and composite it onto the RGBA uint8 canvas (H, W, 4).
+
+    Only the sprite's destination rectangle is touched ("dirty rect"); sprites are premultiplied
+    RGBA uint8 (opaque photos/backgrounds get alpha 255), so the warp takes OpenCV's 4-channel SIMD path.
+    """
     if alpha <= 0.001:
         return
-    if sp.px is None:
-        _draw_opaque(canvas, sp.u8, M, alpha)
-        return
-    src = sp.px
-    if reveal < 1.0:
+    opaque = sp.px is None
+    src = sp.pm8()
+    if reveal < 1.0 and not opaque:
         cut = int(round(sp.w * clamp01(reveal)))
         if cut <= 0:
             return
         src = src[:, :cut]
     h, w = src.shape[:2]
-    corners = np.array([[0, 0, 1], [w, 0, 1], [0, h, 1], [w, h, 1]], np.float32) @ M.T
-    x0 = max(0, int(math.floor(corners[:, 0].min())) - 1)
-    y0 = max(0, int(math.floor(corners[:, 1].min())) - 1)
-    x1 = min(W, int(math.ceil(corners[:, 0].max())) + 1)
-    y1 = min(H, int(math.ceil(corners[:, 1].max())) + 1)
+    x0, y0, x1, y1 = _bounds(M, w, h)
     if x1 <= x0 or y1 <= y0:
         return
     M2 = M.copy()
@@ -145,84 +163,128 @@ def draw(canvas: np.ndarray, sp: Sprite, M: np.ndarray, alpha: float = 1.0, reve
     if abs(M2[0, 0] - 1) < 1e-6 and abs(M2[1, 1] - 1) < 1e-6 and abs(M2[0, 1]) < 1e-6 \
             and abs(M2[0, 2] - round(M2[0, 2])) < 1e-6 and abs(M2[1, 2] - round(M2[1, 2])) < 1e-6:
         ox, oy = int(round(M2[0, 2])), int(round(M2[1, 2]))
-        warped = np.zeros((y1 - y0, x1 - x0, 4), np.float32)
         sx0, sy0 = max(0, -ox), max(0, -oy)
         dx0, dy0 = max(0, ox), max(0, oy)
-        ww = min(w - sx0, warped.shape[1] - dx0)
-        hh = min(h - sy0, warped.shape[0] - dy0)
+        ww = min(w - sx0, (x1 - x0) - dx0)
+        hh = min(h - sy0, (y1 - y0) - dy0)
         if ww > 0 and hh > 0:
-            warped[dy0:dy0 + hh, dx0:dx0 + ww] = src[sy0:sy0 + hh, sx0:sx0 + ww]
-    else:
-        scale = math.hypot(M[0, 0], M[1, 0])
-        interp = cv2.INTER_AREA if scale < 0.7 else cv2.INTER_LINEAR
-        if interp == cv2.INTER_AREA:
-            interp = cv2.INTER_LINEAR  # warpAffine has no true AREA; pre-shrink below
-            if scale < 0.5:
-                f = scale * 1.5
-                src = cv2.resize(src, (max(1, int(w * f)), max(1, int(h * f))), interpolation=cv2.INTER_AREA)
-                M2[:, :2] /= f
-        warped = cv2.warpAffine(src, M2, (x1 - x0, y1 - y0), flags=interp,
-                                borderMode=cv2.BORDER_CONSTANT, borderValue=(0, 0, 0, 0))
-    if alpha < 1.0:
-        warped *= alpha
-    reg = canvas[y0:y1, x0:x1]
-    reg *= (1.0 - warped[..., 3:4])
-    reg += warped[..., :3]
-
-
-def _draw_opaque(canvas, u8, M, alpha):
-    """Opaque RGB uint8 layer: warp in uint8 (3x cheaper than float RGBA), coverage from a warped mask."""
-    h, w = u8.shape[:2]
-    rgb = cv2.warpAffine(u8, M, (W, H), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT, borderValue=(0, 0, 0))
-    corners = np.array([[0, 0, 1], [w, 0, 1], [0, h, 1], [w, h, 1]], np.float32) @ M.T
-    full = corners[:, 0].min() <= 0 and corners[:, 1].min() <= 0 and corners[:, 0].max() >= W and corners[:, 1].max() >= H
-    covers = full and abs(M[0, 1]) < 1e-9  # axis aligned and covering the frame
-    f = rgb.astype(np.float32) * (1.0 / 255.0)
-    if covers and alpha >= 0.999:
-        canvas[:] = f
+            _blend(canvas[y0 + dy0:y0 + dy0 + hh, x0 + dx0:x0 + dx0 + ww], src[sy0:sy0 + hh, sx0:sx0 + ww], alpha)
         return
-    m = cv2.warpAffine(np.full((h, w), 255, np.uint8), M, (W, H), flags=cv2.INTER_LINEAR,
-                       borderMode=cv2.BORDER_CONSTANT, borderValue=0).astype(np.float32) * (alpha / 255.0)
-    m = m[..., None]
-    canvas *= (1.0 - m)
-    canvas += f * m
+    if not opaque:
+        scale = math.hypot(M[0, 0], M[1, 0])
+        if scale < 0.5:  # warpAffine has no true AREA filter: pre-shrink so small sprites don't alias
+            f = scale * 1.5
+            src = cv2.resize(src, (max(1, int(w * f)), max(1, int(h * f))), interpolation=cv2.INTER_AREA)
+            M2[:, :2] /= f
+    warped = cv2.warpAffine(src, M2, (x1 - x0, y1 - y0), flags=cv2.INTER_LINEAR,
+                            borderMode=cv2.BORDER_CONSTANT, borderValue=(0, 0, 0, 0))
+    _blend(canvas[y0:y1, x0:x1], warped, alpha)
+
+
+@lru_cache(maxsize=2)
+def _grain_tiles(amount: float, n: int, seed: int):
+    """Film grain as saturating uint8 (add, subtract) tile pairs, built once per process.
+    Same noise field as the float version: N(0,1) at half resolution, bilinearly upscaled."""
+    rng = np.random.default_rng(seed)
+    tiles = []
+    for _ in range(n):
+        g = rng.normal(0, 1, (H // 2, W // 2)).astype(np.float32)
+        g = cv2.resize(g, (W, H), interpolation=cv2.INTER_LINEAR) * (amount * 255.0)
+        pos = cv2.convertScaleAbs(np.maximum(g, 0))
+        neg = cv2.convertScaleAbs(np.maximum(-g, 0))
+        z = np.zeros_like(pos)
+        tiles.append((cv2.merge((pos, pos, pos, z)), cv2.merge((neg, neg, neg, z))))
+    return tiles
 
 
 class Grain:
     def __init__(self, amount: float, n=6, seed=99):
         self.amount = amount
-        self.tiles = []
-        if amount <= 0:
-            return
-        rng = np.random.default_rng(seed)
-        for _ in range(n):
-            g = rng.normal(0, 1, (H // 2, W // 2)).astype(np.float32)
-            g = cv2.resize(g, (W, H), interpolation=cv2.INTER_LINEAR)
-            self.tiles.append((g * amount)[..., None])
+        self.tiles = _grain_tiles(float(amount), n, seed) if amount > 0 else []
+
+    def index(self, frame: int) -> int:
+        return (frame // 2) % len(self.tiles) if self.tiles else -1
 
     def apply(self, canvas, frame):
         if self.tiles:
-            canvas += self.tiles[(frame // 2) % len(self.tiles)]
+            pos, neg = self.tiles[self.index(frame)]
+            cv2.add(canvas, pos, dst=canvas)
+            cv2.subtract(canvas, neg, dst=canvas)
+
+
+def _layer_pose(scene: Scene, layer: Layer, i: int, t: float, sp: Sprite):
+    st = layer.anim(t) if layer.anim else State()
+    if st.alpha <= 0.001:
+        return None
+    M = _matrix(layer, st, scene.camera, t, sp, _boil(layer, t, scene.stop_motion_fps))
+    rv = layer.reveal(t) if layer.reveal else 1.0
+    return st, M, rv
+
+
+def _fade(scene: Scene, t: float) -> float:
+    f = 1.0
+    if scene.fade_in and t < scene.fade_in:
+        f *= t / scene.fade_in
+    if scene.fade_out and t > scene.duration - scene.fade_out:
+        f *= max(0.0, (scene.duration - t) / scene.fade_out)
+    return f
+
+
+def render_rgba(scene: Scene, i: int, grain: Grain | None = None) -> np.ndarray:
+    """Frame `i` as an RGBA uint8 (H, W, 4) array (the alpha channel is scratch, ignore it)."""
+    t = i / FPS
+    canvas = None
+    for layer in scene.layers:
+        sp = layer.frame_fn(i) if layer.frame_fn else layer.sprite
+        pose = _layer_pose(scene, layer, i, t, sp)
+        if pose is None:
+            continue
+        st, M, rv = pose
+        if canvas is None:
+            if sp.px is None:
+                # opaque first layer (background / full-frame photo): warp straight into a fresh frame;
+                # identical to compositing onto black, without touching the frame twice
+                canvas = cv2.warpAffine(sp.pm8(), M, (W, H), flags=cv2.INTER_LINEAR,
+                                        borderMode=cv2.BORDER_CONSTANT, borderValue=(0, 0, 0, 0))
+                if st.alpha < 0.999:
+                    cv2.convertScaleAbs(canvas, dst=canvas, alpha=st.alpha)
+                continue
+            canvas = np.zeros((H, W, 4), np.uint8)
+        draw(canvas, sp, M, st.alpha, rv)
+    if canvas is None:
+        canvas = np.zeros((H, W, 4), np.uint8)
+    if grain:
+        grain.apply(canvas, i)
+    f = _fade(scene, t)
+    if f < 1.0:
+        cv2.convertScaleAbs(canvas, dst=canvas, alpha=f)
+    return canvas
 
 
 def render_frame(scene: Scene, i: int, grain: Grain | None = None) -> np.ndarray:
+    """Frame `i` as RGB uint8 (H, W, 3)."""
+    return cv2.cvtColor(render_rgba(scene, i, grain), cv2.COLOR_RGBA2RGB)
+
+
+def render_yuv(scene: Scene, i: int, grain: Grain | None = None) -> np.ndarray:
+    """Frame `i` as planar yuv420p (BT.601 limited range, same as ffmpeg's default rgb24->yuv420p)."""
+    return cv2.cvtColor(render_rgba(scene, i, grain), cv2.COLOR_RGBA2YUV_I420)
+
+
+def frame_key(scene: Scene, i: int, grain: Grain | None = None):
+    """Everything frame `i`'s pixels depend on. Two frames with equal keys are identical, so the
+    renderer can reuse the previous frame (held stop-motion poses with a locked camera). None = unique."""
     t = i / FPS
-    canvas = np.zeros((H, W, 3), np.float32)
-    for layer in scene.layers:
-        st = layer.anim(t) if layer.anim else State()
-        if st.alpha <= 0.001:
+    parts = []
+    for k, layer in enumerate(scene.layers):
+        if layer.frame_fn:
+            return None  # video: every frame differs
+        pose = _layer_pose(scene, layer, i, t, layer.sprite)
+        if pose is None:
             continue
-        sp = layer.frame_fn(i) if layer.frame_fn else layer.sprite
-        M = _matrix(layer, st, scene.camera, t, sp, _boil(layer, t, scene.stop_motion_fps))
-        rv = layer.reveal(t) if layer.reveal else 1.0
-        draw(canvas, sp, M, st.alpha, rv)
-    if grain:
-        grain.apply(canvas, i)
-    if scene.fade_in and t < scene.fade_in:
-        canvas *= t / scene.fade_in
-    if scene.fade_out and t > scene.duration - scene.fade_out:
-        canvas *= max(0.0, (scene.duration - t) / scene.fade_out)
-    return (np.clip(canvas, 0, 1) * 255 + 0.5).astype(np.uint8)
+        st, M, rv = pose
+        parts.append((k, tuple(np.round(M.ravel(), 4).tolist()), round(st.alpha, 4), round(rv, 4)))
+    return (tuple(parts), grain.index(i) if grain else -1, round(_fade(scene, t), 4))
 
 
 # --------------------------------------------------------------------------------------- entrance anims
