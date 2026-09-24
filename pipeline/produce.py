@@ -2,6 +2,7 @@
 
     python -m pipeline.produce projects/new-coke --media projects/new-coke/footage/media \
         --out out/new-coke --feed editor/apps/web/public/studio-feed
+    python -m pipeline.produce projects/new-coke --burst 6        # scenes on 6 rented CPU boxes
 
 Inputs in the project folder:
   script.json   chapters → beats, each with narration text, a `scene` (collage renderer spec without
@@ -12,6 +13,13 @@ Inputs in the project folder:
 Every beat becomes a scene clip exactly as long as its narration (plus its pause), so picture and
 voice stay in sync. Beats whose footage is missing get their scripted fallback scene, or a clearly
 marked "needs footage" card so a human sees the gap in review instead of random filler.
+
+Speed: narration runs in parallel processes and every scene starts rendering the moment its beat's
+timing is known (voice and edit overlap), in a process pool sized to the machine. Clips live in a
+content-addressed cache (`<out>/.render-cache/<key>.mp4`, key = spec + media size/mtime + encoder +
+renderer code) and voice takes in `<out>/.tts-cache`, so a re-run after an edit only re-voices the
+lines and re-renders the scenes that changed. `--burst N` renders the scenes on N rented vast.ai
+CPU machines instead (see burst/scenes.py) and concatenates the clips here.
 """
 from __future__ import annotations
 
@@ -76,14 +84,59 @@ def scene_for(beat: dict, media: Path | None, duration: float) -> tuple[dict, st
     return scene, kind
 
 
-def _render_one(args: tuple[dict, str]) -> str:
+def _render_one(args: tuple[dict, str, int, int]) -> str:
     from collage.render import render_scene  # imported in the worker process
-    spec, out = args
-    render_scene(spec, Path(out))
+    spec, out, threads, enc_threads = args
+    render_scene(spec, Path(out), threads=threads, encoder_threads=enc_threads)
     return out
 
 
-def produce(project: Path, out: Path, media_dir: Path | None, feed: Path | None, workers: int | None) -> Path:
+class ClipCache:
+    """Content-addressed store of rendered scene clips: `<root>/<key>.mp4`. A beat's clip in the
+    scenes folder is a hard link to (or copy of) its cache entry, so beats that move, or scenes shared
+    by several beats, never render twice."""
+
+    def __init__(self, root: Path):
+        self.root = Path(root)
+        self.root.mkdir(parents=True, exist_ok=True)
+
+    def path(self, key: str) -> Path:
+        return self.root / f"{key}.mp4"
+
+    def has(self, key: str) -> bool:
+        p = self.path(key)
+        return p.is_file() and p.stat().st_size > 0
+
+    def place(self, key: str, dest: Path) -> None:
+        src = self.path(key)
+        try:
+            if dest.exists() and os.path.samefile(src, dest):
+                return
+        except OSError:
+            pass
+        tmp = dest.with_name(dest.name + ".tmp")
+        tmp.unlink(missing_ok=True)
+        try:
+            os.link(src, tmp)
+        except OSError:
+            shutil.copyfile(src, tmp)
+        os.replace(tmp, dest)
+
+
+def plan_workers(cores: int | None = None, workers: int | None = None) -> tuple[int, int, int]:
+    """(scene processes, compositing threads per scene, x264 threads per scene).
+    A scene's x264 encode costs ~2x its compositing, so ~2 cores per scene process keeps every core
+    busy without one long scene serialising the end of the run."""
+    cores = cores or os.cpu_count() or 2
+    workers = workers or max(1, min(cores, max(2, cores // 2)))
+    return workers, 2, 2
+
+
+def produce(project: Path, out: Path, media_dir: Path | None, feed: Path | None, workers: int | None,
+            burst: int = 0, burst_opts: dict | None = None, cache: bool = True) -> Path:
+    import multiprocessing as mp
+
+    from collage.render import cache_key
     from worker import render
     from worker.tts import Narrator
 
@@ -98,6 +151,7 @@ def produce(project: Path, out: Path, media_dir: Path | None, feed: Path | None,
     out.mkdir(parents=True, exist_ok=True)
     scenes_dir = out / "scenes"
     scenes_dir.mkdir(exist_ok=True)
+    clips = ClipCache(out / ".render-cache")
 
     chapters = script["chapters"]
     beats = [b for ch in chapters for b in ch["beats"]]
@@ -110,47 +164,83 @@ def produce(project: Path, out: Path, media_dir: Path | None, feed: Path | None,
                       "beats": [{"text": b["text"], "visual": {}} for b in ch["beats"]]} for ch in chapters],
     }, indent=1))
 
-    # 1. narration, one take per beat, exact timings
+    # 1+2. narration and scenes, overlapped: a beat's scene is queued as soon as its slot is known
     voice = script.get("voice", {})
     status.stage("voice", "running", f"Narrating {len(beats)} beats")
-    narrator = Narrator(voice.get("voice", "bm_george"), float(voice.get("speed", 0.95)))
-    times = narrator.narrate(chapters, project / "narration.wav")
-    (project / "timings.json").write_text(json.dumps(times))
-    total = times[-1][-1][1]
-    status.stage("voice", "done", f"{total:.0f}s of narration ({narrator.device}) in {time.time() - t0:.0f}s")
+    narrator = Narrator(voice.get("voice", "bm_george"), float(voice.get("speed", 0.95)),
+                        cache_dir=(out / ".tts-cache") if cache else None)
+    n_proc, threads, enc_threads = plan_workers(workers=workers)
+    pool = None if burst else ProcessPoolExecutor(n_proc, mp_context=mp.get_context("spawn"))
+    jobs, report, futures, got = [], [], {}, {}
+    timing = {"first_submit": None}
+    beat_index = {(ci, bi): b for ci, ch in enumerate(chapters) for bi, b in enumerate(ch["beats"])}
 
-    # 2. one scene per beat, frame-exact durations
-    flat = [t for ch in times for t in ch]
-    jobs, report, frame = [], [], 0
-    for b, (s, e) in zip(beats, flat):
-        end_f = round(e * FPS)
-        n = max(1, end_f - frame)
-        frame += n
+    def on_beat(ci: int, bi: int, s: float, e: float) -> None:
+        b = beat_index[(ci, bi)]
+        n = max(1, round(e * FPS) - round(s * FPS))   # slots are whole frames (frame_rate below)
         media = find_media(media_dir, b["id"])
         spec, kind = scene_for(b, media, n / FPS)
         clip = scenes_dir / f"{b['id']}.mp4"
         (scenes_dir / f"{b['id']}.json").write_text(json.dumps(spec, indent=1))
-        jobs.append((spec, str(clip)))
+        key = cache_key(spec)
+        job = {"id": b["id"], "spec": spec, "key": key, "clip": clip, "frames": n}
+        jobs.append(job)
+        hit = cache and clips.has(key)
         report.append({"beat": b["id"], "scene": spec["type"], "resolved": kind,
-                       "media": str(media) if media else None, "seconds": round(n / FPS, 2)})
-    missing = sum(r["resolved"] == "missing" for r in report)
-    status.stage("edit", "running", f"Rendering {len(jobs)} collage scenes ({missing} need footage)")
-    t1 = time.time()
-    workers = workers or max(1, (os.cpu_count() or 2) // 2)
-    done = 0
-    with ProcessPoolExecutor(workers) as ex:
-        futures = [ex.submit(_render_one, j) for j in jobs]
+                       "media": str(media) if media else None, "seconds": round(n / FPS, 2),
+                       "cached": bool(hit)})
+        if hit:
+            clips.place(key, clip)
+        elif pool is not None:
+            timing["first_submit"] = timing["first_submit"] or time.time()
+            futures[pool.submit(_render_one, (spec, str(clips.path(key)), threads, enc_threads))] = job
+
+    try:
+        times = narrator.narrate(chapters, project / "narration.wav", on_beat=on_beat, frame_rate=FPS)
+        (project / "timings.json").write_text(json.dumps(times))
+        total = times[-1][-1][1]
+        t_voice = time.time()
+        status.stage("voice", "done", f"{total:.0f}s of narration ({narrator.device}, {narrator.cached} cached takes)"
+                                      f" in {t_voice - t0:.0f}s")
+
+        missing = sum(r["resolved"] == "missing" for r in report)
+        cached = sum(r["cached"] for r in report)
+        todo = [j for j in jobs if not (cache and clips.has(j["key"]))]
+        status.stage("edit", "running", f"Rendering {len(todo)} collage scenes ({cached} cached, "
+                                        f"{missing} need footage)")
+        if burst and todo:
+            from burst.scenes import run_scene_burst
+            got = run_scene_burst(todo, burst, out / ".burst", log=lambda m: status.log("edit", m),
+                                  **(burst_opts or {}))
+            for j in todo:
+                if j["id"] in got:
+                    os.replace(got[j["id"]], clips.path(j["key"]))
+            left = [j for j in todo if not clips.has(j["key"])]
+            if left:  # anything the fleet didn't deliver is rendered here
+                status.log("edit", f"burst returned {len(todo) - len(left)}/{len(todo)} clips; rendering {len(left)} locally")
+                pool = ProcessPoolExecutor(n_proc, mp_context=mp.get_context("spawn"))
+                for j in left:
+                    futures[pool.submit(_render_one, (j["spec"], str(clips.path(j["key"])), threads, enc_threads))] = j
+        done = 0
         for f in as_completed(futures):
             f.result()
             done += 1
-            if done % 5 == 0 or done == len(jobs):
-                status.log("edit", f"{done}/{len(jobs)} scenes rendered")
-    status.stage("edit", "done", f"{len(jobs)} scenes in {time.time() - t1:.0f}s ({missing} need footage)")
+            if done % 5 == 0 or done == len(futures):
+                status.log("edit", f"{done}/{len(futures)} scenes rendered")
+    finally:
+        if pool is not None:
+            pool.shutdown(cancel_futures=True)
+    for j in jobs:
+        clips.place(j["key"], j["clip"])
+    t_scenes = time.time()
+    n_cached = sum(r["cached"] for r in report)
+    status.stage("edit", "done", f"{len(jobs)} scenes ready {t_scenes - t0:.0f}s after start: {len(futures)} rendered here"
+                                 + (f", {len(got)} on the burst fleet" if burst else "") + f", {n_cached} cached")
 
     # 3. assemble: scenes back to back, narration + music, loudness-mastered
     status.stage("render", "running", "Assembling the final cut")
     video = out / "video.mp4"
-    render.concat([Path(c) for _, c in jobs], video)
+    render.concat([j["clip"] for j in jobs], video)
     music = next(iter(sorted((project / "music").glob("*.*"))), None) if (project / "music").is_dir() else None
     audio = out / "audio.m4a"
     render.mix_audio(project / "narration.wav", audio, music)
@@ -168,6 +258,7 @@ def produce(project: Path, out: Path, media_dir: Path | None, feed: Path | None,
     local_scenes = project / "scenes"
     if local_scenes.resolve() != scenes_dir.resolve():
         shutil.copytree(scenes_dir, local_scenes, dirs_exist_ok=True)
+
     def studio_beat(b: dict) -> dict:
         beat = {"text": b["text"], "pace": b.get("pace", 1.0),
                 "visual": {"type": "clip", "src": f"scenes/{b['id']}.mp4", "in": 0}}
@@ -181,7 +272,13 @@ def produce(project: Path, out: Path, media_dir: Path | None, feed: Path | None,
     seconds = round(time.time() - t0, 1)
     (out / "report.json").write_text(json.dumps({
         "seconds": seconds, "video_seconds": round(render.duration(final), 2), "encoder": "collage + libx264",
-        "stages": {"voice": round(t1 - t0, 1), "scenes": round(time.time() - t1, 1)},
+        "stages": {"voice": round(t_voice - t0, 1),
+                   "scenes": round(t_scenes - (timing["first_submit"] or t_voice), 1),
+                   "scenes_after_voice": round(max(0.0, t_scenes - t_voice), 1),
+                   "assemble": round(time.time() - t_scenes, 1)},
+        "workers": {"scene_processes": n_proc, "threads_per_scene": threads, "x264_threads": enc_threads,
+                    "burst_machines": burst or 0},
+        "rendered": len(futures), "rendered_burst": len(got), "cached": n_cached,
         "speed_vs_realtime": round(render.duration(final) / seconds, 2), "beats": report}, indent=1))
     status.stage("render", "done", f"{render.duration(final):.0f}s documentary in {seconds:.0f}s total")
     return final
@@ -193,12 +290,21 @@ def main(argv=None) -> int:
     ap.add_argument("--media", help="folder of picked footage named <beat id>.<ext>")
     ap.add_argument("--out", help="default: out/<project name>")
     ap.add_argument("--feed", help="publish progress + result to this Studio feed folder")
-    ap.add_argument("--workers", type=int)
+    ap.add_argument("--workers", type=int, help="scene render processes (default: about cores/2)")
+    ap.add_argument("--no-cache", action="store_true", help="re-voice and re-render everything")
+    ap.add_argument("--burst", type=int, default=0, metavar="N",
+                    help="render the scenes on N rented vast.ai CPU machines (needs VAST_API_KEY, "
+                         "S3_* and BURST_IMAGE; see burst/scenes.py)")
+    ap.add_argument("--burst-min-cpu", type=int, default=32, help="with --burst: min effective CPU cores per box")
+    ap.add_argument("--burst-deadline", type=int, default=1800, help="with --burst: hard stop in seconds")
+    ap.add_argument("--burst-image", default=os.environ.get("BURST_IMAGE", ""))
     a = ap.parse_args(argv)
     project = Path(a.project).resolve()
+    burst_opts = {"min_cpu": a.burst_min_cpu, "deadline": a.burst_deadline, "image": a.burst_image}
     final = produce(project, Path(a.out or f"out/{project.name}").resolve(),
                     Path(a.media).resolve() if a.media else None,
-                    Path(a.feed).resolve() if a.feed else None, a.workers)
+                    Path(a.feed).resolve() if a.feed else None, a.workers,
+                    burst=a.burst, burst_opts=burst_opts, cache=not a.no_cache)
     print(final)
     return 0
 
