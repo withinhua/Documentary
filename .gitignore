@@ -7,4 +7,7 @@ models/
 house/look.cube
 house/vignette.png
 .pytest_cache/
-editor/apps/web/public/studio-feed/
+# Studio feed is generated; only the compact demo production is committed (for the hosted Studio).
+editor/apps/web/public/studio-feed/*
+!editor/apps/web/public/studio-feed/index.json
+!editor/apps/web/public/studio-feed/demo/

@@ -1,0 +1,300 @@
+{
+ "slug": "demo",
+ "title": "New Coke: The 79-Day Disaster",
+ "topic": "Why Coca-Cola replaced its formula in 1985, and how the backlash saved the brand",
+ "voice": {
+  "voice": "bm_george",
+  "speed": 0.95
+ },
+ "style": {
+  "title": "New Coke",
+  "grain": 6
+ },
+ "createdAt": 1790265615.4749453,
+ "updatedAt": 1790266197.4168568,
+ "stages": [
+  {
+   "id": "research",
+   "label": "Research",
+   "status": "done",
+   "endedAt": 1790265615.4749484,
+   "detail": "Demo: 12 facts from 5 sources (placeholder)"
+  },
+  {
+   "id": "script",
+   "label": "Script",
+   "status": "done",
+   "endedAt": 1790265615.4752572,
+   "detail": "Demo: 3 chapters, 6 beats, cold open + 2 payoffs"
+  },
+  {
+   "id": "voice",
+   "label": "Voice",
+   "status": "done",
+   "startedAt": 1790265615.82037,
+   "detail": "40.9s of narration on cpu in 38s",
+   "endedAt": 1790265653.5165186
+  },
+  {
+   "id": "footage",
+   "label": "Footage",
+   "status": "done",
+   "endedAt": 1790265615.4756262,
+   "detail": "Demo: 3 clips + 1 photo (synthetic, CC0)"
+  },
+  {
+   "id": "edit",
+   "label": "Edit",
+   "status": "done",
+   "startedAt": 1790265654.695863,
+   "detail": "6 beats \u2192 1228 frames with the house look",
+   "endedAt": 1790265655.0247104
+  },
+  {
+   "id": "render",
+   "label": "Render",
+   "status": "done",
+   "startedAt": 1790265655.3383617,
+   "detail": "40.9s video (libx264 x1) in 87s",
+   "endedAt": 1790265742.5077744
+  },
+  {
+   "id": "publish",
+   "label": "Publish",
+   "status": "pending"
+  }
+ ],
+ "activity": [
+  {
+   "t": 1790265615.4749537,
+   "stage": "research",
+   "message": "Demo: 12 facts from 5 sources (placeholder)"
+  },
+  {
+   "t": 1790265615.4752636,
+   "stage": "script",
+   "message": "Demo: 3 chapters, 6 beats, cold open + 2 payoffs"
+  },
+  {
+   "t": 1790265615.475632,
+   "stage": "footage",
+   "message": "Demo: 3 clips + 1 photo (synthetic, CC0)"
+  },
+  {
+   "t": 1790265615.8203785,
+   "stage": "voice",
+   "message": "Narrating 6 lines with bm_george"
+  },
+  {
+   "t": 1790265653.5165317,
+   "stage": "voice",
+   "message": "40.9s of narration on cpu in 38s"
+  },
+  {
+   "t": 1790265654.6958745,
+   "stage": "edit",
+   "message": "Building the timeline"
+  },
+  {
+   "t": 1790265655.0247235,
+   "stage": "edit",
+   "message": "6 beats \u2192 1228 frames with the house look"
+  },
+  {
+   "t": 1790265655.3383772,
+   "stage": "render",
+   "message": "Rendering 1080p"
+  },
+  {
+   "t": 1790265742.5077913,
+   "stage": "render",
+   "message": "40.9s video (libx264 x1) in 87s"
+  }
+ ],
+ "script": {
+  "chapters": [
+   {
+    "id": "cold-open",
+    "title": "Cold open",
+    "beats": [
+     {
+      "text": "On the morning of April twenty-third, nineteen eighty-five, the most successful product in American history was about to be killed.",
+      "visual": {
+       "type": "clip",
+       "src": "media/archive_a.mp4",
+       "in": 2,
+       "mediaId": "archive_a"
+      },
+      "label": null,
+      "pace": 1.0,
+      "start": 0.0,
+      "end": 8.833333333333334
+     },
+     {
+      "text": "Not by a competitor. By its own makers.",
+      "visual": {
+       "type": "clip",
+       "src": "media/archive_b.mp4",
+       "in": 5,
+       "mediaId": "archive_b"
+      },
+      "label": null,
+      "pace": 0.9,
+      "start": 8.833333333333334,
+      "end": 12.612
+     },
+     {
+      "text": "Inside a hotel ballroom in New York, two hundred reporters waited for an announcement.",
+      "visual": {
+       "type": "photo",
+       "src": "media/portrait.jpg",
+       "motion": "push",
+       "mediaId": "portrait"
+      },
+      "label": {
+       "text": "ROBERTO GOIZUETA",
+       "sub": "CEO, The Coca-Cola Company"
+      },
+      "pace": 1.0,
+      "start": 12.612,
+      "end": 19.572
+     }
+    ]
+   },
+   {
+    "id": "ch1",
+    "title": "The announcement",
+    "beats": [
+     {
+      "text": "Within seventy-nine days, it would become the most famous marketing disaster ever recorded.",
+      "visual": {
+       "type": "clip",
+       "src": "media/archive_c.mp4",
+       "in": 1,
+       "mediaId": "archive_c"
+      },
+      "label": null,
+      "pace": 1.0,
+      "start": 19.572,
+      "end": 26.101333333333333
+     },
+     {
+      "text": "And yet, by the end of that summer, Coca-Cola would be stronger than it had been in a generation.",
+      "visual": {
+       "hold": true
+      },
+      "label": null,
+      "pace": 1.0,
+      "start": 26.101333333333333,
+      "end": 33.46666666666667
+     }
+    ]
+   },
+   {
+    "id": "ch2",
+    "title": "The secret",
+    "beats": [
+     {
+      "text": "To understand how, you have to go back to a secret the company had been hiding for years.",
+      "visual": {
+       "type": "clip",
+       "src": "media/archive_a.mp4",
+       "in": 20,
+       "motion": "left",
+       "mediaId": "archive_a"
+      },
+      "label": null,
+      "pace": 0.92,
+      "start": 33.46666666666667,
+      "end": 40.93866666666667
+     }
+    ]
+   }
+  ]
+ },
+ "media": [
+  {
+   "id": "archive_a",
+   "name": "archive_a.mp4",
+   "type": "video",
+   "usedIn": [
+    "0.0",
+    "2.0"
+   ],
+   "source": "Synthetic test footage (demo)",
+   "license": "CC0",
+   "credit": "Generated locally",
+   "url": null,
+   "src": "media/archive_a.mp4",
+   "thumb": "media/archive_a.thumb.jpg",
+   "durationSec": 25.0
+  },
+  {
+   "id": "archive_b",
+   "name": "archive_b.mp4",
+   "type": "video",
+   "usedIn": [
+    "0.1"
+   ],
+   "source": "Synthetic test footage (demo)",
+   "license": "CC0",
+   "credit": "Generated locally",
+   "url": null,
+   "src": "media/archive_b.mp4",
+   "thumb": "media/archive_b.thumb.jpg",
+   "durationSec": 25.0
+  },
+  {
+   "id": "portrait",
+   "name": "portrait.jpg",
+   "type": "image",
+   "usedIn": [
+    "0.2"
+   ],
+   "source": "Synthetic test footage (demo)",
+   "license": "CC0",
+   "credit": "Generated locally",
+   "url": null,
+   "src": "media/portrait.jpg",
+   "thumb": "media/portrait.thumb.jpg"
+  },
+  {
+   "id": "archive_c",
+   "name": "archive_c.mp4",
+   "type": "video",
+   "usedIn": [
+    "1.0"
+   ],
+   "source": "Synthetic test footage (demo)",
+   "license": "CC0",
+   "credit": "Generated locally",
+   "url": null,
+   "src": "media/archive_c.mp4",
+   "thumb": "media/archive_c.thumb.jpg",
+   "durationSec": 25.0
+  }
+ ],
+ "narration": {
+  "src": "narration.mp3",
+  "durationSec": 40.992
+ },
+ "outputs": [
+  {
+   "kind": "render",
+   "src": "renders/shard.mp4",
+   "thumb": "renders/shard.thumb.jpg",
+   "durationSec": 40.933,
+   "sizeBytes": 85087389,
+   "seconds": 142.2,
+   "stages": {
+    "voice (cpu)": 37.7,
+    "edit": 1.51,
+    "render video (libx264 x1)": 84.82,
+    "audio + mux": 2.55
+   },
+   "encoder": "libx264 x1",
+   "video_seconds": 40.93,
+   "speed_vs_realtime": 0.29
+  }
+ ]
+}

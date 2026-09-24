@@ -1,0 +1,18 @@
+{
+ "productions": [
+  {
+   "slug": "demo",
+   "title": "New Coke: The 79-Day Disaster",
+   "updatedAt": 1790266197.4168568,
+   "state": "ready",
+   "stage": null,
+   "progress": [
+    6,
+    7
+   ],
+   "thumb": "demo/renders/shard.thumb.jpg",
+   "durationSec": 40.933
+  }
+ ],
+ "updatedAt": 1790266197.4180956
+}
