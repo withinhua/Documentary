@@ -7,3 +7,4 @@ models/
 house/look.cube
 house/vignette.png
 .pytest_cache/
+editor/apps/web/public/studio-feed/

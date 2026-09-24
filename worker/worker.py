@@ -92,22 +92,30 @@ def wait_fetch(url: str, dest: Path, deadline: float) -> None:
 
 
 # ── the shard ──────────────────────────────────────────────────────────────────────────────────
-def produce(root: Path, out_dir: Path, clock: Clock) -> dict:
+def produce(root: Path, out_dir: Path, clock: Clock, status=None) -> dict:
     job = json.loads((root / "job.json").read_text())
+    stage = status.stage if status else (lambda *a, **k: None)
     (root / "house").mkdir(exist_ok=True)
     for f in ("look.cube", "vignette.png"):
         if not (root / "house" / f).exists():
             shutil.copy(HOUSE / f, root / "house" / f)
 
     voice = job.get("voice", {})
+    n_beats = sum(len(c.get("beats", [])) for c in job["chapters"])
+    stage("voice", "running", f"Narrating {n_beats} lines with {voice.get('voice', 'bm_george')}")
     narrator = Narrator(voice.get("voice", "bm_george"), float(voice.get("speed", 0.95)))
     times = narrator.narrate(job["chapters"], root / "narration.wav")
+    (root / "timings.json").write_text(json.dumps(times))
     clock.lap(f"voice ({narrator.device})")
+    stage("voice", "done", f"{times[-1][-1][1]:.1f}s of narration on {narrator.device} in {clock.stages[f'voice ({narrator.device})']:.0f}s")
 
+    stage("edit", "running", "Building the timeline")
     xml, frames = mlt.build(job["chapters"], times, job.get("style"))
     project = root / "project.mlt"
     project.write_text(xml)
     clock.lap("edit")
+    stage("edit", "done", f"{n_beats} beats → {frames} frames with the house look")
+    stage("render", "running", "Rendering 1080p")
 
     out_dir.mkdir(parents=True, exist_ok=True)
     video = out_dir / "video.mp4"
@@ -122,18 +130,27 @@ def produce(root: Path, out_dir: Path, clock: Clock) -> dict:
     shutil.rmtree(out_dir / "segs", ignore_errors=True)
     video.unlink()
     clock.lap("audio + mux")
+    stage("render", "done", f"{render.duration(result):.1f}s video ({enc}) in {sum(v for k, v in clock.stages.items() if k.startswith(('render', 'audio'))):.0f}s")
     return {"result": result, "project": project, "frames": frames, "encoder": enc,
             "video_seconds": round(render.duration(result), 2), "shard": job.get("shard", {})}
 
 
-def local(job_dir: Path, out_dir: Path) -> None:
+def local(job_dir: Path, out_dir: Path, feed: Path | None = None) -> None:
+    from pipeline.status import Status
+    publish = None
+    if feed:
+        from pipeline.feed import publish as _publish
+        publish = lambda: _publish(job_dir, feed, out_dir)  # noqa: E731
     clock = Clock()
-    info = produce(job_dir, out_dir, clock)
+    info = produce(job_dir, out_dir, clock, Status(job_dir, on_change=publish))
     shutil.copy(info["project"], out_dir / "project.mlt")
     total = round(time.time() - clock.t0, 1)
-    print(json.dumps({"seconds": total, "stages": clock.stages, "encoder": info["encoder"],
-                      "video_seconds": info["video_seconds"],
-                      "speed_vs_realtime": round(info["video_seconds"] / total, 2)}, indent=1))
+    report = {"seconds": total, "stages": clock.stages, "encoder": info["encoder"],
+              "video_seconds": info["video_seconds"], "speed_vs_realtime": round(info["video_seconds"] / total, 2)}
+    (out_dir / "report.json").write_text(json.dumps(report, indent=1))
+    if publish:
+        publish()
+    print(json.dumps(report, indent=1))
 
 
 def remote() -> None:
@@ -194,10 +211,11 @@ if __name__ == "__main__":
     ap.add_argument("--local")
     ap.add_argument("--out", default="out/local")
     ap.add_argument("--remote", action="store_true")
+    ap.add_argument("--feed", help="also publish progress + results to this Studio feed folder")
     a = ap.parse_args()
     if a.remote:
         remote()
     elif a.local:
-        local(Path(a.local).resolve(), Path(a.out).resolve())
+        local(Path(a.local).resolve(), Path(a.out).resolve(), Path(a.feed).resolve() if a.feed else None)
     else:
         ap.error("--local JOB_DIR or --remote")
