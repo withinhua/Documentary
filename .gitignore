@@ -11,3 +11,5 @@ house/vignette.png
 editor/apps/web/public/studio-feed/*
 !editor/apps/web/public/studio-feed/index.json
 !editor/apps/web/public/studio-feed/demo/
+# library/data is generated (SQLite, thumbnails, vectors)
+library/data/
