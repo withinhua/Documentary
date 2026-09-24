@@ -1,5 +1,11 @@
 # Product blueprint: topic → long-form YouTube documentary
 
+> **Update:** the editing, no-GPU and cloud-execution decisions in
+> [03-editing-and-cloud-pipeline.md](03-editing-and-cloud-pipeline.md) (with measured benchmarks)
+> **override** the GPU-based parts of this doc. Specifically: Kokoro on CPU replaces Chatterbox,
+> Shotcut/MLT replaces the custom assembler, CLIP + Claude vision replace Jev by default, and the
+> time budget in §8 assumes a GPU that we no longer use.
+
 **Goal:** you type a topic and get a finished, monetisation-safe, high-retention documentary
 (10–90 min) with a compelling narrated voiceover, real footage, animated graphics, sound design,
 captions, a thumbnail and a description.
@@ -8,11 +14,13 @@ captions, a thumbnail and a description.
 
 | Constraint | Target |
 |---|---|
-| Cash cost per 60-min video | **< $1** (expected ~$0 on your own hardware) |
-| External paid services | The user's Claude subscription (Pro/Max) through Claude Code, plus **Jev** for shot classification (~$0.05–0.15 per hour of video, see §3a) |
+| Cash cost per 60-min video | **~$0.** Nothing but the Claude subscription. |
+| External paid services | **None.** Only the user's Claude subscription (Pro/Max). Jev is optional and off by default. |
+| Hardware | **None of the user's own, and no GPU.** It runs CPU-only inside Claude Code cloud sessions. |
+| Editor | **Shotcut (MLT).** Claude generates the project, `melt` renders it headlessly, and a human can open the same file. |
 | Style | **One consistent house documentary style.** No per-video style switching. |
 | Human time per video | **~10 min** (pick a title/angle, approve the outline, review the final video) |
-| Wall-clock time | 10-min video in ≤ 10 min; 60-min video in ~15–25 min on a GPU machine (see budget below) |
+| Wall-clock time (measured, 4 vCPU) | 10-min video in ~15–20 min; 60-min video in ~1.5–2 h, unattended |
 
 ---
 
