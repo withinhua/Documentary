@@ -1,0 +1,2362 @@
+{
+  "slug": "new-coke",
+  "title": "Coca-Cola's 79-Day Blunder That Won the Cola War",
+  "title_options": [
+    "Coca-Cola's 79-Day Blunder That Won the Cola War",
+    "200,000 Taste Tests Said Yes. America Said No.",
+    "The Day Coca-Cola Tried to Kill Coca-Cola",
+    "Why Coke Changed a 99-Year-Old Recipe (and Begged to Undo It)",
+    "New Coke: The Worst Idea That Ever Worked"
+  ],
+  "topic": "New Coke (Coca-Cola, 1985): the Pepsi Challenge, Project Kansas, the 23 April 1985 formula change, the public revolt, and the return of Coca-Cola Classic 79 days later.",
+  "voice": {
+    "voice": "bm_george",
+    "speed": 0.95
+  },
+  "chapters": [
+    {
+      "id": "cold-open",
+      "title": "Cold Open",
+      "beats": [
+        {
+          "id": "b001",
+          "text": "In the spring of 1985, the Coca-Cola Company did something no sensible business had ever done.",
+          "pace": 0.95,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "full",
+            "motion": "push",
+            "style": "halftone"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Classic contour Coca-Cola glass bottle",
+            "must_show": "the contour bottle, vintage",
+            "era": "1940-1985",
+            "queries": {
+              "commons": [
+                "Coca-Cola contour bottle",
+                "Coca-Cola bottle vintage"
+              ],
+              "openverse": [
+                "vintage coca-cola bottle",
+                "coca-cola contour bottle"
+              ],
+              "archive": [
+                "Coca-Cola bottle 1950s"
+              ],
+              "loc": [
+                "Coca-Cola bottle",
+                "Coca-Cola advertisement"
+              ],
+              "youtube": []
+            }
+          }
+        },
+        {
+          "id": "b002",
+          "text": "It took the recipe for the most famous drink on Earth, a formula it had guarded for ninety-nine years…",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "number_card",
+            "number": "99",
+            "label": "YEARS OF ONE FORMULA",
+            "photo_position": "right"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Classic contour Coca-Cola glass bottle",
+            "must_show": "the contour bottle, vintage",
+            "era": "1940-1985",
+            "queries": {
+              "commons": [
+                "Coca-Cola contour bottle",
+                "Coca-Cola bottle vintage"
+              ],
+              "openverse": [
+                "vintage coca-cola bottle",
+                "coca-cola contour bottle"
+              ],
+              "archive": [
+                "Coca-Cola bottle 1950s"
+              ],
+              "loc": [
+                "Coca-Cola bottle",
+                "Coca-Cola advertisement"
+              ],
+              "youtube": []
+            }
+          }
+        },
+        {
+          "id": "b003",
+          "text": "…and replaced it.",
+          "pace": 1.0,
+          "pause_after": 0.5,
+          "scene": {
+            "type": "full",
+            "motion": "pull",
+            "style": "archival"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "New Coke can, 1985",
+            "must_show": "a 1985 'Coke' can with the new-formula design",
+            "era": "1983-1986",
+            "queries": {
+              "commons": [
+                "New Coke",
+                "New Coke can 1985",
+                "Coca-Cola can 1985"
+              ],
+              "openverse": [
+                "new coke can",
+                "coca-cola 1985 can"
+              ],
+              "archive": [
+                "new coke 1985"
+              ],
+              "loc": [
+                "Coca-Cola can"
+              ],
+              "youtube": [
+                "New Coke can 1985"
+              ]
+            }
+          }
+        },
+        {
+          "id": "b004",
+          "text": "Around two hundred thousand taste tests had told them it was the right call.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "number_card",
+            "number": "200,000",
+            "label": "TASTE TESTS"
+          },
+          "request": {
+            "kind": "none"
+          }
+        },
+        {
+          "id": "b005",
+          "text": "America disagreed. Furiously.",
+          "pace": 1.0,
+          "pause_after": 0.4,
+          "scene": {
+            "type": "headline",
+            "text": "COKE DRINKERS REVOLT",
+            "publication": "paraphrase",
+            "date": "1985",
+            "paraphrase": true
+          },
+          "request": {
+            "kind": "none"
+          }
+        },
+        {
+          "id": "b006",
+          "text": "Within weeks the company's hotline was taking fifteen hundred calls a day. People poured the new drink into the gutter, and hoarded the old one by the case.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "full",
+            "motion": "left",
+            "style": "archival"
+          },
+          "request": {
+            "kind": "video",
+            "subject": "Anti-New Coke protests, 1985 (Seattle), people pouring New Coke away",
+            "must_show": "protesters with signs / pouring cola into a drain",
+            "era": "1983-1986",
+            "queries": {
+              "commons": [
+                "New Coke protest 1985"
+              ],
+              "openverse": [
+                "new coke protest"
+              ],
+              "archive": [
+                "New Coke protest 1985 news",
+                "Old Cola Drinkers of America"
+              ],
+              "loc": [],
+              "youtube": [
+                "New Coke protest 1985 Seattle",
+                "Gay Mullins Old Cola Drinkers 1985 news"
+              ]
+            },
+            "fallback": {
+              "type": "headline",
+              "text": "COKE DRINKERS REVOLT",
+              "publication": "paraphrase",
+              "date": "1985",
+              "paraphrase": true
+            }
+          }
+        },
+        {
+          "id": "b007",
+          "text": "And seventy-nine days later, the biggest drinks company in the world gave up.",
+          "pace": 1.0,
+          "pause_after": 0.5,
+          "scene": {
+            "type": "number_card",
+            "number": "79",
+            "label": "DAYS",
+            "photo_position": "left"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Coca-Cola Classic can, 1985-1986",
+            "must_show": "can or bottle labelled 'Coca-Cola Classic'",
+            "era": "1983-1986",
+            "queries": {
+              "commons": [
+                "Coca-Cola Classic can",
+                "Coca-Cola Classic 1985"
+              ],
+              "openverse": [
+                "coca-cola classic can",
+                "coke classic vintage"
+              ],
+              "archive": [
+                "Coca-Cola Classic 1985"
+              ],
+              "loc": [
+                "Coca-Cola Classic"
+              ],
+              "youtube": [
+                "Coca-Cola Classic 1985 commercial"
+              ]
+            }
+          }
+        },
+        {
+          "id": "b008",
+          "text": "But here is the strange part. The drink they brought back didn't just recover. It won.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "full",
+            "motion": "push",
+            "style": "clean"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Coca-Cola Classic can, 1985-1986",
+            "must_show": "can or bottle labelled 'Coca-Cola Classic'",
+            "era": "1983-1986",
+            "queries": {
+              "commons": [
+                "Coca-Cola Classic can",
+                "Coca-Cola Classic 1985"
+              ],
+              "openverse": [
+                "coca-cola classic can",
+                "coke classic vintage"
+              ],
+              "archive": [
+                "Coca-Cola Classic 1985"
+              ],
+              "loc": [
+                "Coca-Cola Classic"
+              ],
+              "youtube": [
+                "Coca-Cola Classic 1985 commercial"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-question",
+      "title": "Blunder or Genius?",
+      "beats": [
+        {
+          "id": "b009",
+          "text": "So was New Coke the greatest blunder in marketing history… or the luckiest accident a company ever had?",
+          "pace": 1.0,
+          "pause_after": 0.6,
+          "scene": {
+            "type": "title",
+            "kicker": "1985",
+            "title": "BLUNDER OR GENIUS?"
+          },
+          "request": {
+            "kind": "none"
+          }
+        },
+        {
+          "id": "b010",
+          "text": "Some people still believe it was all a plan. To find out, we have to go back to a question that terrified Atlanta.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "full",
+            "motion": "right",
+            "style": "halftone"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "The Coca-Cola Company headquarters, Atlanta",
+            "must_show": "Coca-Cola HQ tower / North Avenue, Atlanta",
+            "era": "1970-1990",
+            "queries": {
+              "commons": [
+                "Coca-Cola headquarters Atlanta",
+                "Coca-Cola Company headquarters"
+              ],
+              "openverse": [
+                "coca-cola headquarters atlanta"
+              ],
+              "archive": [
+                "Coca-Cola headquarters Atlanta"
+              ],
+              "loc": [
+                "Coca-Cola Company Atlanta"
+              ],
+              "youtube": []
+            }
+          }
+        },
+        {
+          "id": "b011",
+          "text": "What happens when the world's favourite drink starts losing?",
+          "pace": 1.0,
+          "pause_after": 0.5,
+          "scene": {
+            "type": "quote",
+            "text": "What happens when the world's favourite drink starts losing?",
+            "attribution": "THE QUESTION"
+          },
+          "request": {
+            "kind": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ch1-challenge",
+      "title": "The Challenge",
+      "beats": [
+        {
+          "id": "b012",
+          "text": "Chapter one. The Challenge.",
+          "pace": 1.0,
+          "pause_after": 0.5,
+          "scene": {
+            "type": "title",
+            "kicker": "CHAPTER 1",
+            "title": "THE CHALLENGE"
+          },
+          "request": {
+            "kind": "none"
+          }
+        },
+        {
+          "id": "b013",
+          "text": "Just after the Second World War, Coca-Cola had roughly sixty per cent of the American soft drink market.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "full",
+            "motion": "push",
+            "style": "archival"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "1940s Coca-Cola soda fountain or advertisement",
+            "must_show": "Coca-Cola sign or fountain, 1940s America",
+            "era": "1940-1950",
+            "queries": {
+              "commons": [
+                "Coca-Cola 1940s",
+                "Coca-Cola advertisement 1940s",
+                "soda fountain 1940s"
+              ],
+              "openverse": [
+                "coca-cola 1940s",
+                "soda fountain vintage"
+              ],
+              "archive": [
+                "Coca-Cola 1940s advertisement"
+              ],
+              "loc": [
+                "Coca-Cola soda fountain",
+                "Coca-Cola sign"
+              ],
+              "youtube": []
+            }
+          }
+        },
+        {
+          "id": "b014",
+          "text": "Sixty per cent.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "number_card",
+            "number": "60%",
+            "label": "MARKET SHARE, LATE 1940s"
+          },
+          "request": {
+            "kind": "none"
+          }
+        },
+        {
+          "id": "b015",
+          "text": "By the early nineteen-eighties, on most counts, that share had shrunk to under a quarter.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "number_card",
+            "number": "<25%",
+            "label": "BY THE EARLY 1980s"
+          },
+          "request": {
+            "kind": "none"
+          }
+        },
+        {
+          "id": "b016",
+          "text": "The reason had a name. In 1975, in Dallas, Pepsi set up tables in shopping centres, poured two unmarked cups, and asked people to choose.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "full",
+            "motion": "right",
+            "style": "archival"
+          },
+          "request": {
+            "kind": "video",
+            "subject": "Pepsi Challenge TV commercial, late 1970s/early 1980s",
+            "must_show": "blind taste test with two unmarked cups, shopper choosing",
+            "era": "1975-1985",
+            "queries": {
+              "commons": [
+                "Pepsi Challenge"
+              ],
+              "openverse": [
+                "pepsi challenge"
+              ],
+              "archive": [
+                "Pepsi Challenge commercial",
+                "Pepsi commercial 1980s"
+              ],
+              "loc": [
+                "Pepsi-Cola advertisement"
+              ],
+              "youtube": [
+                "Pepsi Challenge commercial 1983",
+                "Pepsi Challenge 1970s ad"
+              ]
+            },
+            "fallback": {
+              "type": "number_card",
+              "number": "1975",
+              "label": "THE PEPSI CHALLENGE"
+            }
+          }
+        },
+        {
+          "id": "b017",
+          "text": "They called it the Pepsi Challenge. And on camera, again and again, people chose Pepsi.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "number_card",
+            "number": "1975",
+            "label": "THE PEPSI CHALLENGE",
+            "photo_position": "right"
+          },
+          "request": {
+            "kind": "video",
+            "subject": "Pepsi Challenge TV commercial, late 1970s/early 1980s",
+            "must_show": "blind taste test with two unmarked cups, shopper choosing",
+            "era": "1975-1985",
+            "queries": {
+              "commons": [
+                "Pepsi Challenge"
+              ],
+              "openverse": [
+                "pepsi challenge"
+              ],
+              "archive": [
+                "Pepsi Challenge commercial",
+                "Pepsi commercial 1980s"
+              ],
+              "loc": [
+                "Pepsi-Cola advertisement"
+              ],
+              "youtube": [
+                "Pepsi Challenge commercial 1983",
+                "Pepsi Challenge 1970s ad"
+              ]
+            },
+            "fallback": {
+              "type": "number_card",
+              "number": "1975",
+              "label": "THE PEPSI CHALLENGE"
+            }
+          }
+        },
+        {
+          "id": "b018",
+          "text": "By the early eighties, Pepsi was outselling Coke in supermarkets, where shoppers picked for themselves.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "full",
+            "motion": "left",
+            "style": "halftone"
+          },
+          "request": {
+            "kind": "video",
+            "subject": "1980s supermarket soft-drink aisle",
+            "must_show": "shelves stacked with cola cans/bottles, shoppers",
+            "era": "1983-1986",
+            "queries": {
+              "commons": [
+                "1980s supermarket",
+                "supermarket soft drinks 1980s"
+              ],
+              "openverse": [
+                "1980s supermarket aisle",
+                "soda aisle vintage"
+              ],
+              "archive": [
+                "1980s supermarket footage",
+                "grocery store 1984"
+              ],
+              "loc": [
+                "supermarket 1980s"
+              ],
+              "youtube": [
+                "1980s supermarket footage"
+              ]
+            },
+            "fallback": {
+              "type": "number_card",
+              "number": "#1",
+              "label": "PEPSI IN SUPERMARKETS"
+            }
+          }
+        },
+        {
+          "id": "b019",
+          "text": "In Atlanta, a new chairman was watching the numbers. Roberto Goizueta, a Yale-trained chemical engineer from Havana, took the top job in 1981.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "cutout",
+            "position": "left",
+            "bg": {
+              "type": "paper"
+            },
+            "caption": {
+              "text": "ROBERTO GOIZUETA",
+              "sub": "CHAIRMAN & CEO, THE COCA-COLA COMPANY"
+            },
+            "motion": "push"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Roberto Goizueta",
+            "must_show": "portrait of Roberto C. Goizueta, Coca-Cola chairman",
+            "era": "1980-1997",
+            "queries": {
+              "commons": [
+                "Roberto Goizueta"
+              ],
+              "openverse": [
+                "roberto goizueta"
+              ],
+              "archive": [
+                "Roberto Goizueta Coca-Cola"
+              ],
+              "loc": [
+                "Goizueta, Roberto"
+              ],
+              "youtube": [
+                "Roberto Goizueta 1985"
+              ]
+            }
+          }
+        },
+        {
+          "id": "b020",
+          "text": "He had left Castro's Cuba, the story goes, with about forty dollars and a hundred shares of Coca-Cola stock.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "number_card",
+            "number": "100",
+            "label": "COCA-COLA SHARES — 1961",
+            "photo_position": "left"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Roberto Goizueta",
+            "must_show": "portrait of Roberto C. Goizueta, Coca-Cola chairman",
+            "era": "1980-1997",
+            "queries": {
+              "commons": [
+                "Roberto Goizueta"
+              ],
+              "openverse": [
+                "roberto goizueta"
+              ],
+              "archive": [
+                "Roberto Goizueta Coca-Cola"
+              ],
+              "loc": [
+                "Goizueta, Roberto"
+              ],
+              "youtube": [
+                "Roberto Goizueta 1985"
+              ]
+            }
+          }
+        },
+        {
+          "id": "b021",
+          "text": "Goizueta was willing to question everything. Even the formula.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "full",
+            "motion": "push",
+            "style": "halftone"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Classic contour Coca-Cola glass bottle",
+            "must_show": "the contour bottle, vintage",
+            "era": "1940-1985",
+            "queries": {
+              "commons": [
+                "Coca-Cola contour bottle",
+                "Coca-Cola bottle vintage"
+              ],
+              "openverse": [
+                "vintage coca-cola bottle",
+                "coca-cola contour bottle"
+              ],
+              "archive": [
+                "Coca-Cola bottle 1950s"
+              ],
+              "loc": [
+                "Coca-Cola bottle",
+                "Coca-Cola advertisement"
+              ],
+              "youtube": []
+            }
+          }
+        },
+        {
+          "id": "b022",
+          "text": "Because the question now haunting Atlanta was brutally simple. What if Pepsi was right?",
+          "pace": 1.0,
+          "pause_after": 0.5,
+          "scene": {
+            "type": "quote",
+            "text": "What if Pepsi was right?",
+            "attribution": "THE QUESTION IN ATLANTA, EARLY 1980s"
+          },
+          "request": {
+            "kind": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ch2-kansas",
+      "title": "Project Kansas",
+      "beats": [
+        {
+          "id": "b023",
+          "text": "Chapter two. Project Kansas.",
+          "pace": 1.0,
+          "pause_after": 0.5,
+          "scene": {
+            "type": "title",
+            "kicker": "CHAPTER 2",
+            "title": "PROJECT KANSAS"
+          },
+          "request": {
+            "kind": "none"
+          }
+        },
+        {
+          "id": "b024",
+          "text": "The secret job went to Brian Dyson, who ran Coca-Cola USA…",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "cutout",
+            "position": "right",
+            "bg": {
+              "type": "paper"
+            },
+            "caption": {
+              "text": "BRIAN DYSON",
+              "sub": "PRESIDENT, COCA-COLA USA"
+            },
+            "motion": "push"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Brian Dyson",
+            "must_show": "portrait of Brian G. Dyson, Coca-Cola USA president",
+            "era": "1978-1990",
+            "queries": {
+              "commons": [
+                "Brian Dyson Coca-Cola"
+              ],
+              "openverse": [
+                "brian dyson coca-cola"
+              ],
+              "archive": [
+                "Brian Dyson Coca-Cola"
+              ],
+              "loc": [],
+              "youtube": [
+                "Brian Dyson Coca-Cola"
+              ]
+            }
+          }
+        },
+        {
+          "id": "b025",
+          "text": "…and his marketing chief, Sergio Zyman, fresh from the launch of Diet Coke.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "cutout",
+            "position": "left",
+            "bg": {
+              "type": "paper"
+            },
+            "caption": {
+              "text": "SERGIO ZYMAN",
+              "sub": "HEAD OF MARKETING, COCA-COLA USA"
+            },
+            "motion": "drift"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Sergio Zyman",
+            "must_show": "portrait of Sergio Zyman, Coca-Cola marketing executive",
+            "era": "1980-2000",
+            "queries": {
+              "commons": [
+                "Sergio Zyman"
+              ],
+              "openverse": [
+                "sergio zyman"
+              ],
+              "archive": [
+                "Sergio Zyman"
+              ],
+              "loc": [],
+              "youtube": [
+                "Sergio Zyman New Coke"
+              ]
+            }
+          }
+        },
+        {
+          "id": "b026",
+          "text": "Its code name came from an old advertising photograph of a Kansas newspaper editor, William Allen White, drinking a Coke.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "full",
+            "motion": "push",
+            "style": "halftone",
+            "caption": {
+              "text": "WILLIAM ALLEN WHITE",
+              "sub": "KANSAS EDITOR — THE PROJECT'S NAMESAKE"
+            }
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "William Allen White",
+            "must_show": "portrait of William Allen White, editor of the Emporia Gazette",
+            "era": "1900-1944",
+            "queries": {
+              "commons": [
+                "William Allen White",
+                "William Allen White Emporia Gazette"
+              ],
+              "openverse": [
+                "william allen white"
+              ],
+              "archive": [
+                "William Allen White"
+              ],
+              "loc": [
+                "White, William Allen",
+                "William Allen White portrait"
+              ],
+              "youtube": []
+            }
+          }
+        },
+        {
+          "id": "b027",
+          "text": "Chemists worked up a smoother, sweeter formula. Then Coke did exactly what Pepsi had done. It ran blind taste tests.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "full",
+            "motion": "push",
+            "style": "archival"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Blind taste test with two unmarked cups of cola",
+            "must_show": "two plain cups of cola / taster, 1980s",
+            "era": "1975-1990",
+            "queries": {
+              "commons": [
+                "blind taste test",
+                "cola taste test"
+              ],
+              "openverse": [
+                "blind taste test cola",
+                "taste test cups"
+              ],
+              "archive": [
+                "taste test 1980s"
+              ],
+              "loc": [],
+              "youtube": []
+            }
+          }
+        },
+        {
+          "id": "b028",
+          "text": "Around two hundred thousand of them.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "number_card",
+            "number": "200,000",
+            "label": "BLIND TASTE TESTS",
+            "photo_position": "left"
+          },
+          "request": {
+            "kind": "none"
+          }
+        },
+        {
+          "id": "b029",
+          "text": "The research reportedly cost around four million dollars.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "number_card",
+            "number": "$4M",
+            "label": "REPORTED RESEARCH COST"
+          },
+          "request": {
+            "kind": "none"
+          }
+        },
+        {
+          "id": "b030",
+          "text": "And the verdict was emphatic. The new formula beat the old Coke. It beat Pepsi.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "headline",
+            "text": "NEW FORMULA BEATS PEPSI IN BLIND TESTS",
+            "publication": "paraphrase of internal research",
+            "date": "1984-85",
+            "paraphrase": true
+          },
+          "request": {
+            "kind": "none"
+          }
+        },
+        {
+          "id": "b031",
+          "text": "But the tests had a blind spot, and it wasn't in the cups.",
+          "pace": 1.0,
+          "pause_after": 0.5,
+          "scene": {
+            "type": "cutout",
+            "position": "center",
+            "bg": {
+              "type": "paper"
+            },
+            "caption": {
+              "text": "THE ORIGINAL",
+              "sub": "99 YEARS OLD — AND NOBODY ASKED ABOUT IT"
+            },
+            "motion": "drift"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Classic contour Coca-Cola glass bottle",
+            "must_show": "the contour bottle, vintage",
+            "era": "1940-1985",
+            "queries": {
+              "commons": [
+                "Coca-Cola contour bottle",
+                "Coca-Cola bottle vintage"
+              ],
+              "openverse": [
+                "vintage coca-cola bottle",
+                "coca-cola contour bottle"
+              ],
+              "archive": [
+                "Coca-Cola bottle 1950s"
+              ],
+              "loc": [
+                "Coca-Cola bottle",
+                "Coca-Cola advertisement"
+              ],
+              "youtube": []
+            }
+          }
+        },
+        {
+          "id": "b032",
+          "text": "Because the project was secret, tasters were asked which drink they preferred. Not how they would feel if the old one simply vanished.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "full",
+            "motion": "right",
+            "style": "clean",
+            "caption": {
+              "text": "THE QUESTION NOBODY ASKED",
+              "sub": "PROJECT KANSAS, 1984–85"
+            }
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "1980s Coca-Cola vending machine or cooler",
+            "must_show": "Coca-Cola branded machine/cooler, 1980s",
+            "era": "1975-1990",
+            "queries": {
+              "commons": [
+                "Coca-Cola vending machine",
+                "Coca-Cola cooler"
+              ],
+              "openverse": [
+                "coca-cola vending machine vintage"
+              ],
+              "archive": [
+                "Coca-Cola vending machine 1980s"
+              ],
+              "loc": [
+                "Coca-Cola machine"
+              ],
+              "youtube": []
+            }
+          }
+        },
+        {
+          "id": "b033",
+          "text": "A sip is not a relationship. And Coca-Cola was about to learn the difference, live, in front of the whole country.",
+          "pace": 1.0,
+          "pause_after": 0.5,
+          "scene": {
+            "type": "full",
+            "motion": "push",
+            "style": "halftone"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "New Coke can, 1985",
+            "must_show": "a 1985 'Coke' can with the new-formula design",
+            "era": "1983-1986",
+            "queries": {
+              "commons": [
+                "New Coke",
+                "New Coke can 1985",
+                "Coca-Cola can 1985"
+              ],
+              "openverse": [
+                "new coke can",
+                "coca-cola 1985 can"
+              ],
+              "archive": [
+                "new coke 1985"
+              ],
+              "loc": [
+                "Coca-Cola can"
+              ],
+              "youtube": [
+                "New Coke can 1985"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "ch3-blinked",
+      "title": "The Other Guy Blinked",
+      "beats": [
+        {
+          "id": "b034",
+          "text": "Chapter three. The Other Guy Blinked.",
+          "pace": 1.0,
+          "pause_after": 0.5,
+          "scene": {
+            "type": "title",
+            "kicker": "CHAPTER 3",
+            "title": "THE OTHER GUY BLINKED"
+          },
+          "request": {
+            "kind": "none"
+          }
+        },
+        {
+          "id": "b035",
+          "text": "On the twenty-third of April, 1985, Coca-Cola's leaders walked on stage at the Vivian Beaumont Theater, in New York's Lincoln Center.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "full",
+            "motion": "push",
+            "style": "archival"
+          },
+          "request": {
+            "kind": "video",
+            "subject": "New Coke launch press conference, 23 April 1985, Lincoln Center, New York",
+            "must_show": "Goizueta/Keough on stage presenting New Coke to reporters",
+            "era": "1983-1986",
+            "queries": {
+              "commons": [
+                "New Coke press conference 1985",
+                "Vivian Beaumont Theater"
+              ],
+              "openverse": [
+                "new coke launch 1985"
+              ],
+              "archive": [
+                "New Coke press conference 1985",
+                "Coca-Cola new formula 1985 news"
+              ],
+              "loc": [],
+              "youtube": [
+                "New Coke press conference April 23 1985",
+                "New Coke announcement 1985 news report"
+              ]
+            },
+            "fallback": {
+              "type": "number_card",
+              "number": "23",
+              "label": "APRIL 1985"
+            }
+          }
+        },
+        {
+          "id": "b036",
+          "text": "The date.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "number_card",
+            "number": "23",
+            "label": "APRIL 1985",
+            "photo_position": "right"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "New Coke can, 1985",
+            "must_show": "a 1985 'Coke' can with the new-formula design",
+            "era": "1983-1986",
+            "queries": {
+              "commons": [
+                "New Coke",
+                "New Coke can 1985",
+                "Coca-Cola can 1985"
+              ],
+              "openverse": [
+                "new coke can",
+                "coca-cola 1985 can"
+              ],
+              "archive": [
+                "new coke 1985"
+              ],
+              "loc": [
+                "Coca-Cola can"
+              ],
+              "youtube": [
+                "New Coke can 1985"
+              ]
+            }
+          }
+        },
+        {
+          "id": "b037",
+          "text": "Beside Goizueta stood his president, Donald Keough.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "cutout",
+            "position": "right",
+            "bg": {
+              "type": "paper"
+            },
+            "caption": {
+              "text": "DONALD KEOUGH",
+              "sub": "PRESIDENT, THE COCA-COLA COMPANY"
+            },
+            "motion": "push"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Donald Keough",
+            "must_show": "portrait of Donald R. Keough, Coca-Cola president",
+            "era": "1980-1993",
+            "queries": {
+              "commons": [
+                "Donald Keough",
+                "Don Keough"
+              ],
+              "openverse": [
+                "donald keough"
+              ],
+              "archive": [
+                "Donald Keough Coca-Cola"
+              ],
+              "loc": [
+                "Keough, Donald"
+              ],
+              "youtube": [
+                "Don Keough Coca-Cola 1985"
+              ]
+            }
+          }
+        },
+        {
+          "id": "b038",
+          "text": "Goizueta told the press that the best had been made even better.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "quote",
+            "text": "The best has been made even better.",
+            "attribution": "Roberto Goizueta, 23 April 1985"
+          },
+          "request": {
+            "kind": "none"
+          }
+        },
+        {
+          "id": "b039",
+          "text": "The new Coke, he said, was smoother, rounder, yet bolder.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "quote",
+            "text": "Smoother, rounder, yet bolder — a more harmonious flavor.",
+            "attribution": "Roberto Goizueta, 23 April 1985"
+          },
+          "request": {
+            "kind": "none"
+          }
+        },
+        {
+          "id": "b040",
+          "text": "The reporters were not charmed. Several of them thought it simply tasted sweeter. More like Pepsi.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "full",
+            "motion": "left",
+            "style": "archival"
+          },
+          "request": {
+            "kind": "video",
+            "subject": "New Coke launch press conference, 23 April 1985, Lincoln Center, New York",
+            "must_show": "Goizueta/Keough on stage presenting New Coke to reporters",
+            "era": "1983-1986",
+            "queries": {
+              "commons": [
+                "New Coke press conference 1985",
+                "Vivian Beaumont Theater"
+              ],
+              "openverse": [
+                "new coke launch 1985"
+              ],
+              "archive": [
+                "New Coke press conference 1985",
+                "Coca-Cola new formula 1985 news"
+              ],
+              "loc": [],
+              "youtube": [
+                "New Coke press conference April 23 1985",
+                "New Coke announcement 1985 news report"
+              ]
+            },
+            "fallback": {
+              "type": "number_card",
+              "number": "23",
+              "label": "APRIL 1985"
+            }
+          }
+        },
+        {
+          "id": "b041",
+          "text": "Pepsi's Roger Enrico had been waiting years for this moment.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "cutout",
+            "position": "left",
+            "bg": {
+              "type": "paper"
+            },
+            "caption": {
+              "text": "ROGER ENRICO",
+              "sub": "PRESIDENT & CEO, PEPSI-COLA USA"
+            },
+            "motion": "push"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Roger Enrico",
+            "must_show": "portrait of Roger Enrico, Pepsi executive",
+            "era": "1983-1999",
+            "queries": {
+              "commons": [
+                "Roger Enrico"
+              ],
+              "openverse": [
+                "roger enrico"
+              ],
+              "archive": [
+                "Roger Enrico Pepsi"
+              ],
+              "loc": [
+                "Enrico, Roger"
+              ],
+              "youtube": [
+                "Roger Enrico Pepsi 1985"
+              ]
+            }
+          }
+        },
+        {
+          "id": "b042",
+          "text": "Pepsi ran full-page newspaper ads reprinting his letter to the company's bottlers.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "full",
+            "motion": "right",
+            "style": "halftone"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "1985 newspaper page / Pepsi print advertisement",
+            "must_show": "a full-page newspaper advertisement or 1980s Pepsi print ad",
+            "era": "1980-1986",
+            "queries": {
+              "commons": [
+                "Pepsi advertisement 1980s",
+                "Pepsi-Cola advertisement"
+              ],
+              "openverse": [
+                "pepsi ad 1980s",
+                "vintage pepsi advertisement"
+              ],
+              "archive": [
+                "Pepsi advertisement 1985",
+                "The other guy blinked Enrico"
+              ],
+              "loc": [
+                "Pepsi-Cola advertisement"
+              ],
+              "youtube": []
+            }
+          }
+        },
+        {
+          "id": "b043",
+          "text": "After eighty-seven years of going at it eyeball to eyeball, it declared, the other guy just blinked.",
+          "pace": 1.0,
+          "pause_after": 0.5,
+          "scene": {
+            "type": "quote",
+            "text": "After 87 years of going at it eyeball to eyeball, the other guy just blinked.",
+            "attribution": "Roger Enrico, Pepsi-Cola USA, April 1985"
+          },
+          "request": {
+            "kind": "none"
+          }
+        },
+        {
+          "id": "b044",
+          "text": "Pepsi gave its staff a day off to celebrate. It looked like a surrender. And for a few weeks, it was about to feel like one.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "full",
+            "motion": "pull",
+            "style": "archival"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Pepsi-Cola 1980s can, bottle or delivery truck",
+            "must_show": "Pepsi branding, 1980s",
+            "era": "1980-1986",
+            "queries": {
+              "commons": [
+                "Pepsi can 1980s",
+                "Pepsi-Cola truck"
+              ],
+              "openverse": [
+                "pepsi can 1980s",
+                "vintage pepsi"
+              ],
+              "archive": [
+                "Pepsi commercial 1985"
+              ],
+              "loc": [
+                "Pepsi-Cola"
+              ],
+              "youtube": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "ch4-backlash",
+      "title": "The Revolt",
+      "beats": [
+        {
+          "id": "b045",
+          "text": "Chapter four. The Revolt.",
+          "pace": 1.0,
+          "pause_after": 0.5,
+          "scene": {
+            "type": "title",
+            "kicker": "CHAPTER 4",
+            "title": "THE REVOLT"
+          },
+          "request": {
+            "kind": "none"
+          }
+        },
+        {
+          "id": "b046",
+          "text": "Coca-Cola's consumer hotline had been taking about four hundred calls a day. By June, it was fifteen hundred.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "number_card",
+            "number": "1,500",
+            "label": "CALLS A DAY — WAS 400"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "1980s telephone switchboard / call-centre operators",
+            "must_show": "operators at desks with telephones, 1980s",
+            "era": "1975-1990",
+            "queries": {
+              "commons": [
+                "telephone operators 1980s",
+                "call center 1980s"
+              ],
+              "openverse": [
+                "1980s telephone operator",
+                "switchboard operators"
+              ],
+              "archive": [
+                "telephone operators 1980s"
+              ],
+              "loc": [
+                "telephone operators"
+              ],
+              "youtube": []
+            }
+          }
+        },
+        {
+          "id": "b047",
+          "text": "The team answering the phones and letters grew from around a dozen people to a hundred and eighty.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "full",
+            "motion": "left",
+            "style": "halftone"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "1980s telephone switchboard / call-centre operators",
+            "must_show": "operators at desks with telephones, 1980s",
+            "era": "1975-1990",
+            "queries": {
+              "commons": [
+                "telephone operators 1980s",
+                "call center 1980s"
+              ],
+              "openverse": [
+                "1980s telephone operator",
+                "switchboard operators"
+              ],
+              "archive": [
+                "telephone operators 1980s"
+              ],
+              "loc": [
+                "telephone operators"
+              ],
+              "youtube": []
+            }
+          }
+        },
+        {
+          "id": "b048",
+          "text": "Not quite enough.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "number_card",
+            "number": "180",
+            "label": "HOTLINE STAFF — WAS ~12",
+            "photo_position": "right"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "1980s telephone switchboard / call-centre operators",
+            "must_show": "operators at desks with telephones, 1980s",
+            "era": "1975-1990",
+            "queries": {
+              "commons": [
+                "telephone operators 1980s",
+                "call center 1980s"
+              ],
+              "openverse": [
+                "1980s telephone operator",
+                "switchboard operators"
+              ],
+              "archive": [
+                "telephone operators 1980s"
+              ],
+              "loc": [
+                "telephone operators"
+              ],
+              "youtube": []
+            }
+          }
+        },
+        {
+          "id": "b049",
+          "text": "One letter reached the chairman addressed simply to the Chief Dodo.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "quote",
+            "text": "Chief Dodo, The Coca-Cola Company",
+            "attribution": "Address on a letter to Roberto Goizueta, 1985"
+          },
+          "request": {
+            "kind": "none"
+          }
+        },
+        {
+          "id": "b050",
+          "text": "A psychiatrist hired to listen in on the calls reportedly said some callers sounded as though a family member had died.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "full",
+            "motion": "push",
+            "style": "archival"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "1980s telephone handset / woman on the phone",
+            "must_show": "person on a landline telephone, 1980s",
+            "era": "1975-1990",
+            "queries": {
+              "commons": [
+                "telephone 1980s",
+                "woman on telephone 1980s"
+              ],
+              "openverse": [
+                "1980s telephone call",
+                "vintage telephone"
+              ],
+              "archive": [
+                "telephone 1980s"
+              ],
+              "loc": [
+                "telephone"
+              ],
+              "youtube": []
+            }
+          }
+        },
+        {
+          "id": "b051",
+          "text": "In San Antonio, a man drove to a bottler and bought a thousand dollars' worth of the old Coke.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "number_card",
+            "number": "$1,000",
+            "label": "OF OLD COKE, SAN ANTONIO",
+            "photo_position": "left"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Stacked crates/cases of Coca-Cola",
+            "must_show": "cases of Coca-Cola stacked in a warehouse or basement",
+            "era": "1950-1986",
+            "queries": {
+              "commons": [
+                "Coca-Cola crates",
+                "Coca-Cola bottling plant"
+              ],
+              "openverse": [
+                "coca-cola crates",
+                "coke cases stacked"
+              ],
+              "archive": [
+                "Coca-Cola bottling plant"
+              ],
+              "loc": [
+                "Coca-Cola bottling"
+              ],
+              "youtube": []
+            }
+          }
+        },
+        {
+          "id": "b052",
+          "text": "And in Seattle, a retiree called Gay Mullins founded the Old Cola Drinkers of America.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "cutout",
+            "position": "right",
+            "bg": {
+              "type": "paper"
+            },
+            "caption": {
+              "text": "GAY MULLINS",
+              "sub": "FOUNDER, OLD COLA DRINKERS OF AMERICA"
+            },
+            "motion": "push"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Gay Mullins, 1985",
+            "must_show": "Gay Mullins, Seattle, with cola cans/signs",
+            "era": "1985",
+            "queries": {
+              "commons": [
+                "Gay Mullins"
+              ],
+              "openverse": [
+                "gay mullins"
+              ],
+              "archive": [
+                "Gay Mullins Old Cola Drinkers"
+              ],
+              "loc": [],
+              "youtube": [
+                "Gay Mullins 1985 interview New Coke"
+              ]
+            }
+          }
+        },
+        {
+          "id": "b053",
+          "text": "He set up a hotline, sold buttons and T-shirts, and threatened Coca-Cola with a class-action suit.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "full",
+            "motion": "right",
+            "style": "archival"
+          },
+          "request": {
+            "kind": "video",
+            "subject": "Anti-New Coke protests, 1985 (Seattle), people pouring New Coke away",
+            "must_show": "protesters with signs / pouring cola into a drain",
+            "era": "1983-1986",
+            "queries": {
+              "commons": [
+                "New Coke protest 1985"
+              ],
+              "openverse": [
+                "new coke protest"
+              ],
+              "archive": [
+                "New Coke protest 1985 news",
+                "Old Cola Drinkers of America"
+              ],
+              "loc": [],
+              "youtube": [
+                "New Coke protest 1985 Seattle",
+                "Gay Mullins Old Cola Drinkers 1985 news"
+              ]
+            },
+            "fallback": {
+              "type": "headline",
+              "text": "COKE DRINKERS REVOLT",
+              "publication": "paraphrase",
+              "date": "1985",
+              "paraphrase": true
+            }
+          }
+        },
+        {
+          "id": "b054",
+          "text": "His group claimed a hundred thousand supporters.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "number_card",
+            "number": "100,000",
+            "label": "SUPPORTERS CLAIMED"
+          },
+          "request": {
+            "kind": "none"
+          }
+        },
+        {
+          "id": "b055",
+          "text": "And then, the twist. The Seattle Times gave Mullins a blind taste test.",
+          "pace": 1.0,
+          "pause_after": 0.4,
+          "scene": {
+            "type": "headline",
+            "text": "MULLINS TAKES THE BLIND TEST",
+            "publication": "paraphrase — The Seattle Times",
+            "date": "1985",
+            "paraphrase": true
+          },
+          "request": {
+            "kind": "none"
+          }
+        },
+        {
+          "id": "b056",
+          "text": "By most accounts, in six tries, the leader of the revolt couldn't tell the new Coke from the old.",
+          "pace": 1.0,
+          "pause_after": 0.6,
+          "scene": {
+            "type": "number_card",
+            "number": "6",
+            "label": "TRIES — NO DIFFERENCE",
+            "photo_position": "right"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Gay Mullins, 1985",
+            "must_show": "Gay Mullins",
+            "era": "1985",
+            "queries": {
+              "commons": [
+                "Gay Mullins"
+              ],
+              "openverse": [
+                "gay mullins"
+              ],
+              "archive": [
+                "Gay Mullins"
+              ],
+              "loc": [],
+              "youtube": [
+                "Gay Mullins New Coke"
+              ]
+            }
+          }
+        },
+        {
+          "id": "b057",
+          "text": "It had never been about taste. People weren't defending a flavour. They were defending a memory.",
+          "pace": 0.95,
+          "pause_after": 0.5,
+          "scene": {
+            "type": "full",
+            "motion": "pull",
+            "style": "halftone"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Classic contour Coca-Cola glass bottle",
+            "must_show": "the contour bottle, vintage",
+            "era": "1940-1985",
+            "queries": {
+              "commons": [
+                "Coca-Cola contour bottle",
+                "Coca-Cola bottle vintage"
+              ],
+              "openverse": [
+                "vintage coca-cola bottle",
+                "coca-cola contour bottle"
+              ],
+              "archive": [
+                "Coca-Cola bottle 1950s"
+              ],
+              "loc": [
+                "Coca-Cola bottle",
+                "Coca-Cola advertisement"
+              ],
+              "youtube": []
+            }
+          }
+        },
+        {
+          "id": "b058",
+          "text": "And the one thing two hundred thousand taste tests could never measure was about to cost Coca-Cola its nerve.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "full",
+            "motion": "push",
+            "style": "halftone"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "New Coke can, 1985",
+            "must_show": "a 1985 'Coke' can with the new-formula design",
+            "era": "1983-1986",
+            "queries": {
+              "commons": [
+                "New Coke",
+                "New Coke can 1985",
+                "Coca-Cola can 1985"
+              ],
+              "openverse": [
+                "new coke can",
+                "coca-cola 1985 can"
+              ],
+              "archive": [
+                "new coke 1985"
+              ],
+              "loc": [
+                "Coca-Cola can"
+              ],
+              "youtube": [
+                "New Coke can 1985"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "ch5-return",
+      "title": "Seventy-Nine Days",
+      "beats": [
+        {
+          "id": "b059",
+          "text": "Chapter five. Seventy-nine days.",
+          "pace": 1.0,
+          "pause_after": 0.5,
+          "scene": {
+            "type": "title",
+            "kicker": "CHAPTER 5",
+            "title": "SEVENTY-NINE DAYS"
+          },
+          "request": {
+            "kind": "none"
+          }
+        },
+        {
+          "id": "b060",
+          "text": "On the tenth of July, 1985, ABC News broke into the afternoon soap opera General Hospital.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "full",
+            "motion": "push",
+            "style": "archival"
+          },
+          "request": {
+            "kind": "video",
+            "subject": "ABC News special bulletin, July 1985, interrupting General Hospital",
+            "must_show": "Peter Jennings at the ABC news desk announcing Coca-Cola's reversal",
+            "era": "1985",
+            "queries": {
+              "commons": [],
+              "openverse": [],
+              "archive": [
+                "ABC News special report July 1985 Coca-Cola",
+                "Peter Jennings 1985 Coca-Cola"
+              ],
+              "loc": [],
+              "youtube": [
+                "ABC special report Coke General Hospital 1985",
+                "Peter Jennings Coca-Cola Classic bulletin"
+              ]
+            },
+            "fallback": {
+              "type": "number_card",
+              "number": "10",
+              "label": "JULY 1985"
+            }
+          }
+        },
+        {
+          "id": "b061",
+          "text": "Peter Jennings had news that couldn't wait.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "cutout",
+            "position": "left",
+            "bg": {
+              "type": "paper"
+            },
+            "caption": {
+              "text": "PETER JENNINGS",
+              "sub": "ABC NEWS"
+            },
+            "motion": "push"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Peter Jennings",
+            "must_show": "Peter Jennings, ABC News anchor, 1980s",
+            "era": "1983-1990",
+            "queries": {
+              "commons": [
+                "Peter Jennings"
+              ],
+              "openverse": [
+                "peter jennings"
+              ],
+              "archive": [
+                "Peter Jennings ABC"
+              ],
+              "loc": [
+                "Jennings, Peter"
+              ],
+              "youtube": []
+            }
+          }
+        },
+        {
+          "id": "b062",
+          "text": "The original Coca-Cola was coming back.",
+          "pace": 1.0,
+          "pause_after": 0.5,
+          "scene": {
+            "type": "headline",
+            "text": "THE OLD COKE IS COMING BACK",
+            "publication": "paraphrase of 10 July 1985 bulletins",
+            "date": "10 July 1985",
+            "paraphrase": true
+          },
+          "request": {
+            "kind": "none"
+          }
+        },
+        {
+          "id": "b063",
+          "text": "The next day, Goizueta and Keough faced the cameras again. This time, to apologise.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "full",
+            "motion": "left",
+            "style": "archival"
+          },
+          "request": {
+            "kind": "video",
+            "subject": "Coca-Cola press conference, 11 July 1985, announcing Coca-Cola Classic",
+            "must_show": "Goizueta and Keough at a podium, July 1985",
+            "era": "1985",
+            "queries": {
+              "commons": [
+                "Coca-Cola Classic 1985"
+              ],
+              "openverse": [
+                "coca-cola classic 1985"
+              ],
+              "archive": [
+                "Coca-Cola Classic press conference 1985",
+                "Coca-Cola 1985 news"
+              ],
+              "loc": [],
+              "youtube": [
+                "Don Keough Coca-Cola Classic speech 1985",
+                "Coca-Cola Classic announcement July 1985"
+              ]
+            },
+            "fallback": {
+              "type": "number_card",
+              "number": "11",
+              "label": "JULY 1985"
+            }
+          }
+        },
+        {
+          "id": "b064",
+          "text": "Keough admitted that all their time, money and skill could not measure what they had actually been tampering with.",
+          "pace": 0.95,
+          "pause_after": 0.5,
+          "scene": {
+            "type": "quote",
+            "text": "All the time and money and skill poured into consumer research on the new Coca-Cola could not measure or reveal the deep and abiding emotional attachment to original Coca-Cola felt by so many people.",
+            "attribution": "Donald Keough, 11 July 1985"
+          },
+          "request": {
+            "kind": "none"
+          }
+        },
+        {
+          "id": "b065",
+          "text": "The company's hotline took thirty-one thousand six hundred calls in two days.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "number_card",
+            "number": "31,600",
+            "label": "CALLS IN TWO DAYS"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "1980s telephone switchboard / call-centre operators",
+            "must_show": "operators at desks with telephones, 1980s",
+            "era": "1975-1990",
+            "queries": {
+              "commons": [
+                "telephone operators 1980s",
+                "call center 1980s"
+              ],
+              "openverse": [
+                "1980s telephone operator",
+                "switchboard operators"
+              ],
+              "archive": [
+                "telephone operators 1980s"
+              ],
+              "loc": [
+                "telephone operators"
+              ],
+              "youtube": []
+            }
+          }
+        },
+        {
+          "id": "b066",
+          "text": "On the floor of the United States Senate, David Pryor of Arkansas called it a meaningful moment in U.S. history.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "cutout",
+            "position": "right",
+            "bg": {
+              "type": "paper"
+            },
+            "caption": {
+              "text": "DAVID PRYOR",
+              "sub": "U.S. SENATOR, ARKANSAS"
+            },
+            "motion": "drift"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Senator David Pryor",
+            "must_show": "official portrait of Senator David H. Pryor",
+            "era": "1979-1996",
+            "queries": {
+              "commons": [
+                "David Pryor",
+                "David Pryor senator"
+              ],
+              "openverse": [
+                "david pryor senator"
+              ],
+              "archive": [
+                "David Pryor Senate"
+              ],
+              "loc": [
+                "Pryor, David",
+                "David Pryor"
+              ],
+              "youtube": []
+            }
+          }
+        },
+        {
+          "id": "b067",
+          "text": "Seventy-nine days after it was retired, the old formula went back on sale. With one new word on the can.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "number_card",
+            "number": "79",
+            "label": "DAYS",
+            "photo_position": "right"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Coca-Cola Classic can, 1985-1986",
+            "must_show": "can or bottle labelled 'Coca-Cola Classic'",
+            "era": "1983-1986",
+            "queries": {
+              "commons": [
+                "Coca-Cola Classic can",
+                "Coca-Cola Classic 1985"
+              ],
+              "openverse": [
+                "coca-cola classic can",
+                "coke classic vintage"
+              ],
+              "archive": [
+                "Coca-Cola Classic 1985"
+              ],
+              "loc": [
+                "Coca-Cola Classic"
+              ],
+              "youtube": [
+                "Coca-Cola Classic 1985 commercial"
+              ]
+            }
+          }
+        },
+        {
+          "id": "b068",
+          "text": "Classic.",
+          "pace": 1.0,
+          "pause_after": 0.6,
+          "scene": {
+            "type": "full",
+            "motion": "push",
+            "style": "clean",
+            "caption": {
+              "text": "COCA-COLA CLASSIC",
+              "sub": "BACK ON SALE, JULY 1985"
+            }
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Coca-Cola Classic can, 1985-1986",
+            "must_show": "can or bottle labelled 'Coca-Cola Classic'",
+            "era": "1983-1986",
+            "queries": {
+              "commons": [
+                "Coca-Cola Classic can",
+                "Coca-Cola Classic 1985"
+              ],
+              "openverse": [
+                "coca-cola classic can",
+                "coke classic vintage"
+              ],
+              "archive": [
+                "Coca-Cola Classic 1985"
+              ],
+              "loc": [
+                "Coca-Cola Classic"
+              ],
+              "youtube": [
+                "Coca-Cola Classic 1985 commercial"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "resolution",
+      "title": "Blunder or Genius? (Epilogue)",
+      "beats": [
+        {
+          "id": "b069",
+          "text": "Epilogue. Blunder or genius?",
+          "pace": 1.0,
+          "pause_after": 0.5,
+          "scene": {
+            "type": "title",
+            "kicker": "EPILOGUE",
+            "title": "BLUNDER OR GENIUS?"
+          },
+          "request": {
+            "kind": "none"
+          }
+        },
+        {
+          "id": "b070",
+          "text": "And then the sales figures did something nobody had forecast. By the end of 1985, Coca-Cola Classic was outselling New Coke, and outselling Pepsi.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "full",
+            "motion": "right",
+            "style": "archival"
+          },
+          "request": {
+            "kind": "video",
+            "subject": "1980s supermarket soft-drink aisle",
+            "must_show": "shelves stacked with cola cans/bottles, shoppers",
+            "era": "1983-1986",
+            "queries": {
+              "commons": [
+                "1980s supermarket",
+                "supermarket soft drinks 1980s"
+              ],
+              "openverse": [
+                "1980s supermarket aisle",
+                "soda aisle vintage"
+              ],
+              "archive": [
+                "1980s supermarket footage",
+                "grocery store 1984"
+              ],
+              "loc": [
+                "supermarket 1980s"
+              ],
+              "youtube": [
+                "1980s supermarket footage"
+              ]
+            },
+            "fallback": {
+              "type": "number_card",
+              "number": "#1",
+              "label": "PEPSI IN SUPERMARKETS"
+            }
+          }
+        },
+        {
+          "id": "b071",
+          "text": "New Coke shrank, by some estimates, to around three per cent of the market.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "number_card",
+            "number": "3%",
+            "label": "NEW COKE'S SHARE — EST."
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "New Coke can, 1985",
+            "must_show": "a 1985 'Coke' can with the new-formula design",
+            "era": "1983-1986",
+            "queries": {
+              "commons": [
+                "New Coke",
+                "New Coke can 1985",
+                "Coca-Cola can 1985"
+              ],
+              "openverse": [
+                "new coke can",
+                "coca-cola 1985 can"
+              ],
+              "archive": [
+                "new coke 1985"
+              ],
+              "loc": [
+                "Coca-Cola can"
+              ],
+              "youtube": [
+                "New Coke can 1985"
+              ]
+            }
+          }
+        },
+        {
+          "id": "b072",
+          "text": "It was renamed Coke Two in the early nineties, and quietly disappeared from American shelves in 2002.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "number_card",
+            "number": "2002",
+            "label": "COKE II DISCONTINUED",
+            "photo_position": "left"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Coke II can",
+            "must_show": "a can labelled 'Coke II'",
+            "era": "1990-2002",
+            "queries": {
+              "commons": [
+                "Coke II",
+                "Coke II can"
+              ],
+              "openverse": [
+                "coke ii can"
+              ],
+              "archive": [
+                "Coke II commercial"
+              ],
+              "loc": [],
+              "youtube": [
+                "Coke II commercial 1990s"
+              ]
+            }
+          }
+        },
+        {
+          "id": "b073",
+          "text": "Which is why, ever since, some people have suspected it was all a plan: take the old Coke away, let America miss it, then bring it back as a hero.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "full",
+            "motion": "pull",
+            "style": "halftone"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Coca-Cola Classic can, 1985-1986",
+            "must_show": "can or bottle labelled 'Coca-Cola Classic'",
+            "era": "1983-1986",
+            "queries": {
+              "commons": [
+                "Coca-Cola Classic can",
+                "Coca-Cola Classic 1985"
+              ],
+              "openverse": [
+                "coca-cola classic can",
+                "coke classic vintage"
+              ],
+              "archive": [
+                "Coca-Cola Classic 1985"
+              ],
+              "loc": [
+                "Coca-Cola Classic"
+              ],
+              "youtube": [
+                "Coca-Cola Classic 1985 commercial"
+              ]
+            }
+          }
+        },
+        {
+          "id": "b074",
+          "text": "There is no evidence for it. Keough had already answered the theory, in July 1985.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "cutout",
+            "position": "center",
+            "bg": {
+              "type": "paper"
+            },
+            "caption": {
+              "text": "DONALD KEOUGH",
+              "sub": "PRESIDENT, THE COCA-COLA COMPANY"
+            },
+            "motion": "drift"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Donald Keough",
+            "must_show": "portrait of Donald R. Keough, Coca-Cola president",
+            "era": "1980-1993",
+            "queries": {
+              "commons": [
+                "Donald Keough",
+                "Don Keough"
+              ],
+              "openverse": [
+                "donald keough"
+              ],
+              "archive": [
+                "Donald Keough Coca-Cola"
+              ],
+              "loc": [
+                "Keough, Donald"
+              ],
+              "youtube": [
+                "Don Keough Coca-Cola 1985"
+              ]
+            }
+          }
+        },
+        {
+          "id": "b075",
+          "text": "Some cynics, he said, would say they had planned the whole thing. The truth is, we're not that dumb, and we're not that smart.",
+          "pace": 0.95,
+          "pause_after": 0.7,
+          "scene": {
+            "type": "quote",
+            "text": "Some cynics will say that we planned the whole thing. The truth is we are not that dumb, and we are not that smart.",
+            "attribution": "Donald Keough, July 1985"
+          },
+          "request": {
+            "kind": "none"
+          }
+        },
+        {
+          "id": "b076",
+          "text": "So, blunder or genius? The honest answer is both, and neither. A blunder that delivered what no genius could have bought.",
+          "pace": 1.0,
+          "pause_after": 0.3,
+          "scene": {
+            "type": "full",
+            "motion": "push",
+            "style": "halftone"
+          },
+          "request": {
+            "kind": "photo",
+            "subject": "Classic contour Coca-Cola glass bottle",
+            "must_show": "the contour bottle, vintage",
+            "era": "1940-1985",
+            "queries": {
+              "commons": [
+                "Coca-Cola contour bottle",
+                "Coca-Cola bottle vintage"
+              ],
+              "openverse": [
+                "vintage coca-cola bottle",
+                "coca-cola contour bottle"
+              ],
+              "archive": [
+                "Coca-Cola bottle 1950s"
+              ],
+              "loc": [
+                "Coca-Cola bottle",
+                "Coca-Cola advertisement"
+              ],
+              "youtube": []
+            }
+          }
+        },
+        {
+          "id": "b077",
+          "text": "Two hundred thousand taste tests measured what people liked. Not one of them measured what people loved.",
+          "pace": 0.95,
+          "pause_after": 0.6,
+          "scene": {
+            "type": "number_card",
+            "number": "200,000",
+            "label": "TESTS. ONE QUESTION MISSING."
+          },
+          "request": {
+            "kind": "none"
+          }
+        },
+        {
+          "id": "b078",
+          "text": "And Coca-Cola was not the last giant to trust the numbers over the people. Because the most dangerous number in business is the one that tells you exactly what you want to hear.",
+          "pace": 0.95,
+          "pause_after": 1.0,
+          "scene": {
+            "type": "title",
+            "kicker": "1985",
+            "title": "THE REAL THING"
+          },
+          "request": {
+            "kind": "none"
+          }
+        }
+      ]
+    }
+  ]
+}

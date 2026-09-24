@@ -1,0 +1,1360 @@
+[
+  {
+    "id": "b001",
+    "kind": "photo",
+    "subject": "Classic contour Coca-Cola glass bottle",
+    "must_show": "the contour bottle, vintage",
+    "era": "1940-1985",
+    "queries": {
+      "commons": [
+        "Coca-Cola contour bottle",
+        "Coca-Cola bottle vintage"
+      ],
+      "openverse": [
+        "vintage coca-cola bottle",
+        "coca-cola contour bottle"
+      ],
+      "archive": [
+        "Coca-Cola bottle 1950s"
+      ],
+      "loc": [
+        "Coca-Cola bottle",
+        "Coca-Cola advertisement"
+      ],
+      "youtube": []
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b002",
+    "kind": "photo",
+    "subject": "Classic contour Coca-Cola glass bottle",
+    "must_show": "the contour bottle, vintage",
+    "era": "1940-1985",
+    "queries": {
+      "commons": [
+        "Coca-Cola contour bottle",
+        "Coca-Cola bottle vintage"
+      ],
+      "openverse": [
+        "vintage coca-cola bottle",
+        "coca-cola contour bottle"
+      ],
+      "archive": [
+        "Coca-Cola bottle 1950s"
+      ],
+      "loc": [
+        "Coca-Cola bottle",
+        "Coca-Cola advertisement"
+      ],
+      "youtube": []
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b003",
+    "kind": "photo",
+    "subject": "New Coke can, 1985",
+    "must_show": "a 1985 'Coke' can with the new-formula design",
+    "era": "1983-1986",
+    "queries": {
+      "commons": [
+        "New Coke",
+        "New Coke can 1985",
+        "Coca-Cola can 1985"
+      ],
+      "openverse": [
+        "new coke can",
+        "coca-cola 1985 can"
+      ],
+      "archive": [
+        "new coke 1985"
+      ],
+      "loc": [
+        "Coca-Cola can"
+      ],
+      "youtube": [
+        "New Coke can 1985"
+      ]
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b006",
+    "kind": "video",
+    "subject": "Anti-New Coke protests, 1985 (Seattle), people pouring New Coke away",
+    "must_show": "protesters with signs / pouring cola into a drain",
+    "era": "1983-1986",
+    "queries": {
+      "commons": [
+        "New Coke protest 1985"
+      ],
+      "openverse": [
+        "new coke protest"
+      ],
+      "archive": [
+        "New Coke protest 1985 news",
+        "Old Cola Drinkers of America"
+      ],
+      "loc": [],
+      "youtube": [
+        "New Coke protest 1985 Seattle",
+        "Gay Mullins Old Cola Drinkers 1985 news"
+      ]
+    },
+    "min_width": 1000,
+    "fallback": {
+      "type": "headline",
+      "text": "COKE DRINKERS REVOLT",
+      "publication": "paraphrase",
+      "date": "1985",
+      "paraphrase": true
+    }
+  },
+  {
+    "id": "b007",
+    "kind": "photo",
+    "subject": "Coca-Cola Classic can, 1985-1986",
+    "must_show": "can or bottle labelled 'Coca-Cola Classic'",
+    "era": "1983-1986",
+    "queries": {
+      "commons": [
+        "Coca-Cola Classic can",
+        "Coca-Cola Classic 1985"
+      ],
+      "openverse": [
+        "coca-cola classic can",
+        "coke classic vintage"
+      ],
+      "archive": [
+        "Coca-Cola Classic 1985"
+      ],
+      "loc": [
+        "Coca-Cola Classic"
+      ],
+      "youtube": [
+        "Coca-Cola Classic 1985 commercial"
+      ]
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b008",
+    "kind": "photo",
+    "subject": "Coca-Cola Classic can, 1985-1986",
+    "must_show": "can or bottle labelled 'Coca-Cola Classic'",
+    "era": "1983-1986",
+    "queries": {
+      "commons": [
+        "Coca-Cola Classic can",
+        "Coca-Cola Classic 1985"
+      ],
+      "openverse": [
+        "coca-cola classic can",
+        "coke classic vintage"
+      ],
+      "archive": [
+        "Coca-Cola Classic 1985"
+      ],
+      "loc": [
+        "Coca-Cola Classic"
+      ],
+      "youtube": [
+        "Coca-Cola Classic 1985 commercial"
+      ]
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b010",
+    "kind": "photo",
+    "subject": "The Coca-Cola Company headquarters, Atlanta",
+    "must_show": "Coca-Cola HQ tower / North Avenue, Atlanta",
+    "era": "1970-1990",
+    "queries": {
+      "commons": [
+        "Coca-Cola headquarters Atlanta",
+        "Coca-Cola Company headquarters"
+      ],
+      "openverse": [
+        "coca-cola headquarters atlanta"
+      ],
+      "archive": [
+        "Coca-Cola headquarters Atlanta"
+      ],
+      "loc": [
+        "Coca-Cola Company Atlanta"
+      ],
+      "youtube": []
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b013",
+    "kind": "photo",
+    "subject": "1940s Coca-Cola soda fountain or advertisement",
+    "must_show": "Coca-Cola sign or fountain, 1940s America",
+    "era": "1940-1950",
+    "queries": {
+      "commons": [
+        "Coca-Cola 1940s",
+        "Coca-Cola advertisement 1940s",
+        "soda fountain 1940s"
+      ],
+      "openverse": [
+        "coca-cola 1940s",
+        "soda fountain vintage"
+      ],
+      "archive": [
+        "Coca-Cola 1940s advertisement"
+      ],
+      "loc": [
+        "Coca-Cola soda fountain",
+        "Coca-Cola sign"
+      ],
+      "youtube": []
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b016",
+    "kind": "video",
+    "subject": "Pepsi Challenge TV commercial, late 1970s/early 1980s",
+    "must_show": "blind taste test with two unmarked cups, shopper choosing",
+    "era": "1975-1985",
+    "queries": {
+      "commons": [
+        "Pepsi Challenge"
+      ],
+      "openverse": [
+        "pepsi challenge"
+      ],
+      "archive": [
+        "Pepsi Challenge commercial",
+        "Pepsi commercial 1980s"
+      ],
+      "loc": [
+        "Pepsi-Cola advertisement"
+      ],
+      "youtube": [
+        "Pepsi Challenge commercial 1983",
+        "Pepsi Challenge 1970s ad"
+      ]
+    },
+    "min_width": 1000,
+    "fallback": {
+      "type": "number_card",
+      "number": "1975",
+      "label": "THE PEPSI CHALLENGE"
+    }
+  },
+  {
+    "id": "b017",
+    "kind": "video",
+    "subject": "Pepsi Challenge TV commercial, late 1970s/early 1980s",
+    "must_show": "blind taste test with two unmarked cups, shopper choosing",
+    "era": "1975-1985",
+    "queries": {
+      "commons": [
+        "Pepsi Challenge"
+      ],
+      "openverse": [
+        "pepsi challenge"
+      ],
+      "archive": [
+        "Pepsi Challenge commercial",
+        "Pepsi commercial 1980s"
+      ],
+      "loc": [
+        "Pepsi-Cola advertisement"
+      ],
+      "youtube": [
+        "Pepsi Challenge commercial 1983",
+        "Pepsi Challenge 1970s ad"
+      ]
+    },
+    "min_width": 1000,
+    "fallback": {
+      "type": "number_card",
+      "number": "1975",
+      "label": "THE PEPSI CHALLENGE"
+    }
+  },
+  {
+    "id": "b018",
+    "kind": "video",
+    "subject": "1980s supermarket soft-drink aisle",
+    "must_show": "shelves stacked with cola cans/bottles, shoppers",
+    "era": "1983-1986",
+    "queries": {
+      "commons": [
+        "1980s supermarket",
+        "supermarket soft drinks 1980s"
+      ],
+      "openverse": [
+        "1980s supermarket aisle",
+        "soda aisle vintage"
+      ],
+      "archive": [
+        "1980s supermarket footage",
+        "grocery store 1984"
+      ],
+      "loc": [
+        "supermarket 1980s"
+      ],
+      "youtube": [
+        "1980s supermarket footage"
+      ]
+    },
+    "min_width": 1000,
+    "fallback": {
+      "type": "number_card",
+      "number": "#1",
+      "label": "PEPSI IN SUPERMARKETS"
+    }
+  },
+  {
+    "id": "b019",
+    "kind": "photo",
+    "subject": "Roberto Goizueta",
+    "must_show": "portrait of Roberto C. Goizueta, Coca-Cola chairman",
+    "era": "1980-1997",
+    "queries": {
+      "commons": [
+        "Roberto Goizueta"
+      ],
+      "openverse": [
+        "roberto goizueta"
+      ],
+      "archive": [
+        "Roberto Goizueta Coca-Cola"
+      ],
+      "loc": [
+        "Goizueta, Roberto"
+      ],
+      "youtube": [
+        "Roberto Goizueta 1985"
+      ]
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b020",
+    "kind": "photo",
+    "subject": "Roberto Goizueta",
+    "must_show": "portrait of Roberto C. Goizueta, Coca-Cola chairman",
+    "era": "1980-1997",
+    "queries": {
+      "commons": [
+        "Roberto Goizueta"
+      ],
+      "openverse": [
+        "roberto goizueta"
+      ],
+      "archive": [
+        "Roberto Goizueta Coca-Cola"
+      ],
+      "loc": [
+        "Goizueta, Roberto"
+      ],
+      "youtube": [
+        "Roberto Goizueta 1985"
+      ]
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b021",
+    "kind": "photo",
+    "subject": "Classic contour Coca-Cola glass bottle",
+    "must_show": "the contour bottle, vintage",
+    "era": "1940-1985",
+    "queries": {
+      "commons": [
+        "Coca-Cola contour bottle",
+        "Coca-Cola bottle vintage"
+      ],
+      "openverse": [
+        "vintage coca-cola bottle",
+        "coca-cola contour bottle"
+      ],
+      "archive": [
+        "Coca-Cola bottle 1950s"
+      ],
+      "loc": [
+        "Coca-Cola bottle",
+        "Coca-Cola advertisement"
+      ],
+      "youtube": []
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b024",
+    "kind": "photo",
+    "subject": "Brian Dyson",
+    "must_show": "portrait of Brian G. Dyson, Coca-Cola USA president",
+    "era": "1978-1990",
+    "queries": {
+      "commons": [
+        "Brian Dyson Coca-Cola"
+      ],
+      "openverse": [
+        "brian dyson coca-cola"
+      ],
+      "archive": [
+        "Brian Dyson Coca-Cola"
+      ],
+      "loc": [],
+      "youtube": [
+        "Brian Dyson Coca-Cola"
+      ]
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b025",
+    "kind": "photo",
+    "subject": "Sergio Zyman",
+    "must_show": "portrait of Sergio Zyman, Coca-Cola marketing executive",
+    "era": "1980-2000",
+    "queries": {
+      "commons": [
+        "Sergio Zyman"
+      ],
+      "openverse": [
+        "sergio zyman"
+      ],
+      "archive": [
+        "Sergio Zyman"
+      ],
+      "loc": [],
+      "youtube": [
+        "Sergio Zyman New Coke"
+      ]
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b026",
+    "kind": "photo",
+    "subject": "William Allen White",
+    "must_show": "portrait of William Allen White, editor of the Emporia Gazette",
+    "era": "1900-1944",
+    "queries": {
+      "commons": [
+        "William Allen White",
+        "William Allen White Emporia Gazette"
+      ],
+      "openverse": [
+        "william allen white"
+      ],
+      "archive": [
+        "William Allen White"
+      ],
+      "loc": [
+        "White, William Allen",
+        "William Allen White portrait"
+      ],
+      "youtube": []
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b027",
+    "kind": "photo",
+    "subject": "Blind taste test with two unmarked cups of cola",
+    "must_show": "two plain cups of cola / taster, 1980s",
+    "era": "1975-1990",
+    "queries": {
+      "commons": [
+        "blind taste test",
+        "cola taste test"
+      ],
+      "openverse": [
+        "blind taste test cola",
+        "taste test cups"
+      ],
+      "archive": [
+        "taste test 1980s"
+      ],
+      "loc": [],
+      "youtube": []
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b031",
+    "kind": "photo",
+    "subject": "Classic contour Coca-Cola glass bottle",
+    "must_show": "the contour bottle, vintage",
+    "era": "1940-1985",
+    "queries": {
+      "commons": [
+        "Coca-Cola contour bottle",
+        "Coca-Cola bottle vintage"
+      ],
+      "openverse": [
+        "vintage coca-cola bottle",
+        "coca-cola contour bottle"
+      ],
+      "archive": [
+        "Coca-Cola bottle 1950s"
+      ],
+      "loc": [
+        "Coca-Cola bottle",
+        "Coca-Cola advertisement"
+      ],
+      "youtube": []
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b032",
+    "kind": "photo",
+    "subject": "1980s Coca-Cola vending machine or cooler",
+    "must_show": "Coca-Cola branded machine/cooler, 1980s",
+    "era": "1975-1990",
+    "queries": {
+      "commons": [
+        "Coca-Cola vending machine",
+        "Coca-Cola cooler"
+      ],
+      "openverse": [
+        "coca-cola vending machine vintage"
+      ],
+      "archive": [
+        "Coca-Cola vending machine 1980s"
+      ],
+      "loc": [
+        "Coca-Cola machine"
+      ],
+      "youtube": []
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b033",
+    "kind": "photo",
+    "subject": "New Coke can, 1985",
+    "must_show": "a 1985 'Coke' can with the new-formula design",
+    "era": "1983-1986",
+    "queries": {
+      "commons": [
+        "New Coke",
+        "New Coke can 1985",
+        "Coca-Cola can 1985"
+      ],
+      "openverse": [
+        "new coke can",
+        "coca-cola 1985 can"
+      ],
+      "archive": [
+        "new coke 1985"
+      ],
+      "loc": [
+        "Coca-Cola can"
+      ],
+      "youtube": [
+        "New Coke can 1985"
+      ]
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b035",
+    "kind": "video",
+    "subject": "New Coke launch press conference, 23 April 1985, Lincoln Center, New York",
+    "must_show": "Goizueta/Keough on stage presenting New Coke to reporters",
+    "era": "1983-1986",
+    "queries": {
+      "commons": [
+        "New Coke press conference 1985",
+        "Vivian Beaumont Theater"
+      ],
+      "openverse": [
+        "new coke launch 1985"
+      ],
+      "archive": [
+        "New Coke press conference 1985",
+        "Coca-Cola new formula 1985 news"
+      ],
+      "loc": [],
+      "youtube": [
+        "New Coke press conference April 23 1985",
+        "New Coke announcement 1985 news report"
+      ]
+    },
+    "min_width": 1000,
+    "fallback": {
+      "type": "number_card",
+      "number": "23",
+      "label": "APRIL 1985"
+    }
+  },
+  {
+    "id": "b036",
+    "kind": "photo",
+    "subject": "New Coke can, 1985",
+    "must_show": "a 1985 'Coke' can with the new-formula design",
+    "era": "1983-1986",
+    "queries": {
+      "commons": [
+        "New Coke",
+        "New Coke can 1985",
+        "Coca-Cola can 1985"
+      ],
+      "openverse": [
+        "new coke can",
+        "coca-cola 1985 can"
+      ],
+      "archive": [
+        "new coke 1985"
+      ],
+      "loc": [
+        "Coca-Cola can"
+      ],
+      "youtube": [
+        "New Coke can 1985"
+      ]
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b037",
+    "kind": "photo",
+    "subject": "Donald Keough",
+    "must_show": "portrait of Donald R. Keough, Coca-Cola president",
+    "era": "1980-1993",
+    "queries": {
+      "commons": [
+        "Donald Keough",
+        "Don Keough"
+      ],
+      "openverse": [
+        "donald keough"
+      ],
+      "archive": [
+        "Donald Keough Coca-Cola"
+      ],
+      "loc": [
+        "Keough, Donald"
+      ],
+      "youtube": [
+        "Don Keough Coca-Cola 1985"
+      ]
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b040",
+    "kind": "video",
+    "subject": "New Coke launch press conference, 23 April 1985, Lincoln Center, New York",
+    "must_show": "Goizueta/Keough on stage presenting New Coke to reporters",
+    "era": "1983-1986",
+    "queries": {
+      "commons": [
+        "New Coke press conference 1985",
+        "Vivian Beaumont Theater"
+      ],
+      "openverse": [
+        "new coke launch 1985"
+      ],
+      "archive": [
+        "New Coke press conference 1985",
+        "Coca-Cola new formula 1985 news"
+      ],
+      "loc": [],
+      "youtube": [
+        "New Coke press conference April 23 1985",
+        "New Coke announcement 1985 news report"
+      ]
+    },
+    "min_width": 1000,
+    "fallback": {
+      "type": "number_card",
+      "number": "23",
+      "label": "APRIL 1985"
+    }
+  },
+  {
+    "id": "b041",
+    "kind": "photo",
+    "subject": "Roger Enrico",
+    "must_show": "portrait of Roger Enrico, Pepsi executive",
+    "era": "1983-1999",
+    "queries": {
+      "commons": [
+        "Roger Enrico"
+      ],
+      "openverse": [
+        "roger enrico"
+      ],
+      "archive": [
+        "Roger Enrico Pepsi"
+      ],
+      "loc": [
+        "Enrico, Roger"
+      ],
+      "youtube": [
+        "Roger Enrico Pepsi 1985"
+      ]
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b042",
+    "kind": "photo",
+    "subject": "1985 newspaper page / Pepsi print advertisement",
+    "must_show": "a full-page newspaper advertisement or 1980s Pepsi print ad",
+    "era": "1980-1986",
+    "queries": {
+      "commons": [
+        "Pepsi advertisement 1980s",
+        "Pepsi-Cola advertisement"
+      ],
+      "openverse": [
+        "pepsi ad 1980s",
+        "vintage pepsi advertisement"
+      ],
+      "archive": [
+        "Pepsi advertisement 1985",
+        "The other guy blinked Enrico"
+      ],
+      "loc": [
+        "Pepsi-Cola advertisement"
+      ],
+      "youtube": []
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b044",
+    "kind": "photo",
+    "subject": "Pepsi-Cola 1980s can, bottle or delivery truck",
+    "must_show": "Pepsi branding, 1980s",
+    "era": "1980-1986",
+    "queries": {
+      "commons": [
+        "Pepsi can 1980s",
+        "Pepsi-Cola truck"
+      ],
+      "openverse": [
+        "pepsi can 1980s",
+        "vintage pepsi"
+      ],
+      "archive": [
+        "Pepsi commercial 1985"
+      ],
+      "loc": [
+        "Pepsi-Cola"
+      ],
+      "youtube": []
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b046",
+    "kind": "photo",
+    "subject": "1980s telephone switchboard / call-centre operators",
+    "must_show": "operators at desks with telephones, 1980s",
+    "era": "1975-1990",
+    "queries": {
+      "commons": [
+        "telephone operators 1980s",
+        "call center 1980s"
+      ],
+      "openverse": [
+        "1980s telephone operator",
+        "switchboard operators"
+      ],
+      "archive": [
+        "telephone operators 1980s"
+      ],
+      "loc": [
+        "telephone operators"
+      ],
+      "youtube": []
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b047",
+    "kind": "photo",
+    "subject": "1980s telephone switchboard / call-centre operators",
+    "must_show": "operators at desks with telephones, 1980s",
+    "era": "1975-1990",
+    "queries": {
+      "commons": [
+        "telephone operators 1980s",
+        "call center 1980s"
+      ],
+      "openverse": [
+        "1980s telephone operator",
+        "switchboard operators"
+      ],
+      "archive": [
+        "telephone operators 1980s"
+      ],
+      "loc": [
+        "telephone operators"
+      ],
+      "youtube": []
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b048",
+    "kind": "photo",
+    "subject": "1980s telephone switchboard / call-centre operators",
+    "must_show": "operators at desks with telephones, 1980s",
+    "era": "1975-1990",
+    "queries": {
+      "commons": [
+        "telephone operators 1980s",
+        "call center 1980s"
+      ],
+      "openverse": [
+        "1980s telephone operator",
+        "switchboard operators"
+      ],
+      "archive": [
+        "telephone operators 1980s"
+      ],
+      "loc": [
+        "telephone operators"
+      ],
+      "youtube": []
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b050",
+    "kind": "photo",
+    "subject": "1980s telephone handset / woman on the phone",
+    "must_show": "person on a landline telephone, 1980s",
+    "era": "1975-1990",
+    "queries": {
+      "commons": [
+        "telephone 1980s",
+        "woman on telephone 1980s"
+      ],
+      "openverse": [
+        "1980s telephone call",
+        "vintage telephone"
+      ],
+      "archive": [
+        "telephone 1980s"
+      ],
+      "loc": [
+        "telephone"
+      ],
+      "youtube": []
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b051",
+    "kind": "photo",
+    "subject": "Stacked crates/cases of Coca-Cola",
+    "must_show": "cases of Coca-Cola stacked in a warehouse or basement",
+    "era": "1950-1986",
+    "queries": {
+      "commons": [
+        "Coca-Cola crates",
+        "Coca-Cola bottling plant"
+      ],
+      "openverse": [
+        "coca-cola crates",
+        "coke cases stacked"
+      ],
+      "archive": [
+        "Coca-Cola bottling plant"
+      ],
+      "loc": [
+        "Coca-Cola bottling"
+      ],
+      "youtube": []
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b052",
+    "kind": "photo",
+    "subject": "Gay Mullins, 1985",
+    "must_show": "Gay Mullins, Seattle, with cola cans/signs",
+    "era": "1985",
+    "queries": {
+      "commons": [
+        "Gay Mullins"
+      ],
+      "openverse": [
+        "gay mullins"
+      ],
+      "archive": [
+        "Gay Mullins Old Cola Drinkers"
+      ],
+      "loc": [],
+      "youtube": [
+        "Gay Mullins 1985 interview New Coke"
+      ]
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b053",
+    "kind": "video",
+    "subject": "Anti-New Coke protests, 1985 (Seattle), people pouring New Coke away",
+    "must_show": "protesters with signs / pouring cola into a drain",
+    "era": "1983-1986",
+    "queries": {
+      "commons": [
+        "New Coke protest 1985"
+      ],
+      "openverse": [
+        "new coke protest"
+      ],
+      "archive": [
+        "New Coke protest 1985 news",
+        "Old Cola Drinkers of America"
+      ],
+      "loc": [],
+      "youtube": [
+        "New Coke protest 1985 Seattle",
+        "Gay Mullins Old Cola Drinkers 1985 news"
+      ]
+    },
+    "min_width": 1000,
+    "fallback": {
+      "type": "headline",
+      "text": "COKE DRINKERS REVOLT",
+      "publication": "paraphrase",
+      "date": "1985",
+      "paraphrase": true
+    }
+  },
+  {
+    "id": "b056",
+    "kind": "photo",
+    "subject": "Gay Mullins, 1985",
+    "must_show": "Gay Mullins",
+    "era": "1985",
+    "queries": {
+      "commons": [
+        "Gay Mullins"
+      ],
+      "openverse": [
+        "gay mullins"
+      ],
+      "archive": [
+        "Gay Mullins"
+      ],
+      "loc": [],
+      "youtube": [
+        "Gay Mullins New Coke"
+      ]
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b057",
+    "kind": "photo",
+    "subject": "Classic contour Coca-Cola glass bottle",
+    "must_show": "the contour bottle, vintage",
+    "era": "1940-1985",
+    "queries": {
+      "commons": [
+        "Coca-Cola contour bottle",
+        "Coca-Cola bottle vintage"
+      ],
+      "openverse": [
+        "vintage coca-cola bottle",
+        "coca-cola contour bottle"
+      ],
+      "archive": [
+        "Coca-Cola bottle 1950s"
+      ],
+      "loc": [
+        "Coca-Cola bottle",
+        "Coca-Cola advertisement"
+      ],
+      "youtube": []
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b058",
+    "kind": "photo",
+    "subject": "New Coke can, 1985",
+    "must_show": "a 1985 'Coke' can with the new-formula design",
+    "era": "1983-1986",
+    "queries": {
+      "commons": [
+        "New Coke",
+        "New Coke can 1985",
+        "Coca-Cola can 1985"
+      ],
+      "openverse": [
+        "new coke can",
+        "coca-cola 1985 can"
+      ],
+      "archive": [
+        "new coke 1985"
+      ],
+      "loc": [
+        "Coca-Cola can"
+      ],
+      "youtube": [
+        "New Coke can 1985"
+      ]
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b060",
+    "kind": "video",
+    "subject": "ABC News special bulletin, July 1985, interrupting General Hospital",
+    "must_show": "Peter Jennings at the ABC news desk announcing Coca-Cola's reversal",
+    "era": "1985",
+    "queries": {
+      "commons": [],
+      "openverse": [],
+      "archive": [
+        "ABC News special report July 1985 Coca-Cola",
+        "Peter Jennings 1985 Coca-Cola"
+      ],
+      "loc": [],
+      "youtube": [
+        "ABC special report Coke General Hospital 1985",
+        "Peter Jennings Coca-Cola Classic bulletin"
+      ]
+    },
+    "min_width": 1000,
+    "fallback": {
+      "type": "number_card",
+      "number": "10",
+      "label": "JULY 1985"
+    }
+  },
+  {
+    "id": "b061",
+    "kind": "photo",
+    "subject": "Peter Jennings",
+    "must_show": "Peter Jennings, ABC News anchor, 1980s",
+    "era": "1983-1990",
+    "queries": {
+      "commons": [
+        "Peter Jennings"
+      ],
+      "openverse": [
+        "peter jennings"
+      ],
+      "archive": [
+        "Peter Jennings ABC"
+      ],
+      "loc": [
+        "Jennings, Peter"
+      ],
+      "youtube": []
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b063",
+    "kind": "video",
+    "subject": "Coca-Cola press conference, 11 July 1985, announcing Coca-Cola Classic",
+    "must_show": "Goizueta and Keough at a podium, July 1985",
+    "era": "1985",
+    "queries": {
+      "commons": [
+        "Coca-Cola Classic 1985"
+      ],
+      "openverse": [
+        "coca-cola classic 1985"
+      ],
+      "archive": [
+        "Coca-Cola Classic press conference 1985",
+        "Coca-Cola 1985 news"
+      ],
+      "loc": [],
+      "youtube": [
+        "Don Keough Coca-Cola Classic speech 1985",
+        "Coca-Cola Classic announcement July 1985"
+      ]
+    },
+    "min_width": 1000,
+    "fallback": {
+      "type": "number_card",
+      "number": "11",
+      "label": "JULY 1985"
+    }
+  },
+  {
+    "id": "b065",
+    "kind": "photo",
+    "subject": "1980s telephone switchboard / call-centre operators",
+    "must_show": "operators at desks with telephones, 1980s",
+    "era": "1975-1990",
+    "queries": {
+      "commons": [
+        "telephone operators 1980s",
+        "call center 1980s"
+      ],
+      "openverse": [
+        "1980s telephone operator",
+        "switchboard operators"
+      ],
+      "archive": [
+        "telephone operators 1980s"
+      ],
+      "loc": [
+        "telephone operators"
+      ],
+      "youtube": []
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b066",
+    "kind": "photo",
+    "subject": "Senator David Pryor",
+    "must_show": "official portrait of Senator David H. Pryor",
+    "era": "1979-1996",
+    "queries": {
+      "commons": [
+        "David Pryor",
+        "David Pryor senator"
+      ],
+      "openverse": [
+        "david pryor senator"
+      ],
+      "archive": [
+        "David Pryor Senate"
+      ],
+      "loc": [
+        "Pryor, David",
+        "David Pryor"
+      ],
+      "youtube": []
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b067",
+    "kind": "photo",
+    "subject": "Coca-Cola Classic can, 1985-1986",
+    "must_show": "can or bottle labelled 'Coca-Cola Classic'",
+    "era": "1983-1986",
+    "queries": {
+      "commons": [
+        "Coca-Cola Classic can",
+        "Coca-Cola Classic 1985"
+      ],
+      "openverse": [
+        "coca-cola classic can",
+        "coke classic vintage"
+      ],
+      "archive": [
+        "Coca-Cola Classic 1985"
+      ],
+      "loc": [
+        "Coca-Cola Classic"
+      ],
+      "youtube": [
+        "Coca-Cola Classic 1985 commercial"
+      ]
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b068",
+    "kind": "photo",
+    "subject": "Coca-Cola Classic can, 1985-1986",
+    "must_show": "can or bottle labelled 'Coca-Cola Classic'",
+    "era": "1983-1986",
+    "queries": {
+      "commons": [
+        "Coca-Cola Classic can",
+        "Coca-Cola Classic 1985"
+      ],
+      "openverse": [
+        "coca-cola classic can",
+        "coke classic vintage"
+      ],
+      "archive": [
+        "Coca-Cola Classic 1985"
+      ],
+      "loc": [
+        "Coca-Cola Classic"
+      ],
+      "youtube": [
+        "Coca-Cola Classic 1985 commercial"
+      ]
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b070",
+    "kind": "video",
+    "subject": "1980s supermarket soft-drink aisle",
+    "must_show": "shelves stacked with cola cans/bottles, shoppers",
+    "era": "1983-1986",
+    "queries": {
+      "commons": [
+        "1980s supermarket",
+        "supermarket soft drinks 1980s"
+      ],
+      "openverse": [
+        "1980s supermarket aisle",
+        "soda aisle vintage"
+      ],
+      "archive": [
+        "1980s supermarket footage",
+        "grocery store 1984"
+      ],
+      "loc": [
+        "supermarket 1980s"
+      ],
+      "youtube": [
+        "1980s supermarket footage"
+      ]
+    },
+    "min_width": 1000,
+    "fallback": {
+      "type": "number_card",
+      "number": "#1",
+      "label": "PEPSI IN SUPERMARKETS"
+    }
+  },
+  {
+    "id": "b071",
+    "kind": "photo",
+    "subject": "New Coke can, 1985",
+    "must_show": "a 1985 'Coke' can with the new-formula design",
+    "era": "1983-1986",
+    "queries": {
+      "commons": [
+        "New Coke",
+        "New Coke can 1985",
+        "Coca-Cola can 1985"
+      ],
+      "openverse": [
+        "new coke can",
+        "coca-cola 1985 can"
+      ],
+      "archive": [
+        "new coke 1985"
+      ],
+      "loc": [
+        "Coca-Cola can"
+      ],
+      "youtube": [
+        "New Coke can 1985"
+      ]
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b072",
+    "kind": "photo",
+    "subject": "Coke II can",
+    "must_show": "a can labelled 'Coke II'",
+    "era": "1990-2002",
+    "queries": {
+      "commons": [
+        "Coke II",
+        "Coke II can"
+      ],
+      "openverse": [
+        "coke ii can"
+      ],
+      "archive": [
+        "Coke II commercial"
+      ],
+      "loc": [],
+      "youtube": [
+        "Coke II commercial 1990s"
+      ]
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b073",
+    "kind": "photo",
+    "subject": "Coca-Cola Classic can, 1985-1986",
+    "must_show": "can or bottle labelled 'Coca-Cola Classic'",
+    "era": "1983-1986",
+    "queries": {
+      "commons": [
+        "Coca-Cola Classic can",
+        "Coca-Cola Classic 1985"
+      ],
+      "openverse": [
+        "coca-cola classic can",
+        "coke classic vintage"
+      ],
+      "archive": [
+        "Coca-Cola Classic 1985"
+      ],
+      "loc": [
+        "Coca-Cola Classic"
+      ],
+      "youtube": [
+        "Coca-Cola Classic 1985 commercial"
+      ]
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b074",
+    "kind": "photo",
+    "subject": "Donald Keough",
+    "must_show": "portrait of Donald R. Keough, Coca-Cola president",
+    "era": "1980-1993",
+    "queries": {
+      "commons": [
+        "Donald Keough",
+        "Don Keough"
+      ],
+      "openverse": [
+        "donald keough"
+      ],
+      "archive": [
+        "Donald Keough Coca-Cola"
+      ],
+      "loc": [
+        "Keough, Donald"
+      ],
+      "youtube": [
+        "Don Keough Coca-Cola 1985"
+      ]
+    },
+    "min_width": 1000
+  },
+  {
+    "id": "b076",
+    "kind": "photo",
+    "subject": "Classic contour Coca-Cola glass bottle",
+    "must_show": "the contour bottle, vintage",
+    "era": "1940-1985",
+    "queries": {
+      "commons": [
+        "Coca-Cola contour bottle",
+        "Coca-Cola bottle vintage"
+      ],
+      "openverse": [
+        "vintage coca-cola bottle",
+        "coca-cola contour bottle"
+      ],
+      "archive": [
+        "Coca-Cola bottle 1950s"
+      ],
+      "loc": [
+        "Coca-Cola bottle",
+        "Coca-Cola advertisement"
+      ],
+      "youtube": []
+    },
+    "min_width": 1000
+  }
+]
