@@ -6,6 +6,8 @@ Docs: https://www.mediawiki.org/wiki/API:Search , API:Imageinfo , Extension:Time
 """
 from __future__ import annotations
 
+from dataclasses import replace
+
 from ..core import Candidate, Request, classify_license, strip_html
 from . import Source
 
@@ -30,7 +32,19 @@ class Commons(Source):
         return params
 
     async def search(self, http, req: Request, query: str, kind: str, limit: int) -> list[Candidate]:
-        data = await http.get_json(API, self.params(query, kind, limit))
+        try:
+            data = await http.get_json(API, self.params(query, kind, limit))
+        except Exception as e:  # noqa: BLE001
+            # Wikimedia's robot policy blocks some shared cloud IPs (HTTP 403). Openverse indexes
+            # Commons, so search Commons files through it rather than go without them.
+            if kind == "video" or "403" not in str(e):
+                raise
+            from .openverse import Openverse
+            ov = Openverse()
+            params = {**ov.params(query, limit), "source": "wikimedia"}
+            data = await http.get_json("https://api.openverse.org/v1/images/", params, headers=await ov._auth(http))
+            return [replace(c, source_label="commons via openverse") if hasattr(c, "source_label") else c
+                    for c in ov.parse(data, query)]
         return self.parse(data, query)
 
     def parse(self, data: dict, query: str = "") -> list[Candidate]:
