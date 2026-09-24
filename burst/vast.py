@@ -45,23 +45,27 @@ class Vast:
 
     # ── offers ──────────────────────────────────────────────────────────────────────────────
     def search_offers(self, gpus=None, min_cpu: int = 32, min_inet_down: float = 2000,
-                      min_reliability: float = 0.98, disk_gb: float = 80, min_cuda: float = 12.4,
-                      limit: int = 64) -> list[dict]:
+                      min_reliability: float = 0.98, disk_gb: float = 80, min_cuda: float | None = 12.4,
+                      limit: int = 64, cpu_only: bool = False) -> list[dict]:
+        """`cpu_only`: the job never touches the GPU (collage scene renders), so any GPU model will
+        do and the offers come back ordered by effective CPU cores instead of the GPU score."""
         q = {
             "verified": {"eq": True}, "external": {"eq": False},
             "rentable": {"eq": True}, "rented": {"eq": False},
             "num_gpus": {"eq": 1},
-            "gpu_name": {"in": list(gpus or DEFAULT_GPUS)},
             "cpu_cores_effective": {"gte": min_cpu},
             "inet_down": {"gte": min_inet_down},
             "reliability": {"gte": min_reliability},
-            "cuda_max_good": {"gte": min_cuda},
             "disk_space": {"gte": disk_gb},
-            "order": [["score", "desc"]],
+            "order": [["cpu_cores_effective", "desc"]] if cpu_only else [["score", "desc"]],
             "type": "on-demand",
             "allocated_storage": disk_gb,
             "limit": limit,
         }
+        if not cpu_only:
+            q["gpu_name"] = {"in": list(gpus or DEFAULT_GPUS)}
+        if min_cuda and not cpu_only:
+            q["cuda_max_good"] = {"gte": min_cuda}
         return self._call("POST", "/bundles/", json=q).get("offers", [])
 
     # ── instances ───────────────────────────────────────────────────────────────────────────
@@ -119,3 +123,28 @@ def pick_offers(offers: list[dict], n: int, gpus=None) -> list[dict]:
             if len(chosen) == n:
                 return chosen
     raise VastError(f"only found fewer than {n} matching machines; lower --shards or relax filters")
+
+
+def rank_cpu_offers(offers: list[dict]) -> list[dict]:
+    """For CPU-bound work (collage scenes: numpy/OpenCV compositing + x264): most effective cores
+    first, then cheapest per core-hour, then download bandwidth. The GPU model is irrelevant."""
+    def per_core(o):
+        return float(o.get("dph_total") or 1e9) / max(1.0, float(o.get("cpu_cores_effective") or 0))
+    return sorted(offers, key=lambda o: (-float(o.get("cpu_cores_effective") or 0), per_core(o),
+                                         -float(o.get("inet_down") or 0)))
+
+
+def pick_cpu_offers(offers: list[dict], n: int, min_cpu: float = 0) -> list[dict]:
+    """Up to N CPU-heavy offers on N different machines (any GPU). Unlike GPU shards the clips are
+    per-scene files, so mixed hardware is fine. Raises if not even one machine qualifies."""
+    chosen, seen = [], set()
+    for o in rank_cpu_offers(offers):
+        if float(o.get("cpu_cores_effective") or 0) < min_cpu or o.get("machine_id") in seen:
+            continue
+        seen.add(o.get("machine_id"))
+        chosen.append(o)
+        if len(chosen) == n:
+            break
+    if not chosen:
+        raise VastError(f"no offers with >= {min_cpu} effective CPU cores; lower --burst-min-cpu")
+    return chosen
