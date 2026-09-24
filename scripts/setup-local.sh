@@ -26,7 +26,7 @@ python house/make_house.py >/dev/null
 
 echo "→ Studio (editor) dependencies"
 corepack enable >/dev/null 2>&1 || npm i -g pnpm
-(cd editor && pnpm install)
+(cd editor && pnpm install && pnpm build:wasm)
 
 echo
 echo "Done. Next:"

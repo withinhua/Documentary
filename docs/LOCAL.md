@@ -28,3 +28,14 @@ into an editable timeline.
 Open the folder in Claude Code (desktop app or `claude` in a terminal) and ask, e.g.
 "run /documentary on the New Coke project" or "make a documentary about the Ford Pinto". The
 `documentary` skill in `.claude/skills/` walks through script → footage → review → render.
+
+## Windows (PowerShell, no WSL needed)
+```powershell
+winget install Git.Git OpenJS.NodeJS.LTS GitHub.cli     # then close and reopen PowerShell
+gh auth login
+gh repo clone withinhua/Documentary; cd Documentary; git checkout claude/zealous-davinci-lerpgn
+powershell -ExecutionPolicy Bypass -File scripts\studio.ps1        # open http://localhost:5173
+```
+To make videos too: `winget install Python.Python.3.12 Gyan.FFmpeg`, reopen PowerShell, then
+`powershell -ExecutionPolicy Bypass -File scripts\setup-local.ps1` once and
+`powershell -ExecutionPolicy Bypass -File scripts\new-coke.ps1` in a second window.
