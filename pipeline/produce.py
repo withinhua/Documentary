@@ -67,7 +67,11 @@ def scene_for(beat: dict, media: Path | None, duration: float) -> tuple[dict, st
         else:
             scene = {"type": "title", "kicker": "NEEDS FOOTAGE", "title": request.get("subject", "")[:70]}
             kind = "missing"
+    if scene.get("type") == "headline" and scene.get("paraphrase"):
+        # Unverified wording must not look like a real newspaper: show it as a typewriter card.
+        scene = {"type": "title", "kicker": str(scene.get("date") or ""), "title": scene.get("text", "")}
     scene.pop("fallback", None)
+    scene.pop("paraphrase", None)
     scene["duration"] = round(duration, 3)
     return scene, kind
 
