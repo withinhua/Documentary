@@ -1,0 +1,4 @@
+# Large ONNX models are downloaded on first use (see assets.py); never commit them.
+assets/models/
+__pycache__/
+demo_out/
