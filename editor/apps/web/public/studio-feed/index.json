@@ -1,19 +1,6 @@
 {
  "productions": [
   {
-   "slug": "new-coke",
-   "title": "Coca-Cola's 79-Day Blunder That Won the Cola War",
-   "updatedAt": 1790269625.816229,
-   "state": "running",
-   "stage": "Voice",
-   "progress": [
-    0,
-    7
-   ],
-   "thumb": null,
-   "durationSec": null
-  },
-  {
    "slug": "demo",
    "title": "New Coke: The 79-Day Disaster",
    "updatedAt": 1790266197.4168568,
