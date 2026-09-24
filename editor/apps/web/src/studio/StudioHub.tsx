@@ -53,7 +53,13 @@ const STATE_STYLE: Record<ProductionSummary["state"], string> = {
   failed: "bg-red-500/15 text-red-700 dark:text-red-300",
 };
 
-export function StudioHub({ initialSlug }: { initialSlug?: string }) {
+/** `onBlankEditor` / `onOpenEditor` let the desktop shell switch views; the browser uses routes. */
+export interface StudioNav {
+  onBlankEditor?: () => void;
+  onOpenEditor?: () => void;
+}
+
+export function StudioHub({ initialSlug, onBlankEditor, onOpenEditor }: { initialSlug?: string } & StudioNav) {
   const { navigate } = useRouter();
   const index = usePolled(fetchIndex, (d) => d.productions.some((p) => p.state === "running"));
   const productions = index.data?.productions ?? [];
@@ -62,7 +68,7 @@ export function StudioHub({ initialSlug }: { initialSlug?: string }) {
   const slug = picked;
 
   return (
-    <div className="flex h-screen w-screen flex-col bg-bg text-fg">
+    <div className="flex h-full w-full flex-col bg-bg text-fg">
       <header className="flex h-14 shrink-0 items-center gap-4 border-b border-border bg-bg-1 px-5">
         <Clapperboard size={20} className="text-accent" aria-hidden />
         <div className="flex min-w-0 flex-col leading-tight">
@@ -73,7 +79,7 @@ export function StudioHub({ initialSlug }: { initialSlug?: string }) {
           <WorkspaceChip />
           <button
             type="button"
-            onClick={() => navigate("welcome")}
+            onClick={() => (onBlankEditor ? onBlankEditor() : navigate("welcome"))}
             className="rounded-md border border-border px-3 py-1.5 text-xs text-fg-2 hover:bg-hover"
           >
             Blank editor
@@ -110,7 +116,7 @@ export function StudioHub({ initialSlug }: { initialSlug?: string }) {
 
         <main className="min-w-0 flex-1 overflow-y-auto">
           {slug ? (
-            <ProductionView key={slug} slug={slug} />
+            <ProductionView key={slug} slug={slug} onOpenEditor={onOpenEditor} />
           ) : productions.length ? (
             <Dashboard onOpen={setPicked} />
           ) : (
@@ -176,7 +182,7 @@ python -m worker.worker --local projects/demo \\
 }
 
 // ── one production ──────────────────────────────────────────────────────────────────────────────
-function ProductionView({ slug }: { slug: string }) {
+function ProductionView({ slug, onOpenEditor }: { slug: string; onOpenEditor?: () => void }) {
   const load = useCallback(() => fetchProduction(slug), [slug]);
   const { data: p, error } = usePolled(load, (d) => d.stages.some((s) => s.status === "running"));
   const [tab, setTab] = useState<Tab>("watch");
@@ -190,7 +196,8 @@ function ProductionView({ slug }: { slug: string }) {
     try {
       const warnings = await buildTimeline(p, (msg, f) => setBuilding({ msg, f }));
       if (warnings.length) console.warn("[studio] timeline warnings", warnings);
-      navigate("editor");
+      if (onOpenEditor) onOpenEditor();
+      else navigate("editor");
     } catch (e) {
       setBuilding({ msg: "Couldn't build the timeline", f: 1, error: e instanceof Error ? e.message : String(e) });
     }

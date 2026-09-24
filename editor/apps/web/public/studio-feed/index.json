@@ -2,7 +2,7 @@
  "productions": [
   {
    "slug": "demo",
-   "title": "New Coke: The 79-Day Disaster",
+   "title": "Demo: pipeline test (synthetic footage)",
    "updatedAt": 1790266197.4168568,
    "state": "ready",
    "stage": null,

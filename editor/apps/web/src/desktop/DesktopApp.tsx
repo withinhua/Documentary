@@ -1,5 +1,6 @@
 import type { JSX } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { StudioHub } from "../studio/StudioHub";
 import { DesktopTitleBar } from "./shell/DesktopTitleBar";
 import { Workspace } from "./shell/Workspace";
 import { DesktopStartScreen } from "./start/DesktopStartScreen";
@@ -35,6 +36,11 @@ export function DesktopApp(): JSX.Element {
   );
   const togglePanel = useUIStore((state) => state.togglePanel);
   const isVideoEditing = desktopPage !== "motion";
+  // Documentary Studio: the dashboard is home. "start" is the blank-project screen; "editor" the timeline.
+  const [view, setView] = useState<"studio" | "start" | "editor">("studio");
+  useEffect(() => {
+    if (hasProject && view === "start") setView("editor");
+  }, [hasProject, view]);
 
 
   // Drive native-menu actions into the app: undo/redo hit the project store
@@ -96,7 +102,12 @@ export function DesktopApp(): JSX.Element {
   return (
     <div className="openreel-desktop isolate flex h-screen w-screen flex-col overflow-hidden bg-bg text-fg">
       <DesktopTitleBar platform={platform}>
-        {hasProject && isVideoEditing ? (
+        {view !== "studio" ? (
+          <Button label="Studio" variant="secondary" size="sm" onClick={() => setView("studio")} className="mr-2" />
+        ) : hasProject ? (
+          <Button label="Back to editor" variant="secondary" size="sm" onClick={() => setView("editor")} className="mr-2" />
+        ) : null}
+        {view === "editor" && hasProject && isVideoEditing ? (
           <Button
             label="AI Editor"
             variant={agentChatVisible ? "primary" : "secondary"}
@@ -107,7 +118,7 @@ export function DesktopApp(): JSX.Element {
             aria-pressed={agentChatVisible}
           />
         ) : null}
-        {hasProject && isVideoEditing ? <DesktopExportButton /> : null}
+        {view === "editor" && hasProject && isVideoEditing ? <DesktopExportButton /> : null}
         <Button
           label="Settings"
           variant="secondary"
@@ -128,7 +139,9 @@ export function DesktopApp(): JSX.Element {
             })
           }
         >
-          {hasProject ? (
+          {view === "studio" ? (
+            <StudioHub onBlankEditor={() => setView(hasProject ? "editor" : "start")} onOpenEditor={() => setView("editor")} />
+          ) : hasProject ? (
             <EditorBootstrapGate>
               <Workspace />
             </EditorBootstrapGate>

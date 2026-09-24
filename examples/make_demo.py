@@ -27,7 +27,7 @@ photo = lambda **kw: {"type": "photo", "src": "media/portrait.jpg", **kw}
 demo_src = {"source": "Synthetic test footage (demo)", "license": "CC0", "credit": "Generated locally",
             "url": None}
 job = {
-    "slug": "demo", "title": "New Coke: The 79-Day Disaster",
+    "slug": "demo", "title": "Demo: pipeline test (synthetic footage)",
     "topic": "Why Coca-Cola replaced its formula in 1985, and how the backlash saved the brand",
     "sources": {f"media/{n}": dict(demo_src) for n in ("archive_a.mp4", "archive_b.mp4", "archive_c.mp4", "portrait.jpg")},
     "voice": {"voice": "bm_george", "speed": 0.95},
