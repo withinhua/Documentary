@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.env
+projects/
+out/
+models/
+house/look.cube
+house/vignette.png
+.pytest_cache/

@@ -1,0 +1,34 @@
+name: worker-image
+# Builds the GPU worker image and publishes it to GitHub Container Registry, so no one needs
+# Docker locally. Make the package public (or give vast.ai registry credentials) after the first run.
+on:
+  push:
+    branches: [main]
+    paths: [worker/**, burst/**, house/**, requirements-worker.txt]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - id: name
+        run: echo "image=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/docburst-worker" >> "$GITHUB_OUTPUT"
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: worker/Dockerfile
+          push: true
+          tags: ${{ steps.name.outputs.image }}:latest,${{ steps.name.outputs.image }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
