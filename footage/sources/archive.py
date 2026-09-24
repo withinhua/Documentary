@@ -49,7 +49,7 @@ def _int(v) -> int | None:
 class Archive(Source):
     name = "archive"
     kinds = ("photo", "video")
-    hosts = ("archive.org", "ia800000.us.archive.org (any ia*.us.archive.org)")
+    hosts = ("archive.org", "*.archive.org")          # downloads redirect to ia*.us.archive.org
 
     def params(self, query: str, kind: str, limit: int) -> dict:
         mt = {"photo": "image", "video": "movies"}.get(kind, "(image OR movies)")

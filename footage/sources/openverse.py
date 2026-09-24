@@ -17,7 +17,7 @@ API = "https://api.openverse.org/v1/images/"
 class Openverse(Source):
     name = "openverse"
     kinds = ("photo",)
-    hosts = ("api.openverse.org",)
+    hosts = ("api.openverse.org", "live.staticflickr.com", "*.staticflickr.com")   # + each provider's image host for full-res
     _token: str | None = None
 
     async def _auth(self, http) -> dict:

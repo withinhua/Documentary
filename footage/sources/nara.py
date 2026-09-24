@@ -19,7 +19,7 @@ PROXY = "https://catalog.archives.gov/proxy/records/search"
 class NARA(Source):
     name = "nara"
     kinds = ("photo", "video")
-    hosts = ("catalog.archives.gov", "s3.amazonaws.com (NARA-hosted media objects)")
+    hosts = ("catalog.archives.gov", "s3.amazonaws.com")    # media objects live in NARAprodstorage
 
     def params(self, query: str, limit: int) -> dict:
         return {"q": query, "limit": str(min(limit, 50)), "availableOnline": "true"}

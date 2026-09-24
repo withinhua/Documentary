@@ -5,6 +5,7 @@ import asyncio
 import hashlib
 import json
 import os
+import ssl
 import time
 from pathlib import Path
 from typing import Any
@@ -36,6 +37,14 @@ def default_cache_dir() -> Path:
     return Path(os.environ.get("FOOTAGE_CACHE") or Path.home() / ".cache" / "documentary-footage")
 
 
+def _ssl_context():
+    """Honour a corporate/sandbox CA bundle (SSL_CERT_FILE / REQUESTS_CA_BUNDLE) when set."""
+    ca = os.environ.get("SSL_CERT_FILE") or os.environ.get("REQUESTS_CA_BUNDLE")
+    if ca and os.path.isfile(ca):
+        return ssl.create_default_context(cafile=ca)
+    return True
+
+
 class HttpError(Exception):
     pass
 
@@ -51,7 +60,7 @@ class Http:
         self._client = httpx.AsyncClient(
             headers={"User-Agent": USER_AGENT, "Accept-Encoding": "gzip, deflate"},
             timeout=timeout, follow_redirects=True, transport=transport,
-            verify=os.environ.get("SSL_CERT_FILE") or os.environ.get("REQUESTS_CA_BUNDLE") or True)
+            verify=_ssl_context())
         self._sems: dict[str, asyncio.Semaphore] = {}
         self._next: dict[str, float] = {}
         self._locks: dict[str, asyncio.Lock] = {}
