@@ -18,8 +18,9 @@ USER_AGENT = ("DocumentaryFootageFinder/0.1 (https://github.com/; documentary re
 
 # Minimum seconds between request starts, and max in-flight requests, per host.
 HOST_POLICY: dict[str, tuple[float, int]] = {
-    "commons.wikimedia.org": (0.1, 4),
-    "upload.wikimedia.org": (0.05, 6),
+    "commons.wikimedia.org": (2.0, 1),   # Wikimedia throttles shared cloud IPs: one at a time
+    "en.wikipedia.org": (2.0, 1),
+    "upload.wikimedia.org": (0.5, 2),
     "api.openverse.org": (0.5, 2),
     "archive.org": (0.2, 4),
     "www.loc.gov": (0.6, 2),          # loc.gov bans bursts; keep it slow
@@ -30,6 +31,9 @@ HOST_POLICY: dict[str, tuple[float, int]] = {
     "pixabay.com": (0.7, 2),
 }
 DEFAULT_POLICY = (0.1, 4)
+# Hosts worth waiting for: on 429 we honour Retry-After (up to 30 s) and try again rather than
+# skipping them, because they hold the photos nobody else has (people, products, events).
+PATIENT_HOSTS = {"commons.wikimedia.org", "en.wikipedia.org", "upload.wikimedia.org"}
 SECRET_PARAMS = {"key", "api_key", "apikey", "token", "client_secret"}
 
 
@@ -105,7 +109,9 @@ class Http:
         if self._tripped.get(host, 0) > time.monotonic():
             raise HttpError(f"{host} is rate-limiting us; skipped for now")
         last: Exception | None = None
-        for attempt in range(4):
+        patient = host in PATIENT_HOSTS
+        attempts = 7 if patient else 4
+        for attempt in range(attempts):
             sem = await self._slot(host)
             try:
                 self.stats["requests"] += 1
@@ -123,13 +129,15 @@ class Http:
                 last = HttpError(f"HTTP {r.status_code} for {r.request.url}")
                 ra = r.headers.get("retry-after", "")
                 delay = float(ra) if ra.isdigit() else 1.5 * 2 ** attempt
-                if r.status_code == 429 and (delay > 5 or attempt >= 1):
+                if r.status_code == 429 and not patient and (delay > 5 or attempt >= 1):
                     self._trip(host)
                     raise last
+                if patient:
+                    delay = min(max(delay, 5.0), 30.0)
             else:
                 delay = 1.0 * 2 ** attempt
-            if attempt < 3:
-                await asyncio.sleep(min(delay, 20))
+            if attempt < attempts - 1:
+                await asyncio.sleep(delay if patient else min(delay, 20))
         self.stats["errors"] += 1
         raise HttpError(str(last))
 
@@ -138,6 +146,10 @@ class Http:
             self.stats["tripped"].append(host)
         self._tripped[host] = time.monotonic() + seconds
         self.stats["errors"] += 1
+
+    async def get_text(self, url: str, params: dict | None = None, headers: dict | None = None) -> str:
+        r = await self._request(url, params, headers)
+        return r.text
 
     async def get_json(self, url: str, params: dict | None = None, headers: dict | None = None,
                        ttl: float | None = None) -> Any:

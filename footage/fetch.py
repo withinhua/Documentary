@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import re
 import json
 import shutil
 import subprocess
@@ -29,7 +30,7 @@ from .net import Http, HttpError
 Image.MAX_IMAGE_PIXELS = 400_000_000
 KEEP_IMAGE = {".jpg", ".jpeg", ".png", ".webp"}
 KEEP_VIDEO = {".mp4", ".mov", ".webm", ".mkv"}
-MAX_EDGE = 6000
+MAX_EDGE = 3840  # 2× 1080p: room for push-ins, fast to render
 
 
 def load_picks(path: Path) -> list[dict]:
@@ -92,6 +93,32 @@ def ytdlp_section(url: str, dest: Path, start: float | None, dur: float | None) 
     return next(dest.parent.glob(dest.stem + ".*"))
 
 
+FLICKR_SIZED = re.compile(r"https://live\.staticflickr\.com/\d+/(\d+)_[0-9a-f]+_[a-z0-9]+\.(?:jpg|png)")
+FLICKR_ORIG = re.compile(r"https://live\.staticflickr\.com/[^\"'\s]+?_(?:o|6k|5k|4k|3k|k|h)\.(?:jpg|png)")
+LOC_SERVICE = re.compile(r"(https://tile\.loc\.gov/storage-services/)service(/pnp/.+/\w+?)[a-z]\.jpg$")
+
+
+async def best_url(http: Http, cand: dict) -> list[str]:
+    """Highest-resolution versions of a photo, best first (the finder's URL is often a 1024px copy)."""
+    url = cand.get("full_url") or ""
+    urls: list[str] = []
+    m = FLICKR_SIZED.match(url)
+    page = cand.get("page_url") or ""
+    if m and "flickr.com/photos/" in page:
+        try:  # Flickr's sizes page lists the original/largest files (different secret per size)
+            html = await http.get_text(page.rstrip("/") + "/sizes/o/")
+            found = FLICKR_ORIG.findall(html)
+            rank = lambda u: next((i for i, s in enumerate(("_o.", "_6k.", "_5k.", "_4k.", "_3k.", "_k.", "_h."))
+                                   if s in u), 9)
+            urls += sorted(set(found), key=rank)
+        except Exception:  # noqa: BLE001 - fall back to the known URL
+            pass
+    m = LOC_SERVICE.match(url)
+    if m:  # LoC "v.jpg" (1024px) → the uncompressed master TIFF
+        urls.append(f"{m.group(1)}master{m.group(2)}u.tif")
+    return urls + [url]
+
+
 async def fetch_one(http: Http, cand: dict, dest_stem: Path, start: float | None, dur: float | None) -> Path:
     kind, url, src = cand["kind"], cand.get("full_url"), cand.get("source")
     if not url:
@@ -114,12 +141,20 @@ async def fetch_one(http: Http, cand: dict, dest_stem: Path, start: float | None
         else:
             await http.download(url, dest)
         return dest
-    dest = dest_stem.with_suffix(ext_of(url, "photo"))
     if local:
+        dest = dest_stem.with_suffix(ext_of(url, "photo"))
         await asyncio.to_thread(shutil.copyfile, local, dest)
-    else:
-        await http.download(url, dest, max_bytes=500_000_000)
-    return await asyncio.to_thread(normalise_image, dest)
+        return await asyncio.to_thread(normalise_image, dest)
+    last: Exception | None = None
+    for u in await best_url(http, cand):
+        dest = dest_stem.with_suffix(ext_of(u, "photo"))
+        try:
+            await http.download(u, dest, max_bytes=500_000_000)
+            return await asyncio.to_thread(normalise_image, dest)
+        except Exception as e:  # noqa: BLE001 - try the next (smaller) version
+            last = e
+            dest.unlink(missing_ok=True)
+    raise RuntimeError(f"all versions failed: {last}")
 
 
 def ledger_entry(cand: dict) -> dict:
