@@ -9,7 +9,8 @@ captions, a thumbnail and a description.
 | Constraint | Target |
 |---|---|
 | Cash cost per 60-min video | **< $1** (expected ~$0 on your own hardware) |
-| External paid services | **None.** Only the user's Claude subscription (Pro/Max), used through Claude Code. |
+| External paid services | The user's Claude subscription (Pro/Max) through Claude Code, plus **Jev** for shot classification (~$0.05–0.15 per hour of video, see §3a) |
+| Style | **One consistent house documentary style.** No per-video style switching. |
 | Human time per video | **~10 min** (pick a title/angle, approve the outline, review the final video) |
 | Wall-clock time | 10-min video in ≤ 10 min; 60-min video in ~15–25 min on a GPU machine (see budget below) |
 
@@ -41,11 +42,10 @@ These are the four places where a naive build would miss the targets, and how we
      Ken Burns), **maps, document cards, timelines and data graphics**. That is the same toolkit
      Vox, Johnny Harris and Magnates Media use.
 
-3. **Shot selection without Gemini.** Keyframes are extracted with ffmpeg scene detection. A
-   local **SigLIP/CLIP** model scores every keyframe against the sentence it would sit on, which is
-   free and fast. Claude looks at **contact sheets** (a 4×4 grid of the top candidates, with IDs
-   printed on them) and picks shots. This is Claude vision, so it's included in the subscription. We
-   also use it to reject watermarks, logos, low resolution and wrong-era footage.
+3. **Shot selection at long-form scale.** An hour needs ~400–700 shots picked from thousands of
+   candidates. Claude vision alone would burn the subscription, so we use three tiers (see §3a):
+   local CLIP for a visual prefilter, **Jev** for fast and cheap semantic scoring of every candidate
+   against every sentence, and Claude vision only for the final shortlist and for the hook.
 
 4. **Claude subscription usage is the real rate limit, not dollars.** An hour-long documentary is
    about 9,000 narrated words, plus research, a critique pass and ~100–200 contact sheets. Rough
@@ -54,7 +54,7 @@ These are the four places where a naive build would miss the targets, and how we
    - Deterministic work (timing, rendering, audio, file handling) never goes through Claude.
    - Claude returns **compact JSON specs**, never per-video code. Graphics are templates that take
      parameters.
-   - Local CLIP filters candidates first, so Claude only looks at the best ones.
+   - CLIP and Jev filter candidates first, so Claude only looks at the best 2–3 per slot.
 
 ---
 
@@ -94,11 +94,34 @@ while chapter 5 is still being written.
 | 3 | **Script.** Chapters are written in parallel from a shared *style bible* and the outline. Then a **retention critic** (hook strength, open loops, a re-hook every 2–4 min, no filler, concrete specifics) and a **fact-checker** (every claim traced to `facts.jsonl`) run, then a rewrite. The output includes **performance markup** (see §4). | Claude | `script.md`, `script.json` |
 | 4 | **Voice.** TTS runs per paragraph. faster-whisper checks every chunk (word-error rate, clipping, dropped words), and bad chunks are retaken automatically. Then the mastering chain runs. The result includes word-level timestamps. | Local TTS + faster-whisper | `narration.wav`, `words.json`, `captions.srt` |
 | 5 | **Director.** For each sentence, decide the visual beat: `footage`, `photo`, `map`, `timeline`, `figure`, `quote/document`, `person card`, `chapter card`, or `collage`. It follows density rules (dense hook, then about one graphic a minute plus a label for every name and number) and variety rules (no layout repeated within 90 s). | Claude | `edl.json` (edit decision list) |
-| 6 | **Assets.** Query the providers → download → normalise → keyframes → CLIP ranking → Claude contact-sheet pick → trim → licence ledger. Photos get cutouts (rembg) and depth maps (Depth-Anything-V2) for parallax. | Free APIs + local models + Claude vision | `assets/`, `licenses.json` |
+| 6 | **Assets.** Query the providers → fetch low-res previews → keyframes → local captions → CLIP prefilter → **Jev scoring** → Claude contact-sheet pick (hook + ties only) → download full-res of chosen seconds → trim → licence ledger. Photos get cutouts (rembg) and depth maps (Depth-Anything-V2) for parallax. | Free APIs + local models + Jev + Claude vision | `assets/`, `licenses.json` |
 | 7 | **Graphics.** Render template scenes from the EDL parameters in parallel. | HTML/GSAP templates → headless Chromium frames, plus ffmpeg | `gfx/*.mov` |
 | 8 | **Assembly.** Render the timeline in parallel segments with a hardware encoder (NVENC/VideoToolbox), then concat. Add the music bed with sidechain ducking, synthesised SFX on cuts and reveals, mastering to −14 LUFS, and optional burnt captions. | ffmpeg | `final.mp4` |
 | 9 | **QC.** Automatic checks: black or frozen frames, repeated shots, silence gaps, loudness, caption sync and watermark detection. Claude reviews a contact sheet of the finished video (1 frame / 10 s), the hook and chapter openings, and patches the EDL. Only the affected segments are re-rendered. | ffmpeg + Claude vision | `qc.json` |
 | 10 | **Publish kit.** Three thumbnail variants (a real-photo cutout plus bold type on the style template), which Claude compares by vision. Also a description with chapters, sources, licence credits and tags. | Claude + templates | `thumb_*.jpg`, `description.md` |
+
+### 3a. Footage engine: where Jev fits
+
+**Jev** (TypeSafe AI, launched Sept 2026) is a text-only "System One" classification model. You
+send it text plus typed questions (a choice, a 0–1 score, or yes/no). It returns probabilities in
+~70–500 ms, and pricing is ~$0.042 per million input tokens with free output. **It doesn't search for
+or download footage, and it can't see pixels.** So it is our *judge*, not our *finder*.
+
+| Step | Tool | Why |
+|---|---|---|
+| Find candidates | Archive APIs (Commons, Internet Archive, NASA, NARA, LoC, DVIDS, Pexels, Pixabay) + optional YouTube search; queries written by Claude per ~20–30 s of narration | Jev can't search |
+| Turn shots into text | ffmpeg scene-cut keyframes → local captioner (e.g. Florence-2, MIT) plus source metadata, date, uploader, and transcript lines around the timestamp | Jev only reads text |
+| Visual prefilter | Local SigLIP/CLIP: drop clearly irrelevant, blurry or low-res frames | Free, catches what text misses |
+| **Semantic scoring** | **Jev**, one call per (sentence, candidate): `relevance` score, `era_matches` yes/no, `shows_named_subject` yes/no, `has_watermark_or_overlay_text` yes/no, `shot_type` choice | Thousands of decisions in seconds, run in parallel, costs cents |
+| Final pick | Claude vision on 4×4 contact sheets, **only** for the hook, chapter openers and close calls | Keeps subscription usage low where it matters least |
+| Variety and pacing | Deterministic rules: no source reused within N minutes, and alternate shot types | No model needed |
+
+**Cost sanity check (60-min video):** ~150 footage slots × ~40 candidates × ~400 tokens is about
+2.4M tokens, or **~$0.10**. Even at 5× that it stays well inside the $1 budget.
+
+**Caveats to verify in Phase 0:** Jev is days old. Test its accuracy against Claude's picks on the
+same contact sheets, check its rate limits and uptime, and keep a fallback. The fallback is CLIP
+plus Claude, which is slower and uses more of the subscription but still works.
 
 ---
 
@@ -159,9 +182,9 @@ at chapter boundaries.
 | Data chart | Line or bar chart drawn on "paper" |
 | Collage | Layered cutouts, pins and string, typewriter labels (built from real photo cutouts, no AI images) |
 
-Styles are JSON (`styles/<channel>.json`) that define fonts, palette, accent colour, grain, music
-folder, pacing and density, script craft, and voice. Templates read the style, so one library
-serves many channels.
+**One house style.** A single `style.json` locks fonts, palette, accent colour, grain, music
+folder, pacing and density, script craft and the narrator voice. Every video looks and sounds
+like the same channel, and the templates are tuned for that one look instead of being generic.
 
 **Rendering choice:** our own HTML/CSS/GSAP templates, captured by headless Chromium through
 Playwright and piped to ffmpeg. We own it fully, with no licensing questions. Remotion is free for
@@ -177,12 +200,13 @@ a distributed product.
 | Claude (script, direction, vision) | $0 marginal (subscription) |
 | TTS (local GPU / Apple Silicon) | $0 (or ~$0.10–0.40 of rented GPU time if no GPU) |
 | Footage and photos (free archives + Pexels/Pixabay) | $0 |
-| Cutouts, depth, CLIP, whisper (local) | $0 |
+| Cutouts, depth, CLIP, captioner, whisper (local) | $0 |
+| Jev shot scoring (~2–5M input tokens) | ~$0.10–0.20 |
 | Music | $0 (user library or YouTube Audio Library / CC0 tracks) |
 | Electricity | ~$0.02–0.05 |
-| **Total** | **~$0.05 on own hardware, < $0.50 worst case** |
+| **Total** | **~$0.15–0.25 on own hardware, < $0.70 worst case** |
 
-Compare Frontier Documentary mode at ~$30 for the same hour.
+This is roughly flat regardless of length. The cost doesn't scale with minutes the way per-minute voice and image APIs do.
 
 ## 8. Time budget (60-min video, target on an RTX 4070+ or M3 Pro-class machine)
 
@@ -219,7 +243,7 @@ documentary/
     script/                 outline, chapter writer, critic, fact-check, markup
     voice/                  engines/{chatterbox,kokoro}.py, retake loop, mastering, bakeoff.py
     footage/                providers/{commons,archive_org,nasa,nara,loc,dvids,pexels,pixabay,youtube_optin}.py
-                            keyframes.py, rank_clip.py, contact_sheet.py, license_ledger.py
+                            keyframes.py, caption.py, rank_clip.py, judge_jev.py, contact_sheet.py, license_ledger.py
     director/               sentence → visual beat, density & variety rules
     gfx/templates/          HTML/CSS/GSAP scenes; render.py (Playwright → ffmpeg)
     photofx/                rembg cutouts, depth parallax, spotlight
@@ -227,7 +251,7 @@ documentary/
     assemble/               EDL → segment render → concat
     qc/                     automated checks + Claude contact-sheet review
     publish/                thumbnails, description, chapters, credits
-  styles/                   documentary.json, noir.json, … (+ variants)
+  style.json                the one house style (fonts, palette, pacing, voice)
   assets/                   fonts (OFL), map data (Natural Earth), textures, music/
   projects/<slug>/          every artifact of every video
 ```
@@ -236,11 +260,11 @@ documentary/
 
 | Phase | Deliverable | Exit criterion |
 |---|---|---|
-| **0 — Spikes (week 1)** | TTS bake-off (Chatterbox vs Kokoro vs newest open models), Claude usage meter per 10 min of script, render-throughput test, footage coverage test on 10 sample topics | Voice that passes a blind "would you keep watching" test; measured token and time numbers |
+| **0 — Spikes (week 1)** | TTS bake-off (Chatterbox vs Kokoro vs newest open models), Claude usage meter per 10 min of script, render-throughput test, footage coverage test on 10 sample topics, **Jev vs Claude shot-pick agreement test** | Voice that passes a blind "would you keep watching" test; measured token and time numbers |
 | **1 — MVP (weeks 2–3)** | Topic → 10-min video: research, script, voice with retakes, archive footage + Ken Burns, labels, captions, music ducking | End-to-end in ≤ 15 min, $0 cash |
-| **2 — Look (weeks 4–5)** | Director + template library (map, timeline, figure, document, person, chapter, spotlight, parallax), styles | Side-by-side against a Frontier sample is comparable or better |
+| **2 — Look (weeks 4–5)** | Director + template library (map, timeline, figure, document, person, chapter, spotlight, parallax), house style locked | Side-by-side against a Frontier sample is comparable or better |
 | **3 — Long-form (weeks 6–7)** | Chapter engine, pipelining, segment-parallel encode, QC loop, publish kit | 60-min video in ≤ 25 min wall clock, < $1 |
-| **4 — Product** | `/documentary` skill UX, local web UI, batch queue, channel styles, rented-GPU mode | A non-developer makes a video in 10 min of their own time |
+| **4 — Product** | `/documentary` skill UX, local web UI, batch queue, rented-GPU mode | A non-developer makes a video in 10 min of their own time |
 
 ## 11. Risks
 

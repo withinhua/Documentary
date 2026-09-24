@@ -42,6 +42,11 @@ into a 1080p MP4 with a thumbnail and a YouTube description.
 | "Carl Jung" cheap mode | Stock footage + AI images + motion graphics | ~$1–2 per 30 min |
 | 2D Stories | Flat 2D character images | ~$0.15 per minute |
 
+> **Correction from the team:** in practice, Frontier users are producing Documentary-style videos
+> for **under $1**. The README's $0.50/min figure is a list-price estimate with every option on.
+> **Cost alone is not our advantage.** We win on speed at long-form lengths, monetisation-safe
+> footage, narration quality and one polished, consistent house style.
+
 ### Speed (their own figure)
 
 > "A 10-minute Documentary takes roughly 40–60 minutes on a laptop."
@@ -63,11 +68,11 @@ At that rate, an hour-long documentary would take about **4–6 hours** of rende
 
 | Weakness | Why it matters | Our answer |
 |---|---|---|
-| **About $30 per hour of video** in Documentary mode, mostly ElevenLabs voice plus image and photo-FX APIs | Long-form is where the money is, and costs scale with length | Local open-weights TTS, local cutouts and depth, no image generation by default. **Target: < $1 per hour, usually ~$0.** |
+| Per-minute API costs (voice, images, photo FX) that grow with length. They're cheap when tuned, but they still scale. | Long-form multiplies every per-minute cost | Local open-weights TTS, local cutouts and depth, no image generation. **Target: < $1 per hour, flat regardless of length.** |
 | **Several third-party accounts** (Algrow, WaveSpeed, kie, Gemini, Pexels, ai33) with reserves and fallbacks | Setup friction, surprise bills, vendor risk | **One dependency: the user's Claude subscription.** Everything else is free APIs or local models. |
 | **Slow**: 40–60 min per 10 min of video | An hour-long video takes an afternoon | A pipelined, parallel, GPU-aware renderer that works on chapters while the script is still being written |
 | **YouTube-ripped footage** (they admit that "a rights holder can still claim a video") | Content ID claims redirect or block monetisation, and repeat strikes can end a channel | **Monetisation-safe by default**: public-domain, Creative Commons and government archives, with a licence ledger and auto-generated credits. YouTube clips are an explicit opt-in. |
-| Shot logging needs Gemini | Another key, another quota | **Claude vision** reviews keyframe contact sheets inside the subscription, with a local CLIP/SigLIP prefilter so it only looks at good candidates |
+| Shot logging needs Gemini to watch video | Slow at long-form scale (hundreds of shots) | Local keyframe captioning, then **Jev** (a fast, cheap classification model) scores every candidate against every sentence. **Claude vision** only confirms the shortlist. |
 | Built for ~10-minute videos | Long-form (40–90 min) needs a different structure: chapters, re-hooks, a midpoint turn, consistent voice for an hour | **Built for long-form first**: an act and chapter engine with re-hooks every 2–4 minutes and voice-consistency checks |
 | Voice quality depends on the ElevenLabs reseller | Cost is tied to quality | A voice-direction layer (performance markup, whisper-verified retakes, a mastering chain) that makes free models sound directed rather than just read |
 
@@ -76,6 +81,6 @@ At that rate, an hour-long documentary would take about **4–6 hours** of rende
 Frontier proves the concept: a title can become a watchable documentary with Claude directing
 an ffmpeg pipeline. Its business model passes API costs to the buyer, and its footage strategy
 puts monetisation at risk. Our product should keep its best editing ideas (sentence-level
-direction, a dense hook, real material, styles as data) and rebuild the expensive and slow parts
-around **local models + Claude vision + free archives**. That is roughly **30× cheaper per
-hour**, several times faster, and safe to monetise.
+direction, a dense hook, real material, a style defined in one file) and rebuild the expensive and slow parts
+around **local models + fast classification (Jev) + Claude vision + free archives**. The result costs
+the same whatever the length, is several times faster at long-form, and is safe to monetise.
