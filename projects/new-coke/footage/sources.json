@@ -1,4 +1,18 @@
 {
+ "media/b001.jpg": {
+  "source": "Library of Congress",
+  "license": "Public domain",
+  "credit": "Highsmith, Carol M., 1946-, photographer / Library of Congress, Public domain",
+  "url": "https://www.loc.gov/item/2014631042/",
+  "license_class": "public-domain",
+  "license_url": "https://www.loc.gov/legal/",
+  "license_flags": [
+   "verify"
+  ],
+  "title": "An old company sign appears on the wall of a Coca-Cola bottling plant outside Alpine, Texas",
+  "original": "https://tile.loc.gov/image-services/iiif/service:pnp:highsm:26800:26842/full/pct:25/0/default.jpg",
+  "candidate": "loc:2014631042"
+ },
  "media/b002.jpg": {
   "source": "Openverse",
   "license": "CC BY-SA 2.0",
@@ -12,6 +26,18 @@
   "candidate": "openverse:7d834b08-3bfa-4aac-aed2-820b6f2d7bcf"
  },
  "media/b007.jpg": {
+  "source": "Openverse",
+  "license": "CC BY-SA 2.0",
+  "credit": "\"Antarctica: 1986 Original Formula\" by eliduke is licensed under CC BY-SA 2.0. To view a copy of this license, visit https://creativecommons.org/licenses/by-sa/2.0/.",
+  "url": "https://www.flickr.com/photos/80547277@N00/3158708110",
+  "license_class": "cc-by-sa",
+  "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+  "license_flags": [],
+  "title": "Antarctica: 1986 Original Formula",
+  "original": "https://live.staticflickr.com/3254/3158708110_2fc503f947_b.jpg",
+  "candidate": "openverse:2b57799b-9067-4fd3-9ce7-0afdc0b781cb"
+ },
+ "media/b008.jpg": {
   "source": "Openverse",
   "license": "CC BY-SA 2.0",
   "credit": "\"Antarctica: 1986 Original Formula\" by eliduke is licensed under CC BY-SA 2.0. To view a copy of this license, visit https://creativecommons.org/licenses/by-sa/2.0/.",
@@ -47,6 +73,30 @@
   "original": "https://live.staticflickr.com/7326/9434849621_fe1c001d29_b.jpg",
   "candidate": "openverse:83407178-d22e-42c2-8601-7da6ad30ba3a"
  },
+ "media/b016.mp4": {
+  "source": "Internet Archive",
+  "license": "Unknown",
+  "credit": "Roland Fields TV / Internet Archive, Unknown",
+  "url": "https://archive.org/details/youtube-wP7T9-R5mj0",
+  "license_class": "unknown",
+  "license_url": null,
+  "license_flags": [],
+  "title": "Take the Pepsi Challenge Commercial 1983",
+  "original": "https://archive.org/download/youtube-wP7T9-R5mj0/wP7T9-R5mj0.mp4",
+  "candidate": "archive:youtube-wP7T9-R5mj0"
+ },
+ "media/b017.mp4": {
+  "source": "Internet Archive",
+  "license": "Unknown",
+  "credit": "Roland Fields TV / Internet Archive, Unknown",
+  "url": "https://archive.org/details/youtube-wP7T9-R5mj0",
+  "license_class": "unknown",
+  "license_url": null,
+  "license_flags": [],
+  "title": "Take the Pepsi Challenge Commercial 1983",
+  "original": "https://archive.org/download/youtube-wP7T9-R5mj0/wP7T9-R5mj0.mp4",
+  "candidate": "archive:youtube-wP7T9-R5mj0"
+ },
  "media/b021.jpg": {
   "source": "Openverse",
   "license": "CC BY 2.0",
@@ -58,6 +108,20 @@
   "title": "Vintage Coca Cola Bottles 9/5",
   "original": "https://live.staticflickr.com/4147/4975298471_9344ec0cf6_b.jpg",
   "candidate": "openverse:41f35848-5902-420d-b971-ace286e38fb0"
+ },
+ "media/b026.jpg": {
+  "source": "Library of Congress",
+  "license": "Public domain",
+  "credit": "Harris & Ewing, photographer / Library of Congress, Public domain",
+  "url": "https://www.loc.gov/item/2016873437/",
+  "license_class": "public-domain",
+  "license_url": "https://www.loc.gov/legal/",
+  "license_flags": [
+   "verify"
+  ],
+  "title": "At meeting of newspaper editors. Washington, D.C., April 21. William Allen White, (left) Editor of the Emporia (Kan.) Gazette, and Franklyn Waltman, new publicity chief of the G.O.P., exchange pleasan",
+  "original": "https://tile.loc.gov/storage-services/service/pnp/hec/24400/24466v.jpg",
+  "candidate": "loc:2016873437"
  },
  "media/b031.jpg": {
   "source": "Openverse",
@@ -83,6 +147,18 @@
   "original": "https://images.rawpixel.com/editor_1024/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA0L3BkMjA3LTItNTYzXzEuanBn.jpg",
   "candidate": "openverse:43d73131-a84d-4b00-8c5e-5d706722e113"
  },
+ "media/b044.jpg": {
+  "source": "Openverse",
+  "license": "CC BY-SA 2.0",
+  "credit": "\"1979-1981 Hot Dude Black Truck Pepsi Day Fresno District Fair -IMG.psd\" by niiicedave is licensed under CC BY-SA 2.0. To view a copy of this license, visit https://creativecommons.org/licenses/by-sa/",
+  "url": "https://www.flickr.com/photos/33671002@N00/27214574183",
+  "license_class": "cc-by-sa",
+  "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+  "license_flags": [],
+  "title": "1979-1981 Hot Dude Black Truck Pepsi Day Fresno District Fair -IMG.psd",
+  "original": "https://live.staticflickr.com/7609/27214574183_ef0f683b7e_b.jpg",
+  "candidate": "openverse:5ad69b6c-07e6-4e50-8af8-814caa0b3082"
+ },
  "media/b051.jpg": {
   "source": "Openverse",
   "license": "CC BY-SA 2.0",
@@ -107,6 +183,30 @@
   "original": "https://live.staticflickr.com/65535/48979059301_ff72273b46_b.jpg",
   "candidate": "openverse:0c5cc17c-b04d-4232-b058-a9b68fc040f8"
  },
+ "media/b060.mp4": {
+  "source": "Internet Archive",
+  "license": "Unknown",
+  "credit": "ABC News / Internet Archive, Unknown",
+  "url": "https://archive.org/details/abc-19850710",
+  "license_class": "unknown",
+  "license_url": null,
+  "license_flags": [],
+  "title": "ABC World News Tonight July 10, 1985",
+  "original": "https://archive.org/download/abc-19850710/ABC%E4%B8%96%E7%95%8C%E6%96%B0%E9%97%BB%2019850710.mp4",
+  "candidate": "archive:abc-19850710"
+ },
+ "media/b061.mp4": {
+  "source": "Internet Archive",
+  "license": "Unknown",
+  "credit": "ABC News / Internet Archive, Unknown",
+  "url": "https://archive.org/details/abc-19850710",
+  "license_class": "unknown",
+  "license_url": null,
+  "license_flags": [],
+  "title": "ABC World News Tonight July 10, 1985",
+  "original": "https://archive.org/download/abc-19850710/ABC%E4%B8%96%E7%95%8C%E6%96%B0%E9%97%BB%2019850710.mp4",
+  "candidate": "archive:abc-19850710"
+ },
  "media/b067.jpg": {
   "source": "Openverse",
   "license": "CC BY-SA 2.0",
@@ -130,6 +230,18 @@
   "title": "Antarctica: 1986 Original Formula",
   "original": "https://live.staticflickr.com/3254/3158708110_2fc503f947_b.jpg",
   "candidate": "openverse:2b57799b-9067-4fd3-9ce7-0afdc0b781cb"
+ },
+ "media/b070.mp4": {
+  "source": "Internet Archive",
+  "license": "Unknown",
+  "credit": "ABC News / Internet Archive, Unknown",
+  "url": "https://archive.org/details/abc-19850710",
+  "license_class": "unknown",
+  "license_url": null,
+  "license_flags": [],
+  "title": "ABC World News Tonight July 10, 1985",
+  "original": "https://archive.org/download/abc-19850710/ABC%E4%B8%96%E7%95%8C%E6%96%B0%E9%97%BB%2019850710.mp4",
+  "candidate": "archive:abc-19850710"
  },
  "media/b072.jpg": {
   "source": "Openverse",

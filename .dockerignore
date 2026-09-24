@@ -1,0 +1,10 @@
+# keep the worker image lean: models are downloaded at build, renders/caches are local-only
+**/__pycache__
+**/*.pyc
+collage/demo_out
+collage/assets/models
+out
+projects
+editor
+footage
+.git

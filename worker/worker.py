@@ -2,6 +2,11 @@
 
     python -m worker.worker --local projects/demo --out out/demo     # test on any machine
     python -m worker.worker --remote                                  # on the rented GPU (env from launcher)
+
+Scene mode (collage clips for `pipeline.produce --burst N`, see burst/scenes.py):
+
+    python -m worker.worker --scenes --remote                         # on the rented CPU box
+    python -m worker.worker --scenes --local scenes-00.tar --out clips/   # test a bundle on any machine
 """
 from __future__ import annotations
 
@@ -12,7 +17,7 @@ import shutil
 import tarfile
 import time
 import traceback
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 import requests
@@ -206,14 +211,131 @@ def remote() -> None:
             raise
 
 
+# ── scene mode: render collage scene clips from a scene bundle ─────────────────────────────────
+def _rebase(v, root: Path):
+    """Point the bundle-relative media paths of a spec at the extracted bundle, in place."""
+    if isinstance(v, dict):
+        for k, x in v.items():
+            if k in ("photo", "video", "src") and isinstance(x, str) and not os.path.isabs(x):
+                v[k] = str(root / x)
+            else:
+                _rebase(x, root)
+    elif isinstance(v, list):
+        for x in v:
+            _rebase(x, root)
+    return v
+
+
+def _render_scene_job(args: tuple[dict, str, int, int]) -> str:
+    from collage.render import render_scene
+    spec, out, threads, enc_threads = args
+    render_scene(spec, Path(out), threads=threads, encoder_threads=enc_threads)
+    return out
+
+
+def render_scenes(root: Path, out_dir: Path, upload=None, workers: int | None = None) -> dict:
+    """Render every scene in an extracted scene bundle. `upload(scene, path)` runs for each clip as
+    soon as it's done (in the background). Returns {"clips": {id: key}, "errors": {id: message}}."""
+    import multiprocessing as mp
+    data = json.loads((root / "scenes.json").read_text())
+    # masks computed on the launcher ship in cache/; the render processes read COLLAGE_CACHE at import
+    (root / "cache").mkdir(exist_ok=True)
+    os.environ["COLLAGE_CACHE"] = str(root / "cache")
+    out_dir.mkdir(parents=True, exist_ok=True)
+    cores = os.cpu_count() or 2
+    n_proc = workers or max(1, cores // 2)          # ~2 cores per scene: compositing + x264 threads
+    scenes = sorted(data["scenes"], key=lambda sc: -float(sc["spec"].get("duration", 0)))  # longest first
+    clips, errors = {}, {}
+    with ProcessPoolExecutor(n_proc, mp_context=mp.get_context("spawn")) as ex, ThreadPoolExecutor(8) as up:
+        futs = {ex.submit(_render_scene_job, (_rebase(json.loads(json.dumps(sc["spec"])), root),
+                                              str(out_dir / f"{sc['id']}.mp4"), 2, 2)): sc for sc in scenes}
+        uploads = {}
+        for f in as_completed(futs):
+            sc = futs[f]
+            try:
+                path = Path(f.result())
+                if upload:
+                    uploads[up.submit(upload, sc, path)] = sc
+                else:
+                    clips[sc["id"]] = sc["key"]
+            except Exception as e:  # noqa: BLE001 - one bad scene must not sink the shard
+                traceback.print_exc()
+                errors[sc["id"]] = f"{type(e).__name__}: {e}"
+            print(f"scene {sc['id']}: {'ok' if sc['id'] not in errors else 'FAILED'} "
+                  f"({len(clips) + len(uploads) + len(errors)}/{len(scenes)})", flush=True)
+        for f in as_completed(uploads):
+            sc = uploads[f]
+            try:
+                f.result()
+                clips[sc["id"]] = sc["key"]
+            except Exception as e:  # noqa: BLE001
+                errors[sc["id"]] = f"upload: {type(e).__name__}: {e}"
+    return {"clips": clips, "errors": errors}
+
+
+def _open_bundle(src: Path, root: Path) -> Path:
+    if src.is_dir():
+        return src
+    with tarfile.open(src) as t:
+        t.extractall(root, filter="data")
+    return root
+
+
+def local_scenes(bundle: Path, out_dir: Path) -> dict:
+    from burst.bundle import verify_extracted
+    clock = Clock()
+    root = _open_bundle(bundle, out_dir / "bundle")
+    verify_extracted(root)
+    res = render_scenes(root, out_dir)
+    res["seconds"] = round(time.time() - clock.t0, 1)
+    print(json.dumps(res, indent=1))
+    return res
+
+
+def remote_scenes() -> None:
+    clock = Clock()
+    env = os.environ
+    work = Path("/work")
+    root, out = work / "job", work / "out"
+    root.mkdir(parents=True, exist_ok=True)
+    try:
+        tar = work / "bundle.tar"
+        fetch(env["BUNDLE_URL"], tar)
+        _open_bundle(tar, root)
+        tar.unlink()
+        from burst.bundle import verify_extracted
+        verify_extracted(root)
+        clock.lap("download + verify")
+        res = render_scenes(root, out, upload=lambda sc, path: put(sc["put_url"], path))
+        clock.lap(f"render + upload {len(res['clips'])} scenes")
+        put(env["STATUS_PUT_URL"], data=json.dumps({
+            "seconds": round(time.time() - clock.t0, 1), "stages": clock.stages, "cores": os.cpu_count(),
+            **res}).encode())
+    except Exception as e:  # report, then let run.sh self-destruct
+        traceback.print_exc()
+        try:
+            put(env["STATUS_PUT_URL"], data=json.dumps({"error": f"{type(e).__name__}: {e}"}).encode())
+        finally:
+            raise
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--local")
     ap.add_argument("--out", default="out/local")
     ap.add_argument("--remote", action="store_true")
     ap.add_argument("--feed", help="also publish progress + results to this Studio feed folder")
+    ap.add_argument("--scenes", action="store_true",
+                    help="scene mode: render the collage clips of a scene bundle (burst/scenes.py)")
     a = ap.parse_args()
-    if a.remote:
+    if a.scenes or os.environ.get("WORKER_MODE") == "scenes":
+        if a.remote:
+            remote_scenes()
+        elif a.local:
+            local_scenes(Path(a.local).resolve(), Path(a.out).resolve())
+        else:
+            ap.error("--scenes with --remote or --local BUNDLE(.tar|dir)")
+    elif a.remote:
         remote()
     elif a.local:
         local(Path(a.local).resolve(), Path(a.out).resolve(), Path(a.feed).resolve() if a.feed else None)

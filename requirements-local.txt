@@ -1,0 +1,10 @@
+# Everything to run the whole pipeline on your own machine (CPU is fine).
+-r requirements-worker.txt
+httpx>=0.27
+imagehash>=4.3
+onnxruntime>=1.18
+yt-dlp>=2025.1.1
+pytest>=8
+# optional: better footage ranking with a local vision model (large download)
+# open_clip_torch>=2.24
+# torch>=2.3

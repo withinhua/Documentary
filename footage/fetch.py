@@ -133,7 +133,18 @@ async def fetch_one(http: Http, cand: dict, dest_stem: Path, start: float | None
         suffix = ext_of(url, "video")
         if start is not None or dur is not None or suffix not in KEEP_VIDEO:
             dest = dest_stem.with_suffix(".mp4")
-            await asyncio.to_thread(ffmpeg_clip, local or url, dest, start, dur)
+            src_file = local
+            if not src_file:
+                # Download with our client (proxy/CA aware, polite), then cut locally: ffmpeg's own
+                # HTTP streaming is refused by some proxies and hosts.
+                tmp = dest_stem.with_name(dest_stem.name + ".src" + suffix)
+                await http.download(url, tmp, max_bytes=2_000_000_000)
+                src_file = str(tmp)
+            try:
+                await asyncio.to_thread(ffmpeg_clip, src_file, dest, start, dur)
+            finally:
+                if not local:
+                    Path(src_file).unlink(missing_ok=True)
             return dest
         dest = dest_stem.with_suffix(suffix)
         if local:
@@ -198,10 +209,11 @@ async def run(picks: list[dict], candidates: dict, out: Path, http: Http, with_a
         jobs = [("pick", p["pick"], out / rid)]
         if with_alt and p.get("alt"):
             jobs.append(("alt", p["alt"], out / "alts" / rid))
+        src_id = str(p.get("from") or rid)   # "from": reuse a candidate found on another beat's sheet
         for role, n, stem in jobs:
-            cand = cand_for(rid, n)
+            cand = cand_for(src_id, n)
             if not cand:
-                errors[f"{rid}:{role}"] = f"no candidate #{n}"
+                errors[f"{rid}:{role}"] = f"no candidate #{n} on {src_id}"
                 continue
             stem.parent.mkdir(parents=True, exist_ok=True)
             try:
@@ -215,7 +227,7 @@ async def run(picks: list[dict], candidates: dict, out: Path, http: Http, with_a
                 ledger.pop(k)                       # a re-pick replaced a file with another extension
             ledger[key] = ledger_entry(cand)
             if role == "pick":
-                picked[rid] = {"path": key, "candidate": n, "alt": p.get("alt"), "crop": p.get("crop"),
+                picked[rid] = {"path": key, "candidate": n, "from": p.get("from"), "alt": p.get("alt"), "crop": p.get("crop"),
                                "in": p.get("in"), "dur": p.get("dur"), "notes": p.get("notes", ""),
                                "kind": cand.get("kind"), "width": cand.get("width"), "height": cand.get("height")}
             print(f"[fetch] {rid} #{n} → {key}", file=sys.stderr)

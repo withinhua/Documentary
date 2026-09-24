@@ -23,6 +23,10 @@ RUN mkdir -p /opt/models/kokoro && cd /opt/models/kokoro && \
 COPY burst /opt/app/burst
 COPY worker /opt/app/worker
 COPY house /opt/app/house
+# collage scene renderer (scene mode: `run.sh --scenes`, rented for CPU cores, GPU unused).
+# The ISNet cut-out model is baked in so no scene waits on a download.
+COPY collage /opt/app/collage
+RUN cd /opt/app && python3 -c "from collage.assets import model_path; model_path('isnet-general-use.onnx'); model_path('u2netp.onnx')"
 RUN python3 /opt/app/house/make_house.py /opt/app/house && chmod +x /opt/app/worker/run.sh
 
 WORKDIR /opt/app

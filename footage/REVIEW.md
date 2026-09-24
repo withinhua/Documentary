@@ -130,3 +130,9 @@ This writes `<out>/media/<id>.<ext>`, the `<out>/sources.json` licence ledger (t
 `requery.json` is itself a valid requests file, carrying your new queries. Run
 `python -m footage.find <out>/requery.json --out <out>` to search again. It updates those requests
 in `candidates.json` and redraws their sheets, then you review them again.
+
+## Reusing a candidate from another beat
+
+A pick may point at a tile on another request's sheet with `"from": "<other id>"` — e.g. a clip found
+for b060 that also shows the subject of b061: `{"id":"b061","from":"b060","pick":5,"in":12,"dur":6}`.
+Use it whenever the best shot for a beat turned up on a different sheet.

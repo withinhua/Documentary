@@ -27,6 +27,7 @@ import re
 import sys
 import time
 from pathlib import Path
+from urllib.parse import urlsplit
 
 import numpy as np
 
@@ -125,14 +126,19 @@ class Harvester:
         self.cpu = asyncio.Semaphore(2)
         self.stats = {"searches": 0, "search_errors": 0, "found": 0, "new": 0, "thumbs": 0, "thumb_fail": 0}
         self.pending: list[asyncio.Task] = []
+        self.host_fail: dict[str, int] = {}       # consecutive thumbnail failures per host
 
-    async def search(self, src, kind: str, query: str) -> None:
+    def host_ok(self, url: str) -> bool:
+        return self.host_fail.get(urlsplit(url).hostname or "", 0) < 6
+
+    async def search(self, src, kind: str, query: str) -> bool:
+        """Run one query; False when it failed."""
         if time.monotonic() > self.deadline:
-            return
+            return True
         done = self.con.execute("SELECT n FROM harvest_log WHERE source=? AND kind=? AND query=? AND error IS NULL",
                                 (src.name, kind, query)).fetchone()
         if done is not None:
-            return
+            return True
         req = Request(id="lib", kind=kind, subject=query)
         err, cands = None, []
         try:
@@ -149,13 +155,19 @@ class Harvester:
                 self.stats["new"] += 1
                 self.pending.append(asyncio.create_task(self.thumb(c)))
         self.con.commit()
+        return err is None
 
     async def _img(self, url: str | None):
         if not url:
             return None
+        host = urlsplit(url).hostname or ""
+        if not self.host_ok(url):                    # a host refusing us (robot policy, 429s): stop asking
+            return None
         try:
             data = await self.http.get_bytes(url)
+            self.host_fail[host] = 0
         except (HttpError, OSError):
+            self.host_fail[host] = self.host_fail.get(host, 0) + 1
             return None
         try:
             async with self.cpu:
@@ -221,8 +233,12 @@ async def harvest(con, topic: str, era: str, entities: list[str], sources: list[
                 jobs.append((s, kind, qs))
 
         async def run_source(s, kind, qs):
+            fails = 0
             for q in qs:                       # sequential per source+kind; sources run in parallel
-                await h.search(s, kind, q)
+                fails = 0 if await h.search(s, kind, q) else fails + 1
+                if fails >= 3:                 # blocked or rate-limited: leave it for the next run
+                    log(f"[library] {s.name}/{kind}: 3 errors in a row, stopping this source for now")
+                    return
         await asyncio.gather(*(run_source(*j) for j in jobs))
         await h.drain()
         h.stats["http"] = dict(http.stats)
@@ -330,7 +346,7 @@ def main(argv=None) -> int:
     for pat in a.from_candidates:
         report["import"] = import_candidates(con, pat, a.topic)
     t1 = time.time()
-    if a.topic or a.requests:
+    if (a.topic or a.requests) and a.minutes > 0:
         report["harvest"] = asyncio.run(harvest(
             con, a.topic, a.era, [e for e in a.entities.split(",") if e.strip()], a.sources.split(","),
             a.requests, a.minutes, a.per_query, a.max_queries))

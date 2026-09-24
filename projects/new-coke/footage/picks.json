@@ -1,32 +1,12 @@
 [
  {
   "id": "b001",
-  "pick": null,
+  "pick": 1,
   "alt": null,
-  "crop": null,
+  "crop": "full",
   "in": null,
   "dur": null,
-  "notes": "no landscape >=1000px vintage contour bottle: #10 crate holds 2000s paper-label bottles, #11 modern phone shot, #1/#9 portrait & under 1000px, rest are murals/novelty items",
-  "requery": {
-   "commons": [
-    "Coca-Cola contour bottle 1915",
-    "Hobbleskirt bottle",
-    "Coca-Cola bottles 1950s",
-    "Coca-Cola bottling plant 1940s"
-   ],
-   "loc": [
-    "Coca-Cola bottles bottling plant",
-    "Photograph shows Coca-Cola bottles",
-    "Gottscho-Schleisner Coca-Cola"
-   ],
-   "openverse": [
-    "coca-cola contour bottle glass 6 oz",
-    "hobbleskirt coke bottle"
-   ],
-   "archive": [
-    "Coca-Cola bottling 1950s film"
-   ]
-  }
+  "notes": "Hand-painted vintage Coca-Cola sign with the contour bottle centred (Alpine TX bottling plant, Carol Highsmith/LOC, public domain, 1840px); sharp, clean, room to push. No other tile shows the bottle."
  },
  {
   "id": "b002",
@@ -44,25 +24,25 @@
   "crop": null,
   "in": null,
   "dur": null,
-  "notes": "no 1985 New Coke can: #1-3 are 2000s cans (#2 titled 'New Coke' but is a modern can), rest are painted murals/signs",
+  "notes": "no tile shows a 1985 New Coke can: 1938 coke-plant homes (coal coke namesake), NARA paperwork, mosaics. NB: YouTube RMsSh0EXMvM (A&P 1985, also b018 #4) has a clear shelf of New Coke cans at ~3:10-3:18 (hq3 still) - usable as fair use.",
   "requery": {
    "commons": [
     "New Coke",
-    "Coca-Cola 1985 can New Coke",
-    "New Coke can"
+    "Coke 1985 can",
+    "Category:New Coke"
    ],
    "openverse": [
     "new coke 1985 can",
-    "new coke can vintage",
-    "coke 1985 can collection"
+    "coke can 1985 new taste"
    ],
    "archive": [
-    "New Coke 1985 commercial",
-    "New Coke introduction April 1985 news"
+    "New Coke commercial 1985",
+    "\"new coke\""
    ],
+   "loc": [],
    "youtube": [
-    "New Coke 1985 commercial Bill Cosby",
-    "New Coke launch 1985"
+    "Shopping for Pepsi Free and New Coke A&P 1985",
+    "New Coke commercial 1985 can"
    ]
   }
  },
@@ -73,24 +53,26 @@
   "crop": null,
   "in": null,
   "dur": null,
-  "notes": "only candidate is WMAR Baltimore raw news 28 Aug 1985 (tennis, interviews; a 'Coke' item at 12:30 but after the July reversal, no protesters); licence Scripps stream-only, not usable",
+  "notes": "no protest/pouring footage: #7 is AI-generated imagery with captions, #2 (Gay Mullins, real) has a 'Walter J. Brown Media Archives' watermark across the frame, #4 CBS bug + taste-test not protest, #1/#3/#8/#13 are launch/return news, #12/#15/#16 modern. Use fallback headline card.",
   "requery": {
-   "archive": [
-    "Old Cola Drinkers of America 1985",
-    "New Coke protest news 1985",
-    "Coca-Cola formula change protest 1985 news"
-   ],
-   "youtube": [
-    "New Coke protest 1985 news report",
-    "Gay Mullins New Coke 1985",
-    "New Coke backlash 1985 CBS news",
-    "Coke drinkers pour New Coke 1985"
-   ],
    "commons": [
-    "New Coke protest"
+    "Old Cola Drinkers of America"
    ],
    "openverse": [
-    "new coke 1985 protest sign"
+    "new coke protest 1985"
+   ],
+   "archive": [
+    "New Coke 1985 news protest",
+    "Old Cola Drinkers of America 1985",
+    "Coca-Cola 1985 news July"
+   ],
+   "loc": [
+    "Coca-Cola protest 1985"
+   ],
+   "youtube": [
+    "Old Cola Drinkers of America protest 1985 news",
+    "New Coke protesters pour 1985",
+    "Gay Mullins Seattle 1985 news footage"
    ]
   }
  },
@@ -105,31 +87,12 @@
  },
  {
   "id": "b008",
-  "pick": null,
-  "alt": null,
-  "crop": null,
+  "pick": 1,
+  "alt": 2,
+  "crop": "full",
   "in": null,
   "dur": null,
-  "notes": "full-frame 'it won' beat needs a clean landscape Classic image; only era-correct option is the dented Antarctic litter can (#4, portrait 768px, used for b007); #6 is a 1992 Olympics can, #7 modern",
-  "requery": {
-   "commons": [
-    "Coca-Cola Classic 1985",
-    "Coke Classic can 1980s"
-   ],
-   "openverse": [
-    "coca-cola classic original formula can",
-    "coke classic 1980s can",
-    "coca-cola classic 1985 bottle"
-   ],
-   "archive": [
-    "Coca-Cola Classic return July 1985 news",
-    "Coca-Cola Classic 1986 commercial"
-   ],
-   "youtube": [
-    "Coca-Cola Classic returns 1985 news",
-    "Coca-Cola Classic 1986 commercial"
-   ]
-  }
+  "notes": "Genuine 1986 'Coca-Cola CLASSIC / Original Formula' can (c1986 printed on it), label fully readable, sharp; CC BY-SA 2.0 eliduke/Flickr. Caveat: portrait 768x1024, under 1000px min width - fetch Flickr original if larger, else frame as tall push/cutout. #2 same can, opened, top view."
  },
  {
   "id": "b010",
@@ -169,33 +132,12 @@
  },
  {
   "id": "b018",
-  "pick": null,
-  "alt": null,
-  "crop": null,
-  "in": null,
-  "dur": null,
-  "notes": "all candidates irrelevant (book-festival talks, Star Trek, animation, 1960s industrial film); no 1980s supermarket soda aisle",
-  "requery": {
-   "archive": [
-    "supermarket 1980s",
-    "grocery store commercial 1984",
-    "Kroger 1985",
-    "supermarket soda aisle 1985 news"
-   ],
-   "youtube": [
-    "1980s supermarket soda aisle footage",
-    "grocery store 1985 news report cola wars",
-    "cola wars 1985 supermarket news"
-   ],
-   "loc": [
-    "Photograph shows supermarket interior 1980s",
-    "supermarket shelves soft drinks"
-   ],
-   "commons": [
-    "Supermarkets in the United States in the 1980s",
-    "Soft drink aisle 1980s"
-   ]
-  }
+  "pick": 4,
+  "alt": 13,
+  "crop": "full",
+  "in": 190.0,
+  "dur": 8.0,
+  "notes": "fair use: real 1985 A&P supermarket camcorder footage from the height of the cola wars - shelf stacked with Coke cans with price tags (YouTube hq3 still ~75% = ~3:13). Sheet timestamps for YouTube are estimates (1/6,1/2) while stills are ~25/50/75%, so check ~3:08-3:20 and trim to cleanest 8s; crop out burned-in timecode top-right. Alt #13 Safeway 1980 aisle with shoppers (~3:02-3:10, hq1), also timecode top-right. Not usable: #3 is 1994 store brand, #5 has WDEF side graphics. Also: YouTube EgbtQQGOuoA (b006 #1, PIX11 1985) at ~1:36 shows a full Pepsi/Pepsi Free shelf - ideal if requeried here."
  },
  {
   "id": "b019",
@@ -204,29 +146,25 @@
   "crop": null,
   "in": null,
   "dur": null,
-  "notes": "no usable portrait: #1 is a 1989 WH contact sheet where Goizueta is a tiny full-body figure (~600px frames); #2-6 are documents/FOIA markers",
+  "notes": "only real Goizueta hit is #1 NARA WHPO-P07862 - a whole contact sheet (Bush meets Goizueta, 8 Nov 1989, frames 23-34); each frame ~580px wide, his face ~40px: not a usable portrait. Others are Reagan/Clinton library folder covers. Individual frames of that roll are public domain if NARA/Bush Library has them scanned.",
   "requery": {
    "commons": [
     "Roberto C. Goizueta",
-    "Roberto Goizueta Coca-Cola chairman"
+    "Roberto Goizueta 1985"
    ],
    "openverse": [
-    "roberto goizueta portrait"
-   ],
-   "loc": [
-    "Goizueta, Roberto C."
-   ],
-   "nara": [
-    "President Reagan Roberto Goizueta",
-    "President Bush meets with Roberto C. Goizueta"
+    "goizueta coca-cola"
    ],
    "archive": [
     "Roberto Goizueta interview",
-    "Goizueta Coca-Cola 1985 news"
+    "Goizueta Coca-Cola chairman 1985"
+   ],
+   "loc": [
+    "Goizueta"
    ],
    "youtube": [
-    "Roberto Goizueta interview",
-    "Goizueta New Coke press conference 1985"
+    "Roberto Goizueta New Coke press conference 1985",
+    "Goizueta 1985 announcement"
    ]
   }
  },
@@ -237,25 +175,23 @@
   "crop": null,
   "in": null,
   "dur": null,
-  "notes": "same pool as b019 - no clean Goizueta portrait (contact sheet frames too small, rest are documents); reuse whatever b019 requery finds, ideally a different photo",
+  "notes": "same as b019: #1 is the 1989 Bush-Goizueta contact sheet (face too tiny for a portrait); #2-#6 are archive folder covers/FOIA markers.",
   "requery": {
    "commons": [
     "Roberto C. Goizueta"
    ],
    "openverse": [
-    "goizueta coca-cola"
-   ],
-   "loc": [
-    "Goizueta, Roberto C."
-   ],
-   "nara": [
-    "Roberto C. Goizueta White House"
+    "roberto goizueta portrait"
    ],
    "archive": [
     "Roberto Goizueta"
    ],
+   "loc": [
+    "Goizueta"
+   ],
    "youtube": [
-    "Roberto Goizueta 1980s interview"
+    "Roberto Goizueta 1985 press conference",
+    "Roberto Goizueta interview"
    ]
   }
  },
@@ -275,24 +211,23 @@
   "crop": null,
   "in": null,
   "dur": null,
-  "notes": "no Brian Dyson at all - NARA hits are unrelated Dysons/documents, #9 is a 2009 poster session",
+  "notes": "no Brian Dyson anywhere: namesakes (George/Arthur/Ralph Dyson records), tech meetups, NARA paperwork, a 2009 poster session. No YouTube candidates returned.",
   "requery": {
    "commons": [
-    "Brian G. Dyson",
-    "Brian Dyson Coca-Cola USA"
+    "Brian G. Dyson"
    ],
    "openverse": [
-    "brian dyson"
+    "brian dyson coke"
    ],
    "archive": [
-    "Brian Dyson Coca-Cola 1985",
+    "Brian Dyson Coca-Cola USA 1985",
     "New Coke press conference 1985"
    ],
+   "loc": [],
    "youtube": [
-    "Brian Dyson Coca-Cola speech",
-    "Brian Dyson New Coke"
-   ],
-   "loc": []
+    "Brian Dyson Coca-Cola USA 1985",
+    "New Coke press conference April 23 1985 full"
+   ]
   }
  },
  {
@@ -302,7 +237,7 @@
   "crop": null,
   "in": null,
   "dur": null,
-  "notes": "no Sergio Zyman - all tiles are microfilm records/FOIA markers",
+  "notes": "no Sergio Zyman: all NARA microfilm covers, immigration cards, morning reports (text-match noise). No YouTube candidates returned.",
   "requery": {
    "commons": [
     "Sergio Zyman"
@@ -313,73 +248,40 @@
    ],
    "archive": [
     "Sergio Zyman interview",
-    "End of Marketing as We Know It Zyman"
+    "Sergio Zyman Coca-Cola"
    ],
+   "loc": [],
    "youtube": [
-    "Sergio Zyman interview",
-    "Sergio Zyman New Coke"
-   ],
-   "flickr": [
-    "Sergio Zyman"
+    "Sergio Zyman interview New Coke",
+    "Sergio Zyman 1985"
    ]
   }
  },
  {
   "id": "b026",
-  "pick": null,
-  "alt": null,
-  "crop": null,
+  "pick": 8,
+  "alt": 2,
+  "crop": "full",
   "in": null,
   "dur": null,
-  "notes": "no portrait of William Allen White: tiles are other William Allens, pension files, and HABS shots of his cabins/house (#15 house drawing is not a portrait)",
-  "requery": {
-   "loc": [
-    "White, William Allen, 1868-1944",
-    "William Allen White portrait",
-    "William Allen White Harris & Ewing"
-   ],
-   "commons": [
-    "William Allen White (journalist)",
-    "William Allen White 1868-1944"
-   ],
-   "openverse": [
-    "william allen white emporia"
-   ],
-   "archive": [
-    "William Allen White Emporia Gazette"
-   ],
-   "nara": [
-    "William Allen White"
-   ]
-  }
+  "notes": "LOC Harris & Ewing 1938, caption names 'William Allen White, (left) Editor of the Emporia (Kan.) Gazette' - same white-haired face as #2/#7/#9; landscape 1024px, sharp glass negative, PD; alt #2 is WAW alone at a lectern (portrait 822px)"
  },
  {
   "id": "b027",
   "pick": null,
   "alt": null,
   "crop": null,
-  "in": null,
-  "dur": null,
-  "notes": "nothing shows a cola taste test: coffee cupping, Jones Soda party, 2012 school lunch, microfilm targets - wrong subject and era",
+  "notes": "no 1980s taste test: #1/#15/#16 are 1920s-40s LOC food tasting, #3/#4/#11 modern Pepsi Challenge (2010s Pepsi Next booth), rest NARA microfilm/cats; no fair-use clip in pool",
   "requery": {
-   "archive": [
-    "Pepsi Challenge 1980s commercial",
-    "Pepsi Challenge taste test",
-    "cola taste test 1985 news"
-   ],
    "youtube": [
-    "Pepsi Challenge 1980s",
-    "New Coke taste test 1985"
+    "Pepsi Challenge commercial 1983",
+    "Coca-Cola taste test 1985 news"
+   ],
+   "archive": [
+    "Pepsi Challenge commercial 1980s"
    ],
    "commons": [
-    "Pepsi Challenge"
-   ],
-   "openverse": [
-    "pepsi challenge",
-    "cola blind taste test"
-   ],
-   "loc": [
-    "taste test"
+    "Pepsi Challenge 1970s"
    ]
   }
  },
@@ -403,182 +305,73 @@
  },
  {
   "id": "b033",
-  "pick": null,
-  "alt": null,
-  "crop": null,
-  "in": null,
-  "dur": null,
-  "notes": "no 1985 New Coke can: #1-3 are 2000s-era cans (#2 'New Coke Can Design' is the modern wave design), rest are painted wall signs",
-  "requery": {
-   "commons": [
-    "New Coke",
-    "New Coke can",
-    "Coca-Cola 1985 can"
-   ],
-   "openverse": [
-    "new coke 1985 can",
-    "new coke can vintage"
-   ],
-   "archive": [
-    "New Coke commercial 1985",
-    "New Coke 1985 news"
-   ],
-   "youtube": [
-    "New Coke commercial 1985",
-    "New Coke can 1985"
-   ],
-   "smithsonian": [
-    "New Coke can"
-   ]
-  }
+  "from": "b040",
+  "pick": 4,
+  "in": 140,
+  "dur": 6,
+  "notes": "fair use: New Coke can close-up, Today show 1985"
  },
  {
   "id": "b035",
-  "pick": null,
-  "alt": null,
-  "crop": null,
-  "in": null,
-  "dur": null,
-  "notes": "only candidate is an unrelated 1.5h screen recording of browser UI (unknown licence) - no press conference footage",
-  "requery": {
-   "archive": [
-    "New Coke press conference April 23 1985",
-    "New Coke announcement 1985 news",
-    "CBS Evening News April 23 1985"
-   ],
-   "youtube": [
-    "New Coke press conference 1985",
-    "Goizueta Keough New Coke announcement Lincoln Center",
-    "New Coke introduction 1985 news report"
-   ],
-   "commons": [
-    "New Coke press conference 1985"
-   ],
-   "openverse": [
-    "new coke announcement 1985"
-   ]
-  }
+  "pick": 5,
+  "alt": 6,
+  "crop": "full",
+  "in": 56.0,
+  "dur": 6.0,
+  "notes": "fair use: only footage of the launch stage - speaker at red 'The Coca-Cola Company' podium, clean frame, no bug; uploader description says Vivian Beaumont Theater, Lincoln Center, 11 am. VERIFY: title 'Classic Coke' may mean the 11 July speech (b063) - if so, drop. Alt #6 = CBS still of Keough raising a New Coke can at the launch (CBS bug lower-right, crop it; in 43 dur 5)"
  },
  {
   "id": "b036",
-  "pick": null,
-  "alt": null,
-  "crop": null,
-  "in": null,
-  "dur": null,
-  "notes": "no 1985 'Coke' can: #1-3 are 2000s-design cans (and <1000px), rest are vintage murals/signs or unrelated NARA reports",
-  "requery": {
-   "commons": [
-    "New Coke",
-    "New Coke can",
-    "Coca-Cola 1985 can",
-    "File:New Coke can.jpg"
-   ],
-   "openverse": [
-    "new coke 1985 can",
-    "new coke can vintage",
-    "coke 1985 can collection"
-   ],
-   "archive": [
-    "New Coke can 1985",
-    "New Coke commercial 1985"
-   ],
-   "loc": [
-    "Coca-Cola 1985"
-   ],
-   "youtube": [
-    "New Coke 1985 commercial can"
-   ]
-  }
+  "from": "b040",
+  "pick": 4,
+  "in": 141,
+  "dur": 5,
+  "notes": "fair use: New Coke can close-up, Today show 1985"
  },
  {
   "id": "b037",
   "pick": null,
   "alt": null,
   "crop": null,
-  "in": null,
-  "dur": null,
-  "notes": "no Keough anywhere: all tiles are NARA index cards/file folders (namesakes); Commons search failed with 403",
+  "notes": "no Keough: every tile is a NARA index card/folder (namesakes). Real Keough face is in b040 #4 (Today 1985, 0:48 with name lower-third) and b040 #5 (CBS, holding New Coke can) - fair-use candidates for a requery",
   "requery": {
+   "youtube": [
+    "Donald Keough Today show 1985",
+    "Don Keough Coca-Cola interview"
+   ],
    "commons": [
-    "Donald Keough",
-    "Donald R. Keough",
-    "Category:Donald Keough"
-   ],
-   "openverse": [
-    "Don Keough Coca-Cola",
-    "Donald Keough portrait"
-   ],
-   "archive": [
-    "Donald Keough Coca-Cola interview",
-    "Don Keough 1985"
+    "Donald Keough"
    ],
    "loc": [
-    "Donald R. Keough"
-   ],
-   "youtube": [
-    "Don Keough Coca-Cola interview",
-    "Donald Keough New Coke 1985"
+    "Keough, Donald R."
    ]
   }
  },
  {
   "id": "b040",
-  "pick": null,
-  "alt": null,
-  "crop": null,
-  "in": null,
-  "dur": null,
-  "notes": "only tile is an unrelated 1.5h screen recording of web pages (UI chrome, licence unknown); no press-conference footage",
-  "requery": {
-   "commons": [
-    "New Coke press conference 1985",
-    "New Coke announcement"
-   ],
-   "openverse": [
-    "new coke announcement 1985"
-   ],
-   "archive": [
-    "New Coke 1985 news",
-    "Coca-Cola new taste 1985 CBS",
-    "New Coke announcement newscast"
-   ],
-   "loc": [],
-   "youtube": [
-    "New Coke announcement April 23 1985 Goizueta",
-    "Goizueta Keough New Coke press conference",
-    "New Coke 1985 NBC news"
-   ]
-  }
+  "pick": 5,
+  "alt": 3,
+  "crop": "full",
+  "in": 43.0,
+  "dur": 5.0,
+  "notes": "fair use: real 1985 launch image - Keough (face matches his named Today lower-third in #4) grinning with a New Coke can; clean except small CBS NEWS bug lower-right - crop right ~15%. Alt #3 Lincoln Center clip at 2:53-2:59 (execs/audience at the event, verify date as b035)"
  },
  {
   "id": "b041",
   "pick": null,
   "alt": null,
   "crop": null,
-  "in": null,
-  "dur": null,
-  "notes": "no Enrico: NARA index cards, Roger Ailes caricatures, Milan/Turin towers (Enrico namesake confusion)",
+  "notes": "no Enrico: NARA 'START' microfilm targets, index cards, 1944 ledgers, FOIA markers, a Baltimore street - namesake/text matches only",
   "requery": {
-   "commons": [
-    "Roger Enrico",
-    "Roger A. Enrico",
-    "Category:Roger Enrico"
-   ],
-   "openverse": [
-    "Roger Enrico PepsiCo",
-    "Roger Enrico CEO"
-   ],
-   "archive": [
-    "Roger Enrico PepsiCo interview",
+   "youtube": [
+    "Roger Enrico Pepsi 1985 interview",
     "Roger Enrico The Other Guy Blinked"
    ],
-   "loc": [
-    "Roger A. Enrico"
+   "commons": [
+    "Roger Enrico"
    ],
-   "youtube": [
-    "Roger Enrico PepsiCo interview",
-    "Roger Enrico Pepsi 1980s"
+   "openverse": [
+    "roger enrico pepsico"
    ]
   }
  },
@@ -587,94 +380,46 @@
   "pick": null,
   "alt": null,
   "crop": null,
-  "in": null,
-  "dur": null,
-  "notes": "wrong era: Pepsi ads are 1913-1953 (old script logo) and all <1000px; Smithsonian pages are 1787-1858 newspapers",
+  "notes": "wrong era: 1787-1858 Smithsonian newspapers and 1939-43 LOC newsroom photos; no 1985 Pepsi full-page ad",
   "requery": {
-   "commons": [
-    "Pepsi advertisement 1985",
-    "Pepsi Challenge advertisement",
-    "New York Times April 1985"
-   ],
-   "openverse": [
-    "pepsi newspaper ad 1985",
-    "pepsi challenge ad",
-    "1980s newspaper advertisement full page"
+   "youtube": [
+    "Pepsi newspaper ad 1985 New Coke"
    ],
    "archive": [
-    "Pepsi newspaper ad 1985 Coke blinked",
-    "newspaper April 1985 Pepsi",
-    "Pepsi magazine ad 1984"
+    "New York Times April 1985 Pepsi advertisement"
    ],
-   "loc": [
-    "newspaper 1985"
-   ],
-   "youtube": []
+   "commons": [
+    "Pepsi advertisement 1985"
+   ]
   }
  },
  {
   "id": "b044",
-  "pick": null,
+  "pick": 1,
   "alt": null,
-  "crop": null,
+  "crop": "full",
   "in": null,
   "dur": null,
-  "notes": "novelty transistor radios shaped like Pepsi cans/bottles (#5,#7 carry the 1980s can livery but are radios, portrait, <700px); signs are 1906/1950s logo or 2018-19 photos",
-  "requery": {
-   "commons": [
-    "Pepsi can 1980s",
-    "Pepsi truck 1980s",
-    "Pepsi-Cola delivery truck",
-    "Pepsi logo 1973"
-   ],
-   "openverse": [
-    "pepsi can 1985",
-    "pepsi truck 1980s",
-    "pepsi vending machine 1980s",
-    "pepsi bottles 1980s"
-   ],
-   "archive": [
-    "Pepsi commercial 1985",
-    "Pepsi Challenge commercial 1983"
-   ],
-   "loc": [
-    "Pepsi-Cola truck",
-    "Pepsi bottling plant"
-   ],
-   "youtube": []
-  }
+  "notes": "c.1979-81 Kodacolor snapshot, Fresno District Fair gate with period 'PEPSI DAY' banner + Pepsi globe logo (CC BY-SA 2.0); genuine era Pepsi branding, pull from the banner; not the 1985 staff day off itself, so don't caption it as such. #2 Versailles, #3 FOIA marker rejected"
  },
  {
   "id": "b046",
   "pick": null,
   "alt": null,
   "crop": null,
-  "in": null,
-  "dur": null,
-  "notes": "wrong era: every tile is a 1900-1960s cord switchboard; nothing shows 1980s desk phones/call centre",
+  "notes": "no operators/phones on any tile: LOC HABS dams/stations, veterans' collections, archive.org drawings; all off-subject",
   "requery": {
-   "commons": [
-    "customer service representatives 1980s",
-    "telephone operators 1985",
-    "call centre 1980s",
-    "hotline phone bank 1980s"
+   "loc": [
+    "telephone operators switchboard 1980",
+    "Photograph shows telephone operators"
    ],
-   "openverse": [
-    "phone bank 1980s",
-    "telephone hotline 1980s",
-    "telethon phone bank"
+   "commons": [
+    "Telephone operators 1980s",
+    "Call centre 1980s"
    ],
    "archive": [
-    "phone bank 1980s",
-    "customer service telephone 1980s",
-    "telethon 1985 phones"
-   ],
-   "loc": [
-    "phone bank",
-    "telephone operators 1980s",
-    "hotline volunteers telephones"
-   ],
-   "youtube": []
+    "telephone operators 1980s film"
+   ]
   }
  },
  {
@@ -682,29 +427,19 @@
   "pick": null,
   "alt": null,
   "crop": null,
-  "in": null,
-  "dur": null,
-  "notes": "same pool as b046: 1900-1960s switchboards only, wrong era for a 1985 hotline team",
+  "notes": "no call-centre operators: #1 modern still life of a phone, #2 1980 phone ad with ad copy, #5/#7 museum display cases, rest buildings/unrelated",
   "requery": {
-   "commons": [
-    "phone bank 1980s",
-    "customer service office 1980s",
-    "call centre 1980s"
+   "loc": [
+    "telephone operators switchboard 1980",
+    "Photograph shows telephone operators"
    ],
-   "openverse": [
-    "phone bank volunteers 1980s",
-    "office telephones 1980s",
-    "telethon phone bank"
+   "commons": [
+    "Telephone operators 1980s",
+    "Customer service representatives telephone 1980s"
    ],
    "archive": [
-    "phone bank 1980s",
-    "telethon 1985 phone volunteers"
-   ],
-   "loc": [
-    "phone bank",
-    "telephone volunteers 1980s"
-   ],
-   "youtube": []
+    "telephone operators 1980s film"
+   ]
   }
  },
  {
@@ -712,26 +447,17 @@
   "pick": null,
   "alt": null,
   "crop": null,
-  "in": null,
-  "dur": null,
-  "notes": "same pool as b046: 1900-1960s switchboards only, wrong era; reuse whatever b046/b047 requery finds",
+  "notes": "same 16 tiles as b047; none shows operators at desks with phones",
   "requery": {
-   "commons": [
-    "phone bank 1980s",
-    "office workers telephones 1980s"
+   "loc": [
+    "telephone operators switchboard 1980"
    ],
-   "openverse": [
-    "1980s office telephone",
-    "phone bank 1980s"
+   "commons": [
+    "Telephone operators 1980s"
    ],
    "archive": [
-    "phone bank 1980s",
-    "office 1985 telephones"
-   ],
-   "loc": [
-    "phone bank"
-   ],
-   "youtube": []
+    "telephone operators 1980s film"
+   ]
   }
  },
  {
@@ -739,29 +465,18 @@
   "pick": null,
   "alt": null,
   "crop": null,
-  "in": null,
-  "dur": null,
-  "notes": "no person on a 1980s landline: rotary-phone stock/clipart (pre-80s, no caller), 1915 LOC, unrelated 1980s ads/posters",
+  "notes": "all junk: children's drawings, QR code, 2010s interview, 1930s gangsters, web screenshot, UFO document; nobody on a 1980s phone",
   "requery": {
    "commons": [
-    "woman on telephone 1980s",
-    "push-button telephone 1980s",
-    "man talking on telephone 1985"
-   ],
-   "openverse": [
-    "woman talking on phone 1980s",
-    "1980s landline phone call",
-    "retro 80s telephone call"
-   ],
-   "archive": [
-    "telephone call 1980s",
-    "woman on phone 1980s film"
+    "Woman on telephone 1980s",
+    "Rotary telephone 1980"
    ],
    "loc": [
-    "woman using telephone 1980s",
-    "telephone conversation 1980s"
+    "woman talking on telephone 1980s"
    ],
-   "youtube": []
+   "openverse": [
+    "1980s woman telephone vintage photo"
+   ]
   }
  },
  {
@@ -778,28 +493,16 @@
   "pick": null,
   "alt": null,
   "crop": null,
-  "in": null,
-  "dur": null,
-  "notes": "no image of Gay Mullins: all tiles are unrelated NARA court dockets/case files and an 1862 letter; Commons search failed (HTTP 403)",
+  "notes": "all NARA court dockets/naturalisation cards/muster rolls matching 'Gay' as a surname; no image of Gay Mullins",
   "requery": {
-   "commons": [
-    "Gay Mullins Old Cola Drinkers",
-    "Old Cola Drinkers of America"
-   ],
-   "openverse": [
-    "Old Cola Drinkers of America",
-    "Gay Mullins Seattle 1985"
+   "youtube": [
+    "Gay Mullins Old Cola Drinkers of America 1985"
    ],
    "archive": [
-    "Old Cola Drinkers of America 1985 news",
-    "New Coke Seattle protest 1985 newscast"
+    "Gay Mullins 1985"
    ],
-   "loc": [
-    "Coca-Cola protest 1985"
-   ],
-   "youtube": [
-    "Gay Mullins Old Cola Drinkers of America",
-    "Gay Mullins New Coke 1985 news report"
+   "commons": [
+    "Gay Mullins"
    ]
   }
  },
@@ -808,30 +511,15 @@
   "pick": null,
   "alt": null,
   "crop": null,
-  "in": null,
-  "dur": null,
-  "notes": "only tile is an unrelated Aug 1985 local news tape (tennis, interviews), rights held, 640x480, no protest visible; use headline fallback if requery fails",
+  "notes": "no tile shows protesters/pouring: #1 is the real July 1985 Mullins news interview but a full-frame 'Walter J. Brown Media Archives' watermark runs across every frame; #12/#16 AI-generated; #5 CBS taste-test vox pops; #11 is 2014 Times Square gay-rights protest (wrong event); rest modern explainers",
   "requery": {
-   "commons": [
-    "New Coke protest",
-    "Old Cola Drinkers of America"
-   ],
-   "openverse": [
-    "new coke protest 1985",
-    "old cola drinkers"
+   "youtube": [
+    "Old Cola Drinkers of America 1985 news",
+    "New Coke protest 1985 news footage",
+    "Gay Mullins 1985 NBC"
    ],
    "archive": [
-    "New Coke 1985 newscast",
-    "Coca-Cola formula change 1985 news",
-    "Old Cola Drinkers of America"
-   ],
-   "loc": [
-    "Coca-Cola protest"
-   ],
-   "youtube": [
-    "New Coke backlash 1985 news report",
-    "Old Cola Drinkers of America 1985",
-    "New Coke protest pouring down drain 1985"
+    "New Coke protest 1985"
    ]
   }
  },
@@ -840,24 +528,13 @@
   "pick": null,
   "alt": null,
   "crop": null,
-  "in": null,
-  "dur": null,
-  "notes": "same result set as b052: NARA dockets/case files, nothing showing Gay Mullins; share whatever b052's requery finds",
+  "notes": "same NARA document tiles as b052; no picture of Mullins",
   "requery": {
-   "commons": [
-    "Gay Mullins"
-   ],
-   "openverse": [
-    "Gay Mullins Seattle"
+   "youtube": [
+    "Gay Mullins taste test New Coke 1985"
    ],
    "archive": [
-    "Gay Mullins taste test New Coke",
-    "Old Cola Drinkers of America 1985"
-   ],
-   "loc": [],
-   "youtube": [
-    "Gay Mullins blind taste test New Coke",
-    "Gay Mullins Old Cola Drinkers interview"
+    "Gay Mullins 1985"
    ]
   }
  },
@@ -875,140 +552,65 @@
   "pick": null,
   "alt": null,
   "crop": null,
-  "in": null,
-  "dur": null,
-  "notes": "no 1985 New Coke can: #1-3 are 2000s cans (#1 even says Classic), rest are painted wall signs/2010s murals and NARA reports; Commons search failed (HTTP 403)",
+  "notes": "no 1985 'New Taste' can: #1 modern World of Coca-Cola neon, #2 barn mosaic, #10 1940s Cornwell ad, rest NARA records matching 'Coke'/'1985' text",
   "requery": {
    "commons": [
-    "New Coke",
     "New Coke can",
-    "Coca-Cola 1985 can"
+    "Coca-Cola New Taste can 1985"
    ],
    "openverse": [
-    "new coke 1985 can",
-    "new coke vintage can",
-    "new coke can collection"
-   ],
-   "archive": [
-    "New Coke commercial 1985",
-    "New Coke can 1985"
-   ],
-   "loc": [
-    "New Coke"
+    "new coke can 1985",
+    "new taste coke can"
    ],
    "youtube": [
-    "New Coke 1985 commercial Bill Cosby"
+    "New Coke 1985 commercial can"
    ]
   }
  },
  {
   "id": "b060",
-  "pick": null,
+  "pick": 5,
   "alt": null,
-  "crop": null,
-  "in": null,
-  "dur": null,
-  "notes": "zero candidates returned; ABC bulletin is copyrighted broadcast - use the number_card fallback unless a short FAIR-USE clip turns up",
-  "requery": {
-   "commons": [],
-   "openverse": [],
-   "archive": [
-    "ABC News special report July 10 1985",
-    "General Hospital July 1985 interruption",
-    "ABC News Peter Jennings 1985"
-   ],
-   "loc": [],
-   "youtube": [
-    "ABC News special report Coca-Cola July 10 1985",
-    "Peter Jennings Coke returns 1985 bulletin",
-    "General Hospital interrupted Coca-Cola 1985"
-   ]
-  }
+  "crop": "full",
+  "in": 8.0,
+  "dur": 7.0,
+  "notes": "fair use: the real ABC World News Tonight of 10 July 1985. Peter Jennings at the desk opening the Coke-reversal story. Checked the full clip: from 0:06 to about 0:25 he is on camera with no 'World News Tonight' title graphic. Unavoidable burn-ins are a small 'JULY 10, 1985' tag top-left and an abcNEWS.com bug bottom-right, so crop in. This is the evening newscast, not the General Hospital bulletin itself, but it is the same day, anchor and story. archive.org abc-19850710, rights unknown (ABC), licence: verify"
  },
  {
   "id": "b061",
-  "pick": null,
-  "alt": null,
-  "crop": null,
-  "in": null,
-  "dur": null,
-  "notes": "only real Jennings tile is #3 (July 1984 snapshot, CC BY): profile, hand and cigarette over face, crowd heads in foreground, soft - too weak for an anchor cutout (last-resort fallback only); rest are street signs/pension files; Commons failed (HTTP 403)",
-  "requery": {
-   "commons": [
-    "Peter Jennings",
-    "Peter Jennings 1980s",
-    "Peter Jennings ABC News anchor"
-   ],
-   "openverse": [
-    "peter jennings abc news",
-    "peter jennings anchor"
-   ],
-   "archive": [
-    "Peter Jennings World News Tonight 1985"
-   ],
-   "loc": [
-    "Peter Jennings journalist",
-    "Jennings, Peter, 1938-2005"
-   ],
-   "youtube": []
-  }
+  "from": "b060",
+  "pick": 5,
+  "in": 12,
+  "dur": 6,
+  "notes": "fair use: Peter Jennings on ABC World News Tonight, 10 July 1985 (crop logos)"
  },
  {
   "id": "b063",
-  "pick": null,
+  "pick": 4,
   "alt": null,
-  "crop": null,
-  "in": null,
-  "dur": null,
-  "notes": "no tile shows the July 11 1985 Coca-Cola Classic press conference: all are 1987-2004 ad reels, films and an unrelated April 1985 news tape; use number_card fallback if requery fails",
-  "requery": {
-   "commons": [
-    "Coca-Cola Classic 1985 press conference",
-    "Donald Keough"
-   ],
-   "openverse": [
-    "coca-cola classic announcement 1985"
-   ],
-   "archive": [
-    "Coca-Cola Classic return July 1985 news",
-    "Old Coke returns 1985 news",
-    "Donald Keough 1985"
-   ],
-   "loc": [],
-   "youtube": [
-    "Coca-Cola Classic press conference July 11 1985",
-    "Don Keough some critics will say Coca-Cola made a marketing mistake",
-    "Old Coke is back 1985 news report"
-   ]
-  }
+  "crop": "full",
+  "in": 58.0,
+  "dur": 8.0,
+  "notes": "fair use: Don Keough speaking at the 11 July 1985 press conference announcing Coca-Cola Classic. The uploader is Coca-Cola's own archivist channel (CokeConversations); the full description says 'remarks made at the press conference for the return of Coke Classic'. Keough is at 'The Coca-Cola Company' podium against a red backdrop, with no bugs or lower-thirds. Only Keough is visible, not Goizueta. A wide room shot (podium, Coca-Cola logo, press seats) runs about 2:20-2:25 if the editor prefers it. Rejected: #5 is an April launch still with a CBS bug, #1 is 2020s CBS Philadelphia with tickers, #2/#3 are April or lower-thirds"
  },
  {
   "id": "b065",
   "pick": null,
   "alt": null,
   "crop": null,
-  "in": null,
-  "dur": null,
-  "notes": "wrong era: every tile is a 1910s-1950s plugboard switchboard, none shows 1980s operators at desk phones",
+  "notes": "no operators or call centre: tiles are a desk phone still life, a 1980 phone ad, an empty Amtrak control room, museum gadgets, buildings, a KKK photo and Jerry West. Beat is a number_card, so the card stands alone",
   "requery": {
    "commons": [
-    "telephone operators 1985",
-    "call centre 1980s",
-    "customer service representatives 1980s"
-   ],
-   "openverse": [
-    "1980s office telephones",
-    "1980s call center",
-    "operators headsets 1980s"
-   ],
-   "archive": [
-    "1980s office workers telephones"
+    "Telephone operators 1980s",
+    "Call centre 1980s"
    ],
    "loc": [
-    "telephone operators 1980s",
-    "office workers telephones 1980s"
+    "Photograph shows telephone operators at switchboard"
    ],
-   "youtube": []
+   "archive": [
+    "telephone hotline operators 1985 news",
+    "Coca-Cola hotline 1-800-GET-COKE 1985"
+   ]
   }
  },
  {
@@ -1016,26 +618,19 @@
   "pick": null,
   "alt": null,
   "crop": null,
-  "in": null,
-  "dur": null,
-  "notes": "no official portrait found (Commons, where the PD Senate portrait lives, failed with HTTP 403); fallback: #1 LOC 1993 PD photo, standing white-haired man is very likely Pryor, face crop possible but group shot with overlaps; rest are 1943 song cards, letters, 2010s protests",
+  "notes": "no photo of Pryor: all 8 tiles are 1990s Clinton-library letters and FOIA marker sheets, restricted licence. The Senate official portrait of David Pryor is public domain and on Commons; requery for it",
   "requery": {
    "commons": [
     "David Pryor",
     "David Pryor official portrait",
     "David H. Pryor"
    ],
-   "openverse": [
-    "senator david pryor portrait"
-   ],
-   "archive": [
-    "David Pryor senator Arkansas 1985"
-   ],
    "loc": [
-    "Pryor, David, 1934-",
-    "David H. Pryor senator portrait"
+    "Pryor, David, 1934-"
    ],
-   "youtube": []
+   "openverse": [
+    "Senator David Pryor Arkansas"
+   ]
   }
  },
  {
@@ -1058,50 +653,29 @@
  },
  {
   "id": "b070",
-  "pick": null,
-  "alt": null,
-  "crop": null,
-  "notes": "no tile shows a 1980s supermarket soda aisle: #1 is a 1968 Pillsbury promo, rest are Star Trek, book-festival talks, lectures, 2017 news",
-  "requery": {
-   "archive": [
-    "supermarket 1985 newsreel",
-    "grocery store shopping 1980s home movie",
-    "Coca-Cola Classic supermarket 1985 news"
-   ],
-   "commons": [
-    "Supermarkets in the United States 1980s",
-    "soft drink aisle 1980s"
-   ],
-   "loc": [
-    "Photograph shows supermarket shelves soft drinks"
-   ],
-   "youtube": [
-    "1985 supermarket soda aisle news footage Coke Pepsi"
-   ]
-  }
+  "from": "b060",
+  "pick": 5,
+  "in": 27,
+  "dur": 8,
+  "notes": "fair use: 1985 bottling line/fountain shots from the same ABC report"
  },
  {
   "id": "b071",
   "pick": null,
   "alt": null,
   "crop": null,
-  "notes": "no 1985 New Coke can: #1-3 are 2000s-era Coca-Cola cans (#2 titled 'New Coke' is a modern design), rest are painted wall signs/murals and NARA reports",
+  "notes": "no New Coke can: tiles show 1938 coke-plant (fuel) homes, a Coca-Cola neon sign, NARA reports and 'Coke' namesake files. Beat is a number_card, so the card stands alone",
   "requery": {
    "openverse": [
-    "new coke 1985 can",
-    "new coke can vintage",
-    "coke 1985 can collection"
+    "new coke can 1985",
+    "new coke can"
    ],
    "commons": [
     "New Coke",
-    "New Coke can"
+    "Coca-Cola cans 1985"
    ],
-   "archive": [
-    "New Coke 1985 commercial",
-    "New Coke launch April 1985 news"
-   ],
-   "youtube": [
-    "New Coke 1985 commercial can"
+   "flickr": [
+    "New Coke can 1985"
    ]
   }
  },
@@ -1125,29 +699,11 @@
  },
  {
   "id": "b074",
-  "pick": null,
-  "alt": null,
-  "crop": null,
-  "notes": "no photo of Donald Keough: all 12 tiles are NARA index cards, file folders and log books for other Keoughs/Kings",
-  "requery": {
-   "commons": [
-    "Donald R. Keough",
-    "Donald Keough Coca-Cola"
-   ],
-   "openverse": [
-    "Don Keough Coca-Cola president"
-   ],
-   "archive": [
-    "Donald Keough Coca-Cola 1985 press conference",
-    "Coca-Cola Classic announcement July 1985"
-   ],
-   "loc": [
-    "Keough, Donald R."
-   ],
-   "youtube": [
-    "Don Keough July 11 1985 Coca-Cola Classic press conference"
-   ]
-  }
+  "from": "b063",
+  "pick": 4,
+  "in": 55,
+  "dur": 7,
+  "notes": "fair use: Keough at the 11 July 1985 podium"
  },
  {
   "id": "b076",
