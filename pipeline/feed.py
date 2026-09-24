@@ -61,7 +61,14 @@ def media_type(src: str) -> str:
 
 
 def publish(project: Path, feed: Path, renders: Path | None = None) -> Path:
-    job = json.loads((project / "job.json").read_text())
+    if (project / "job.json").is_file():
+        job = json.loads((project / "job.json").read_text())
+    else:  # before the first render: show the script (no pictures yet) so the production appears early
+        script = json.loads((project / "script.json").read_text())
+        job = {**{k: script[k] for k in ("slug", "title", "topic", "voice") if k in script},
+               "chapters": [{"id": c.get("id"), "title": c.get("title"),
+                             "beats": [{"text": b["text"], "visual": {}} for b in c["beats"]]}
+                            for c in script["chapters"]]}
     slug = job.get("slug") or project.name
     out = feed / slug
     (out / "media").mkdir(parents=True, exist_ok=True)
@@ -126,7 +133,7 @@ def publish(project: Path, feed: Path, renders: Path | None = None) -> Path:
             shutil.copy(renders / "project.mlt", out / "renders" / "project.mlt")
 
     production = {
-        "slug": slug, "title": job.get("title", slug), "topic": job.get("topic"),
+        "coverage": coverage(project), "slug": slug, "title": job.get("title", slug), "topic": job.get("topic"),
         "voice": job.get("voice"), "style": job.get("style"),
         "createdAt": status.get("createdAt"), "updatedAt": time.time(),
         "stages": status.get("stages", []), "activity": status.get("activity", []),
@@ -136,6 +143,21 @@ def publish(project: Path, feed: Path, renders: Path | None = None) -> Path:
     (out / "production.json").write_text(json.dumps(production, indent=1))
     _write_index(feed)
     return out
+
+
+def coverage(project: Path) -> dict | None:
+    """How much of the script has real footage: beats needing a picture, approved, downloaded."""
+    req_path, picks_path = project / "requests.json", project / "footage" / "picks.json"
+    if not req_path.is_file():
+        return None
+    needed = {r["id"] for r in json.loads(req_path.read_text()) if r.get("kind") in ("photo", "video")}
+    picks = json.loads(picks_path.read_text()) if picks_path.is_file() else []
+    approved = {p["id"] for p in picks if p.get("pick")} & needed
+    media = project / "footage" / "media"
+    downloaded = {f.stem for f in media.iterdir() if f.is_file()} & needed if media.is_dir() else set()
+    fair = sum(1 for p in picks if p.get("pick") and "fair use" in (p.get("notes") or "").lower())
+    return {"needed": len(needed), "approved": len(approved), "downloaded": len(downloaded),
+            "fair_use": fair, "reviewed": len({p["id"] for p in picks} & needed)}
 
 
 def _write_index(feed: Path) -> None:
@@ -156,6 +178,10 @@ def _write_index(feed: Path) -> None:
             "progress": [done, len(d["stages"])],
             "thumb": f"{d['slug']}/{thumb}" if thumb else None,
             "durationSec": (final or {}).get("durationSec") or (d.get("narration") or {}).get("durationSec"),
+            "detail": (running or failed or {}).get("detail"),
+            "coverage": d.get("coverage"),
+            "beats": sum(len(c["beats"]) for c in d["script"]["chapters"]),
+            "chapters": len(d["script"]["chapters"]),
         })
     items.sort(key=lambda x: -x["updatedAt"])
     (feed / "index.json").write_text(json.dumps({"productions": items, "updatedAt": time.time()}, indent=1))

@@ -250,11 +250,20 @@ def main(argv=None) -> int:
     a = ap.parse_args(argv)
     picks = load_picks(a.picks)
     cands = json.loads(a.candidates.read_text())
+    from pipeline.live import tracker_for
+    live = tracker_for(a.out)
+    n_pick = sum(1 for p in picks if p.get("pick"))
+    if live:
+        live.stage("footage", "running", f"Downloading {n_pick} approved shots at full resolution")
 
     async def go():
         async with Http() as http:
             return await run(picks, cands, a.out, http, a.with_alt, a.parallel)
     res = asyncio.run(go())
+    if live:
+        live.stage("footage", "done", f"{res['fetched']} of {n_pick} approved shots downloaded"
+                   + (f" · {len(res['errors'])} failed" if res["errors"] else "")
+                   + f" · {len(res['requery'])} beats use fallback cards")
     print(json.dumps(res, indent=1))
     return 1 if res["errors"] else 0
 

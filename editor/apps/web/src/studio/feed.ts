@@ -75,7 +75,16 @@ export interface RenderOutput {
   speed_vs_realtime?: number;
 }
 
+export interface Coverage {
+  needed: number;
+  reviewed: number;
+  approved: number;
+  downloaded: number;
+  fair_use: number;
+}
+
 export interface Production {
+  coverage?: Coverage | null;
   slug: string;
   title: string;
   topic?: string;
@@ -99,6 +108,10 @@ export interface ProductionSummary {
   progress: [number, number];
   thumb?: string | null;
   durationSec?: number | null;
+  detail?: string | null;
+  coverage?: Coverage | null;
+  beats?: number;
+  chapters?: number;
 }
 
 /** Absolute URL for a path inside the feed (production-relative when a slug is given). */

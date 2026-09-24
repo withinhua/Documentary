@@ -166,6 +166,7 @@ def produce(project: Path, out: Path, media_dir: Path | None, feed: Path | None,
 
     # 1+2. narration and scenes, overlapped: a beat's scene is queued as soon as its slot is known
     voice = script.get("voice", {})
+    status.reset(["voice", "edit", "render", "publish"])
     status.stage("voice", "running", f"Narrating {len(beats)} beats")
     narrator = Narrator(voice.get("voice", "bm_george"), float(voice.get("speed", 0.95)),
                         cache_dir=(out / ".tts-cache") if cache else None)

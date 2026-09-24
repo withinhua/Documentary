@@ -15,6 +15,7 @@ import {
   Film,
   Image as ImageIcon,
   Layers,
+  LayoutDashboard,
   ListChecks,
   Loader2,
   Mic,
@@ -25,6 +26,7 @@ import {
 import { useRouter } from "../hooks/use-router";
 import { BRAND } from "./brand";
 import { buildTimeline } from "./build-timeline";
+import { Dashboard } from "./Dashboard";
 import {
   fetchIndex,
   fetchProduction,
@@ -54,8 +56,9 @@ export function StudioHub({ initialSlug }: { initialSlug?: string }) {
   const { navigate } = useRouter();
   const index = usePolled(fetchIndex, (d) => d.productions.some((p) => p.state === "running"));
   const productions = index.data?.productions ?? [];
+  // No production in the URL → the dashboard; picking one opens its detail view.
   const [picked, setPicked] = useState<string | undefined>(initialSlug);
-  const slug = picked ?? productions[0]?.slug;
+  const slug = picked;
 
   return (
     <div className="flex h-screen w-screen flex-col bg-bg text-fg">
@@ -78,6 +81,17 @@ export function StudioHub({ initialSlug }: { initialSlug?: string }) {
 
       <div className="flex min-h-0 flex-1">
         <aside className="flex w-72 shrink-0 flex-col border-r border-border bg-bg-1">
+          <div className="px-2 pt-3">
+            <button
+              type="button"
+              onClick={() => setPicked(undefined)}
+              className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium ${
+                slug ? "hover:bg-hover" : "bg-selected"
+              }`}
+            >
+              <LayoutDashboard size={15} aria-hidden /> Dashboard
+            </button>
+          </div>
           <div className="px-4 pb-2 pt-4 text-[11px] font-semibold uppercase tracking-wider text-fg-muted">
             Productions
           </div>
@@ -95,6 +109,8 @@ export function StudioHub({ initialSlug }: { initialSlug?: string }) {
         <main className="min-w-0 flex-1 overflow-y-auto">
           {slug ? (
             <ProductionView key={slug} slug={slug} />
+          ) : productions.length ? (
+            <Dashboard onOpen={setPicked} />
           ) : (
             <EmptyFeed error={index.error} loaded={!!index.data} />
           )}

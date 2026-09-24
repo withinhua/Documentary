@@ -52,6 +52,16 @@ class Status:
             self.log(stage_id, detail, save=False)
         self._save()
 
+    def reset(self, stage_ids: list[str]) -> None:
+        """A new run of these stages is starting: clear their old results so the Studio doesn't show
+        a previous run's 'done' next to this run's progress."""
+        for s in self.data["stages"]:
+            if s["id"] in stage_ids:
+                for k in ("startedAt", "endedAt", "detail"):
+                    s.pop(k, None)
+                s["status"] = "pending"
+        self._save()
+
     def log(self, stage_id: str, message: str, save: bool = True) -> None:
         self.data["activity"].append({"t": time.time(), "stage": stage_id, "message": message})
         self.data["activity"] = self.data["activity"][-500:]

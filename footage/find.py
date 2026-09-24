@@ -337,6 +337,8 @@ class Finder:
         stats.update(shown=len(entries), clip=clip_on, seconds=round(time.time() - t0, 1))
         print(f"[footage] {req.id}: {stats['found']} found → {len(entries)} on sheet "
               f"({stats['seconds']}s; errors: {', '.join(stats['errors']) or 'none'})", file=sys.stderr)
+        if ON_REQUEST_DONE:
+            ON_REQUEST_DONE(req.id, stats)
         return {"request": req.to_dict(), "contact_sheet": str(sheet.relative_to(self.out)),
                 "zoom_dir": f"contact/{req.id}/", "stats": stats, "candidates": entries}
 
@@ -387,6 +389,9 @@ def load_requests(path: Path) -> list[Request]:
     return [Request.from_dict(d) for d in data]
 
 
+ON_REQUEST_DONE = None   # optional progress callback (request id, stats), set by main for the Studio
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("requests", type=Path, nargs="?")
@@ -422,11 +427,25 @@ def main(argv=None) -> int:
                   allow_nc=a.allow_nc, allow_unknown=not a.strict_license, allow_fair_use=a.allow_youtube,
                   use_clip=not a.no_clip, zooms=not a.no_zoom)
     print(f"[footage] {len(reqs)} requests · sources: {', '.join(s.name for s in sources)}", file=sys.stderr)
+    global ON_REQUEST_DONE
+    from pipeline.live import tracker_for
+    live = tracker_for(a.out)
+    if live:
+        done = {"n": 0, "found": 0}
+        live.stage("footage", "running", f"Searching {len(reqs)} beats across {len(sources)} sources")
+
+        def progress(rid, stats):
+            done["n"] += 1
+            done["found"] += stats.get("found", 0)
+            live.stage("footage", "running", f"Searched {done['n']}/{len(reqs)} beats · {done['found']} candidates")
+        ON_REQUEST_DONE = progress
 
     async def go():
         async with Http(cache_dir=a.cache, offline=a.offline) as http:
             return await run(reqs, sources, a.out, opt, http=http, parallel=a.parallel)
     doc = asyncio.run(go())
+    if live:
+        live.stage("footage", "running", f"{len(reqs)} beats searched · review sheets ready for the eyes")
     for rid, r in doc["requests"].items():
         print(f"{rid}\t{len(r['candidates'])} candidates\t{a.out / r['contact_sheet']}")
     print(f"→ review with footage/REVIEW.md, write picks.json (template: {a.out / 'picks.template.json'})")
