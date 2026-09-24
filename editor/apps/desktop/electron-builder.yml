@@ -1,8 +1,8 @@
-appId: video.openreel.desktop
-productName: OpenReel
+appId: app.icedlatte.documentarystudio
+productName: Documentary Studio
 # Predictable, space-free, arch-suffixed names → clean R2 URLs + a simple
 # manifest (e.g. OpenReel-1.2.3-arm64.dmg, OpenReel-1.2.3-x64.exe).
-artifactName: ${productName}-${version}-${arch}.${ext}
+artifactName: DocumentaryStudio-${version}-${arch}.${ext}
 asar: true
 # The MCP stdio shim must be a real on-disk file so external clients (Claude
 # Desktop / Cursor / Cline) can spawn it with `node`; unpack it from the asar.
@@ -13,10 +13,7 @@ directories:
 # Update feed for electron-updater. Builds embed app-update.yml pointing at the
 # R2-backed download subdomain and generate latest*.yml + blockmaps; the release
 # CI uploads everything to R2 (the generic provider does not upload itself).
-publish:
-  provider: generic
-  url: https://dl.openreel.video
-  channel: latest
+publish: null
 files:
   - dist/**/*
   - "!**/*.map"
@@ -69,6 +66,11 @@ win:
   target:
     - target: nsis
       arch: [x64]
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  shortcutName: Documentary Studio
 linux:
   icon: build/icon.png
   target:

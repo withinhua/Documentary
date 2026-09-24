@@ -19,14 +19,18 @@ export function registerAppSchemePrivileges(): void {
   ]);
 }
 
-export function handleAppScheme(rendererRoot: string): void {
+export function handleAppScheme(rendererRoot: string, studioFeedRoot?: () => string | null): void {
   protocol.handle(SCHEME, async (request) => {
     const url = new URL(request.url);
     let pathname = decodeURIComponent(url.pathname);
     if (pathname === "/" || pathname === "") pathname = "/index.html";
     if (pathname === "/motion") pathname = "/index.html";
 
-    const root = path.normalize(rendererRoot);
+    // Documentary Studio: /studio-feed/* comes from the user's workspace (live pipeline output)
+    // when one is set up; otherwise from the bundled demo feed inside the renderer.
+    const feedRoot = pathname.startsWith("/studio-feed/") ? studioFeedRoot?.() : null;
+    if (feedRoot) pathname = pathname.slice("/studio-feed".length);
+    const root = path.normalize(feedRoot ?? rendererRoot);
     const resolved = path.normalize(path.join(root, pathname));
     const rel = path.relative(root, resolved);
     if (rel !== "" && (rel === ".." || rel.startsWith(".." + path.sep) || path.isAbsolute(rel))) {
@@ -37,6 +41,7 @@ export function handleAppScheme(rendererRoot: string): void {
     try {
       response = await net.fetch(pathToFileURL(resolved).toString());
     } catch {
+      if (feedRoot) return new Response("Not found", { status: 404 });
       response = await net.fetch(pathToFileURL(path.join(rendererRoot, "index.html")).toString());
     }
 
@@ -44,6 +49,7 @@ export function handleAppScheme(rendererRoot: string): void {
     headers.set("Cross-Origin-Opener-Policy", "same-origin");
     headers.set("Cross-Origin-Embedder-Policy", "require-corp");
     headers.set("Cross-Origin-Resource-Policy", "same-origin");
+    if (feedRoot) headers.set("Cache-Control", "no-store");
     return new Response(response.body, {
       status: response.status,
       statusText: response.statusText,

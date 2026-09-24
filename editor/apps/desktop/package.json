@@ -12,7 +12,7 @@
     "name": "OpenReel",
     "email": "support@openreel.video"
   },
-  "description": "OpenReel — open-source professional video editor",
+  "description": "Documentary Studio — make and edit documentaries (editor based on OpenReel, MIT)",
   "scripts": {
     "build:main": "node scripts/prepare-aurora-native.mjs && tsup",
     "build:renderer": "OPENREEL_DESKTOP=1 pnpm --filter @openreel/web build",

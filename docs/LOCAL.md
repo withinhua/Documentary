@@ -39,3 +39,11 @@ powershell -ExecutionPolicy Bypass -File scripts\studio.ps1        # open http:/
 To make videos too: `winget install Python.Python.3.12 Gyan.FFmpeg`, reopen PowerShell, then
 `powershell -ExecutionPolicy Bypass -File scripts\setup-local.ps1` once and
 `powershell -ExecutionPolicy Bypass -File scripts\new-coke.ps1` in a second window.
+
+## The desktop app (Windows installer)
+Every push that changes `editor/` builds **DocumentaryStudio-<version>-x64.exe** on GitHub's Windows
+machines and publishes it on the repo's Releases page as **studio-latest**. Install it, open
+"Documentary Studio", and click **Choose your Documentary folder** (your checkout of this repo).
+The dashboard then shows your productions live; each production has **Get footage**,
+**Make video** and **Show file** buttons that run the pipeline on your PC (after
+`scripts\setup-local.ps1` has set up Python and the voice model once).

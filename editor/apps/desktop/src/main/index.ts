@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain, shell } from "electron";
 import path from "node:path";
 import { z } from "zod";
 import { registerAppSchemePrivileges, handleAppScheme, APP_INDEX } from "./protocol";
+import { loadWorkspace, registerStudioIpc, studioFeedRoot } from "./studio";
 import { installNavigationGuard } from "./nav-guard";
 import { handle } from "./ipc";
 import { CHANNELS } from "../shared/ipc-contract";
@@ -139,7 +140,9 @@ function createWindow(): void {
 
 app.whenReady().then(() => {
   if (!hasSingleInstanceLock) return;
-  handleAppScheme(rendererRoot());
+  loadWorkspace();
+  registerStudioIpc();
+  handleAppScheme(rendererRoot(), studioFeedRoot);
   handle(CHANNELS.probeHardware, z.undefined(), () => collectHardwareInfo());
   handle(CHANNELS.fsShowSaveDialog, saveDialogArgsSchema, showSaveDialog);
   handle(CHANNELS.fsShowOpenDialog, openDialogArgsSchema, showOpenDialog);
@@ -259,7 +262,8 @@ app.whenReady().then(() => {
   handle(CHANNELS.mcpRotateToken, z.undefined(), () => rotateMcpToken());
   handle(CHANNELS.mcpTestConnection, z.undefined(), () => testMcpConnection());
   createWindow();
-  initAutoUpdater();
+  // Documentary Studio has no update server yet; enable once releases are published.
+  if (process.env.STUDIO_AUTO_UPDATE === "1") initAutoUpdater();
   startMcpServer().catch((error) =>
     reportError({
       type: "mcp-start-failed",

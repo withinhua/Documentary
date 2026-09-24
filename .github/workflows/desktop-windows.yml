@@ -1,0 +1,56 @@
+name: desktop-windows
+# Builds the Documentary Studio Windows installer (.exe) on a GitHub-hosted Windows machine and
+# publishes it as the "studio-latest" pre-release, so it can be downloaded and installed directly.
+on:
+  push:
+    branches: [main, claude/zealous-davinci-lerpgn]
+    paths: [editor/**, .github/workflows/desktop-windows.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: desktop-windows-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: editor
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: editor/package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: editor/pnpm-lock.yaml
+      # package scripts use POSIX syntax (VAR=1 cmd) — run them with Git Bash
+      - run: pnpm config set script-shell "C:\\Program Files\\Git\\bin\\bash.exe"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build:wasm
+      - name: Build installer
+        working-directory: editor/apps/desktop
+        run: pnpm run dist --win --publish never
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DocumentaryStudio-windows
+          path: editor/apps/desktop/release/*.exe
+          if-no-files-found: error
+      - name: Publish as the studio-latest pre-release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: studio-latest
+          name: Documentary Studio (latest build)
+          prerelease: true
+          target_commitish: ${{ github.sha }}
+          files: editor/apps/desktop/release/*.exe
+          body: |
+            Latest Windows build of Documentary Studio from `${{ github.ref_name }}` (${{ github.sha }}).
+            Install, then click "Choose your Documentary folder" and pick your local checkout of this repo.

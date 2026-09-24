@@ -27,6 +27,7 @@ import { useRouter } from "../hooks/use-router";
 import { BRAND } from "./brand";
 import { buildTimeline } from "./build-timeline";
 import { Dashboard } from "./Dashboard";
+import { desktop } from "./desktop";
 import {
   fetchIndex,
   fetchProduction,
@@ -69,6 +70,7 @@ export function StudioHub({ initialSlug }: { initialSlug?: string }) {
           <span className="truncate text-xs text-fg-muted">{BRAND.tagline}</span>
         </div>
         <div className="ml-auto flex items-center gap-2">
+          <WorkspaceChip />
           <button
             type="button"
             onClick={() => navigate("welcome")}
@@ -213,14 +215,17 @@ function ProductionView({ slug }: { slug: string }) {
             <span>Updated {fmtAgo(p.updatedAt)}</span>
           </div>
         </div>
-        <button
-          type="button"
-          onClick={openInEditor}
-          disabled={!!building && !building.error}
-          className="flex items-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-accent-fg hover:bg-accent-strong disabled:opacity-60"
-        >
-          <Scissors size={15} aria-hidden /> Open in editor
-        </button>
+        <div className="flex flex-wrap items-center gap-2">
+          {desktop && <DesktopActions slug={p.slug} busy={p.stages.some((s) => s.status === "running")} />}
+          <button
+            type="button"
+            onClick={openInEditor}
+            disabled={!!building && !building.error}
+            className="flex items-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-accent-fg hover:bg-accent-strong disabled:opacity-60"
+          >
+            <Scissors size={15} aria-hidden /> Open in editor
+          </button>
+        </div>
       </div>
 
       <StageTracker stages={p.stages} />
@@ -534,5 +539,49 @@ function BuildOverlay({ state, onClose }: { state: { msg: string; f: number; err
         )}
       </div>
     </div>
+  );
+}
+
+// ── desktop app only ─────────────────────────────────────────────────────────────────────────────
+function WorkspaceChip() {
+  const [ws, setWs] = useState<string | null | undefined>(undefined);
+  const [error, setError] = useState<string | null>(null);
+  useEffect(() => {
+    void desktop?.workspace().then((w) => setWs(w.workspace));
+  }, []);
+  if (!desktop) return null;
+  const choose = async () => {
+    const r = await desktop!.chooseWorkspace();
+    setError(r.error ?? null);
+    if (r.ok) window.location.reload();
+  };
+  return (
+    <button
+      type="button"
+      onClick={choose}
+      title={error ?? ws ?? "Choose the Documentary folder on this computer"}
+      className={`max-w-xs truncate rounded-md border px-3 py-1.5 text-xs ${
+        ws ? "border-border text-fg-2 hover:bg-hover" : "border-amber-500/60 bg-amber-500/10 text-amber-700 dark:text-amber-300"
+      }`}
+    >
+      {error ? error : ws ? `Workspace: ${ws}` : "Choose your Documentary folder"}
+    </button>
+  );
+}
+
+function DesktopActions({ slug, busy }: { slug: string; busy: boolean }) {
+  const [msg, setMsg] = useState<string | null>(null);
+  const run = async (action: "produce" | "fetch") => {
+    const r = await desktop!.run(slug, action);
+    setMsg(r.ok ? (action === "fetch" ? "Getting footage… watch the stages" : "Making the video… watch the stages") : r.error ?? "Couldn't start");
+  };
+  const btn = "rounded-lg border border-border px-3 py-2.5 text-sm text-fg-2 hover:bg-hover disabled:opacity-50";
+  return (
+    <>
+      {msg && <span className="max-w-[16rem] truncate text-xs text-fg-muted" title={msg}>{msg}</span>}
+      <button type="button" className={btn} disabled={busy} onClick={() => run("fetch")}>Get footage</button>
+      <button type="button" className={btn} disabled={busy} onClick={() => run("produce")}>Make video</button>
+      <button type="button" className={btn} onClick={() => void desktop!.openOutput(slug)}>Show file</button>
+    </>
   );
 }

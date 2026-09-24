@@ -2,6 +2,14 @@ import { contextBridge, ipcRenderer } from "electron";
 import { CHANNELS } from "../shared/channels";
 import type { McpBridgeRequest } from "../shared/mcp";
 
+contextBridge.exposeInMainWorld("documentaryStudio", {
+  workspace: () => ipcRenderer.invoke("studio:workspace"),
+  chooseWorkspace: () => ipcRenderer.invoke("studio:choose-workspace"),
+  run: (slug: string, action: "produce" | "fetch" = "produce") => ipcRenderer.invoke("studio:run", { slug, action }),
+  stop: (slug: string, action: "produce" | "fetch" = "produce") => ipcRenderer.invoke("studio:stop", { slug, action }),
+  openOutput: (slug: string) => ipcRenderer.invoke("studio:open-output", { slug }),
+});
+
 contextBridge.exposeInMainWorld("openreel", {
   platform: "desktop",
   publicOrigin: "https://app.openreel.video",
